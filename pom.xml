@@ -1,0 +1,118 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.ocpsoft</groupId>
+	<artifactId>ocpsoft-pretty-time</artifactId>
+	<packaging>jar</packaging>
+	<version>1.0.6</version>
+	<name>PrettyTime</name>
+	<description>Social networking style time-formatting utilities and web-framework integrations.</description>
+	<url>http://ocpsoft.com/prettytime</url>
+
+	<licenses>
+		<license>
+			<name>GNU LESSER GENERAL PUBLIC LICENSE, Version 3, 29 June 2007</name>
+			<url>http://www.gnu.org/licenses/lgpl-3.0.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<developerConnection>scm:svn:http://prettytime.googlecode.com/svn/trunk/ocpsoft-pretty-time</developerConnection>
+		<tag>HEAD</tag>
+		<url>http://code.google.com/p/prettytime/source/browse/#svn/trunk/ocpsoft-pretty-time</url>
+	</scm>
+
+	<issueManagement>
+		<system>Google Code</system>
+		<url>http://code.google.com/p/prettytime/issues/list</url>
+	</issueManagement>
+
+	<developers>
+		<developer>
+			<id>lincolnbaxter</id>
+			<name>Lincoln Baxter, III</name>
+			<email>lincoln@ocpsoft.com</email>
+			<timezone>-5</timezone>
+		</developer>
+		<developer>
+			<id>tweitzel</id>
+			<name>Thomas Weitzel</name>
+			<email>tweitzel@synformation.com</email>
+		</developer>
+	</developers>
+
+	<distributionManagement>
+		<repository>
+			<id>ocpsoft.ftp.public</id>
+			<url>ftp://ocpsoft.com/ocpsoft.com/repository</url>
+		</repository>
+	</distributionManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>javax.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<version>1.2_02</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.5</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<organization>
+		<name>OcpSoft</name>
+		<url>http://ocpsoft.com</url>
+	</organization>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+					<encoding>UTF-8</encoding> 
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ftp</artifactId>
+				<version>1.0-alpha-6</version>
+			</extension>
+		</extensions>
+	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<keywords>true</keywords>
+					<destDir>${artifactId}/${version}</destDir>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
+</project>

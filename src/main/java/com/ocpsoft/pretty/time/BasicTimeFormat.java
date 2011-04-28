@@ -91,7 +91,7 @@ public class BasicTimeFormat implements TimeFormat
     private String getGramaticallyCorrectName(final Duration d)
     {
         String result = d.getUnit().getName();
-        if ((Math.abs(d.getQuantity()) == 0) || (Math.abs(d.getQuantity()) > 1))
+        if ((Math.abs(getQuantity(d)) == 0) || (Math.abs(getQuantity(d)) > 1))
         {
             result = d.getUnit().getPluralName();
         }

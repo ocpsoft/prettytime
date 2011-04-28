@@ -9,6 +9,15 @@
 	<description>Social networking style time-formatting utilities and web-framework integrations.</description>
 	<url>http://ocpsoft.com/prettytime</url>
 
+  <properties>
+    <project.build.sourceEncoding>
+      UTF-8
+    </project.build.sourceEncoding>
+    <project.reporting.outputEncoding>
+      UTF-8
+    </project.reporting.outputEncoding>
+  </properties>
+
 	<licenses>
 		<license>
 			<name>GNU LESSER GENERAL PUBLIC LICENSE, Version 3, 29 June 2007</name>
@@ -81,6 +90,7 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<version>3.0.2</version>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 				<executions>
@@ -106,11 +116,12 @@
 	<reporting>
 		<plugins>
 			<plugin>
+				<version>3.0.2</version>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<configuration>
 					<keywords>true</keywords>
-					<destDir>${artifactId}/${version}</destDir>
+					<destDir>${project.artifactId}/${project.version}</destDir>
 				</configuration>
 			</plugin>
 		</plugins>

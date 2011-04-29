@@ -37,7 +37,7 @@ public class BasicTimeFormat implements TimeFormat
     private String futureSuffix = "";
     private String pastPrefix = "";
     private String pastSuffix = "";
-    private int roundingTolerance = 0;
+    private int roundingTolerance = 50;
 
     public String format(final Duration duration)
     {
@@ -80,7 +80,7 @@ public class BasicTimeFormat implements TimeFormat
         {
             double threshold = Math
                     .abs(((double) duration.getDelta() / (double) duration.getUnit().getMillisPerUnit()) * 100);
-            if (threshold < roundingTolerance)
+            if (threshold > roundingTolerance)
             {
                 quantity = quantity + 1;
             }
@@ -91,7 +91,7 @@ public class BasicTimeFormat implements TimeFormat
     private String getGramaticallyCorrectName(final Duration d)
     {
         String result = d.getUnit().getName();
-        if ((Math.abs(d.getQuantity()) == 0) || (Math.abs(d.getQuantity()) > 1))
+        if ((Math.abs(getQuantity(d)) == 0) || (Math.abs(getQuantity(d)) > 1))
         {
             result = d.getUnit().getPluralName();
         }

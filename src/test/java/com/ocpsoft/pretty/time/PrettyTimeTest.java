@@ -217,6 +217,12 @@ public class PrettyTimeTest
         assertEquals("3 centuries ago", t.format(new Date(0)));
     }
 
+    @Test
+    public void testWithinTwoHoursRounding() throws Exception
+    {
+      PrettyTime t = new PrettyTime();
+      assertEquals("2 hours ago", t.format(new Date(new Date().getTime() - 6543990)));      
+    }
     // Method tearDown() is called automatically after every test method
     @After
     public void tearDown() throws Exception

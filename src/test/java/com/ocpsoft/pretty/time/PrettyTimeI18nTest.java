@@ -90,7 +90,7 @@ public class PrettyTimeI18nTest
     {
         // The default resource bundle should be used
         PrettyTime p = new PrettyTime(new Date(3155692597470L * 3L), Locale.GERMAN);
-        assertEquals(p.format(new Date(0)), "Vor 3 Jahrhunderten");
+        assertEquals(p.format(new Date(0)), "vor 3 Jahrhunderten");
     }
 
     @Test
@@ -126,7 +126,7 @@ public class PrettyTimeI18nTest
         // The default resource bundle should be used
         Locale.setDefault(Locale.GERMAN);
         PrettyTime p = new PrettyTime(new Date(3155692597470L * 3L));
-        assertEquals(p.format(new Date(0)), "Vor 3 Jahrhunderten");
+        assertEquals(p.format(new Date(0)), "vor 3 Jahrhunderten");
     }
 
     @Test
@@ -148,7 +148,7 @@ public class PrettyTimeI18nTest
         PrettyTime p = new PrettyTime(new Date(0), Locale.GERMAN);
         while (1000L * 60L * 60L * 24L * 365L * 1000000L > t)
         {
-            assertEquals(p.format(new Date(0)).startsWith("In") || p.format(new Date(0)).startsWith("Jetzt"), true);
+            assertEquals(p.format(new Date(0)).startsWith("in") || p.format(new Date(0)).startsWith("Jetzt"), true);
             t *= 2L;
         }
     }

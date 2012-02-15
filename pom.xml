@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.ocpsoft</groupId>
 		<artifactId>ocpsoft-parent</artifactId>
-		<version>1</version>
+		<version>2</version>
 	</parent>
 
 	<artifactId>ocpsoft-pretty-time</artifactId>
@@ -59,13 +59,6 @@
 		</developer>
 	</developers>
 
-	<distributionManagement>
-		<repository>
-			<id>ocpsoft.ftp.public</id>
-			<url>ftp://ocpsoft.com/ocpsoft.com/repository</url>
-		</repository>
-	</distributionManagement>
-
 	<dependencies>
 		<dependency>
 			<groupId>javax.faces</groupId>
@@ -81,10 +74,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<organization>
-		<name>OcpSoft</name>
-		<url>http://ocpsoft.com</url>
-	</organization>
 
 	<build>
 		<plugins>
@@ -112,13 +101,6 @@
 				</executions>
 			</plugin>
 		</plugins>
-		<extensions>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-ftp</artifactId>
-				<version>1.0-alpha-6</version>
-			</extension>
-		</extensions>
 	</build>
 
 	<reporting>

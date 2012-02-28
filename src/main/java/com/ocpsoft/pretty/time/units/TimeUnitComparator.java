@@ -36,9 +36,9 @@ public class TimeUnitComparator implements Comparator<TimeUnit>, Serializable {
 
 	public int compare(final TimeUnit left, final TimeUnit right) {
 		if (left.getMillisPerUnit() < right.getMillisPerUnit()) {
-			return 1;
-		} else if (left.getMillisPerUnit() > right.getMillisPerUnit()) {
 			return -1;
+		} else if (left.getMillisPerUnit() > right.getMillisPerUnit()) {
+			return 1;
 		}
 		return 0;
 	}

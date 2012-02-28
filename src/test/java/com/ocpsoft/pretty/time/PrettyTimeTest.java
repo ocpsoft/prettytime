@@ -1,9 +1,11 @@
 package com.ocpsoft.pretty.time;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.junit.After;
@@ -223,6 +225,27 @@ public class PrettyTimeTest
       PrettyTime t = new PrettyTime();
       assertEquals("2 hours ago", t.format(new Date(new Date().getTime() - 6543990)));      
     }
+
+    @Test
+    public void testPreciseInTheFuture() throws Exception
+    {
+      PrettyTime t = new PrettyTime();
+      List<Duration> durations = t.calculatePreciseDuration(new Date(new Date().getTime() + 1000*(10*60+5*60*60)));
+      assertTrue(durations.size() >= 2); // might be more because of milliseconds between date capturing and result calculation
+      assertEquals(5, durations.get(0).getQuantity());
+      assertEquals(10, durations.get(1).getQuantity());
+    }
+
+    @Test
+    public void testPreciseInThePast() throws Exception
+    {
+      PrettyTime t = new PrettyTime();
+      List<Duration> durations = t.calculatePreciseDuration(new Date(new Date().getTime() - 1000*(10*60+5*60*60)));
+      assertTrue(durations.size() >= 2); // might be more because of milliseconds between date capturing and result calculation
+      assertEquals(-5, durations.get(0).getQuantity());
+      assertEquals(-10, durations.get(1).getQuantity());
+    }
+
     // Method tearDown() is called automatically after every test method
     @After
     public void tearDown() throws Exception

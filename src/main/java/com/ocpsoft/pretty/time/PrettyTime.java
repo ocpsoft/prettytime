@@ -217,7 +217,7 @@ public class PrettyTime
         long difference = then.getTime() - reference.getTime();
         Duration duration = calculateDuration(difference);
         result.add(duration);
-        while (0 < duration.getDelta())
+        while (0 != duration.getDelta())
         {
             duration = calculateDuration(duration.getDelta());
             result.add(duration);

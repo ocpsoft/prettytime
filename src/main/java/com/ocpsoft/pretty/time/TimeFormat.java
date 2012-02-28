@@ -20,6 +20,7 @@
  */
 package com.ocpsoft.pretty.time;
 
+
 /**
  * Format a Duration object.
  * 
@@ -35,4 +36,26 @@ public interface TimeFormat
      * @return
      */
     public abstract String format(final Duration duration);
+
+    /**
+     * Given Duration object apply formating, optional rounding,
+     * optional decorating with prefix/suffix and output the result.
+     * 
+     * @param duration
+     * @param doRounding
+     * @param doDecorate
+     * @return
+     */
+    public abstract String format(final Duration duration, boolean doRounding, boolean doDecorate);
+
+    
+    /**
+     * Decorate with prefix/fuffix
+     * 
+     * @param sign
+     * @param result
+     * @return
+     */
+    public String decorate(String value, boolean inThePast);
+
 }

@@ -20,6 +20,7 @@
  */
 package com.ocpsoft.pretty.time;
 
+
 /**
  * Represents a simple method of formatting a specific {@link Duration} of time
  * 
@@ -39,14 +40,21 @@ public class BasicTimeFormat implements TimeFormat
    private String pastSuffix = "";
    private int roundingTolerance = 50;
 
+
    public String format(final Duration duration)
+   {
+      return format(duration, true, true);
+   }
+      
+   public String format(final Duration duration, final boolean doRounding, final boolean doDecorate)
    {
       String sign = getSign(duration);
       String unit = getGramaticallyCorrectName(duration);
-      long quantity = getQuantity(duration);
+      long quantity = getQuantity(duration, doRounding);
 
       String result = applyPattern(sign, unit, quantity);
-      result = decorate(sign, result);
+      if (doDecorate)
+    	  result = decorate(sign, result);
 
       return result;
    }
@@ -63,6 +71,10 @@ public class BasicTimeFormat implements TimeFormat
       }
       return result.replaceAll("\\s+", " ").trim();
    }
+   
+   public String decorate(String value, boolean inThePast) {
+	   return decorate(inThePast ? NEGATIVE : "", value);
+   }
 
    private String applyPattern(final String sign, final String unit, final long quantity)
    {
@@ -72,7 +84,11 @@ public class BasicTimeFormat implements TimeFormat
       return result;
    }
 
-   private long getQuantity(final Duration duration)
+   private long getQuantity(final Duration duration) {
+	  return getQuantity(duration, true);
+   }
+
+   private long getQuantity(final Duration duration, boolean doRounding)
    {
       long quantity = Math.abs(duration.getQuantity());
 
@@ -80,7 +96,7 @@ public class BasicTimeFormat implements TimeFormat
       {
          double threshold = Math
                     .abs(((double) duration.getDelta() / (double) duration.getUnit().getMillisPerUnit()) * 100);
-         if (threshold > roundingTolerance)
+         if (doRounding && (threshold > roundingTolerance))
          {
             quantity = quantity + 1;
          }

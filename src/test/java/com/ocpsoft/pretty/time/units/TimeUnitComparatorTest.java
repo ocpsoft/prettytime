@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Locale;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,6 +26,13 @@ public class TimeUnitComparatorTest {
     {
         TimeUnitComparator comparator = new TimeUnitComparator();
         assertEquals(-1, comparator.compare(new Hour(locale), new Day(locale)));
+    }
+
+    // Method tearDown() is called automatically after every test method
+    @After
+    public void tearDown() throws Exception
+    {
+        Locale.setDefault(locale);
     }
 
 }

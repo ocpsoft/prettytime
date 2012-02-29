@@ -239,6 +239,43 @@ public class PrettyTime
         return format.format(duration);
     }
 
+
+    /**
+     * Format the given {@link Duration} objects, using the {@link TimeFormat}
+     * specified by the {@link TimeUnit} contained within.
+     * Rounds only the last {@link Duration} object.
+     * 
+     * @param durations
+     *            the {@link Duration}s to be formatted
+     * @return A list of formatted strings representing {@code durations}
+     */
+    public String format(final List<Duration> durations)
+    {
+    	String result = null;
+    	if (durations != null) {
+    		StringBuilder builder = new StringBuilder();
+    		Duration duration = null;
+    		TimeFormat format = null;
+    		for (int i=0; i<durations.size(); i++) {
+    			duration = durations.get(i);
+    			boolean isLast = (i == durations.size() - 1);
+    	        format = duration.getUnit().getFormat();
+    	        if (!isLast) {
+        	        builder.append(format.formatWithoutRounding(duration));
+    	        	builder.append(" ");
+    	        } else {
+    	        	builder.append(format.formatWithRounding(duration));
+    	        }
+    		}
+    		if (duration.getQuantity() < 0) {
+    			result = format.decoratePast(builder.toString());
+    		} else {
+    			result = format.decorateFuture(builder.toString());
+    		}
+    	}
+        return result;
+    }
+
     /**
      * Format the given {@link Date} object. This method applies the {@code
      * PrettyTime.approximateDuration(date)} method to perform its calculation.

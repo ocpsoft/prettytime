@@ -20,6 +20,7 @@
  */
 package com.ocpsoft.pretty.time;
 
+
 /**
  * Represents a simple method of formatting a specific {@link Duration} of time
  * 
@@ -39,18 +40,40 @@ public class BasicTimeFormat implements TimeFormat
    private String pastSuffix = "";
    private int roundingTolerance = 50;
 
+
    public String format(final Duration duration)
+   {
+      String result = format(duration, true);
+      String sign = getSign(duration);
+      return decorate(sign, result);
+   }
+   
+   public String formatWithoutRounding(final Duration duration) {
+	   return format(duration, false);
+   }
+   
+   public String formatWithRounding(final Duration duration) {
+	   return format(duration, true);
+   }
+      
+   private String format(final Duration duration, final boolean doRounding)
    {
       String sign = getSign(duration);
       String unit = getGramaticallyCorrectName(duration);
-      long quantity = getQuantity(duration);
+      long quantity = getQuantity(duration, doRounding);
 
       String result = applyPattern(sign, unit, quantity);
-      result = decorate(sign, result);
-
       return result;
    }
 
+   public String decoratePast(String value) {
+	   return decorate(NEGATIVE, value);
+   }
+   
+   public String decorateFuture(String value) {
+	   return decorate("", value);
+   }
+   
    private String decorate(final String sign, String result)
    {
       if (NEGATIVE.equals(sign))
@@ -63,6 +86,10 @@ public class BasicTimeFormat implements TimeFormat
       }
       return result.replaceAll("\\s+", " ").trim();
    }
+   
+   public String decorate(String value, boolean inThePast) {
+	   return decorate(inThePast ? NEGATIVE : "", value);
+   }
 
    private String applyPattern(final String sign, final String unit, final long quantity)
    {
@@ -72,7 +99,11 @@ public class BasicTimeFormat implements TimeFormat
       return result;
    }
 
-   private long getQuantity(final Duration duration)
+   private long getQuantity(final Duration duration) {
+	  return getQuantity(duration, true);
+   }
+
+   private long getQuantity(final Duration duration, boolean doRounding)
    {
       long quantity = Math.abs(duration.getQuantity());
 
@@ -80,7 +111,7 @@ public class BasicTimeFormat implements TimeFormat
       {
          double threshold = Math
                     .abs(((double) duration.getDelta() / (double) duration.getUnit().getMillisPerUnit()) * 100);
-         if (threshold > roundingTolerance)
+         if (doRounding && (threshold > roundingTolerance))
          {
             quantity = quantity + 1;
          }

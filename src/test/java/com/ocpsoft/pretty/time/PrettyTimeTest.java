@@ -247,17 +247,6 @@ public class PrettyTimeTest
     }
     
     @Test
-    public void testDoRounding() throws Exception
-    {
-    	PrettyTime t = new PrettyTime(new Date(1000 * 60 * 60 * 3 + 1000 * 60 * 45));
-        Duration duration = t.approximateDuration(new Date(0));
-        assertEquals("3 hours ago", t.format(duration, false));
-        assertEquals("4 hours ago", t.format(duration, true));
-        // rounding should be enabled by default
-        assertEquals("4 hours ago", t.format(duration));
-    }
-    
-    @Test
     public void testFormattingDurationListInThePast() throws Exception
     {
     	PrettyTime t = new PrettyTime(new Date(1000 * 60 * 60 * 24 * 3 + 1000 * 60 * 60 * 15 + 1000 * 60 * 38));

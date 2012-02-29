@@ -43,22 +43,37 @@ public class BasicTimeFormat implements TimeFormat
 
    public String format(final Duration duration)
    {
-      return format(duration, true, true);
+      String result = format(duration, true);
+      String sign = getSign(duration);
+      return decorate(sign, result);
+   }
+   
+   public String formatWithoutRounding(final Duration duration) {
+	   return format(duration, false);
+   }
+   
+   public String formatWithRounding(final Duration duration) {
+	   return format(duration, true);
    }
       
-   public String format(final Duration duration, final boolean doRounding, final boolean doDecorate)
+   private String format(final Duration duration, final boolean doRounding)
    {
       String sign = getSign(duration);
       String unit = getGramaticallyCorrectName(duration);
       long quantity = getQuantity(duration, doRounding);
 
       String result = applyPattern(sign, unit, quantity);
-      if (doDecorate)
-    	  result = decorate(sign, result);
-
       return result;
    }
 
+   public String decoratePast(String value) {
+	   return decorate(NEGATIVE, value);
+   }
+   
+   public String decorateFuture(String value) {
+	   return decorate("", value);
+   }
+   
    private String decorate(final String sign, String result)
    {
       if (NEGATIVE.equals(sign))

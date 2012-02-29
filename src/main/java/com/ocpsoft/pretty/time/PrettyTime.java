@@ -241,21 +241,6 @@ public class PrettyTime
 
 
     /**
-     * Format the given {@link Duration} object, using the {@link TimeFormat}
-     * specified by the {@link TimeUnit} contained within and with optional rounding
-     * 
-     * @param duration
-     *            the {@link Duration} to be formatted
-     * @param doRounding
-     * @return A formatted string representing {@code duration}
-     */
-    public String format(final Duration duration, boolean doRounding)
-    {
-        TimeFormat format = duration.getUnit().getFormat();
-        return format.format(duration, doRounding, true);
-    }
-
-    /**
      * Format the given {@link Duration} objects, using the {@link TimeFormat}
      * specified by the {@link TimeUnit} contained within.
      * Rounds only the last {@link Duration} object.
@@ -270,16 +255,23 @@ public class PrettyTime
     	if (durations != null) {
     		StringBuilder builder = new StringBuilder();
     		Duration duration = null;
-    		TimeFormat format;
+    		TimeFormat format = null;
     		for (int i=0; i<durations.size(); i++) {
     			duration = durations.get(i);
     			boolean isLast = (i == durations.size() - 1);
     	        format = duration.getUnit().getFormat();
-    	        builder.append(format.format(duration, isLast, false));
-    	        if (!isLast)
+    	        if (!isLast) {
+        	        builder.append(format.formatWithoutRounding(duration));
     	        	builder.append(" ");
+    	        } else {
+    	        	builder.append(format.formatWithRounding(duration));
+    	        }
     		}
-    		result = duration.getUnit().getFormat().decorate(builder.toString(), duration.getQuantity() < 0);
+    		if (duration.getQuantity() < 0) {
+    			result = format.decoratePast(builder.toString());
+    		} else {
+    			result = format.decorateFuture(builder.toString());
+    		}
     	}
         return result;
     }

@@ -29,7 +29,7 @@ package com.ocpsoft.pretty.time;
 public interface TimeFormat
 {
     /**
-     * Given a populated Duration object. Apply formatting and output the
+     * Given a populated Duration object. Apply formatting, decorate and output the
      * result.
      * 
      * @param duration
@@ -38,24 +38,37 @@ public interface TimeFormat
     public abstract String format(final Duration duration);
 
     /**
-     * Given Duration object apply formating, optional rounding,
-     * optional decorating with prefix/suffix and output the result.
+     * Return formatted duration without rounding
      * 
      * @param duration
-     * @param doRounding
-     * @param doDecorate
      * @return
      */
-    public abstract String format(final Duration duration, boolean doRounding, boolean doDecorate);
-
+    public String formatWithRounding(Duration duration);
     
     /**
-     * Decorate with prefix/fuffix
+     * Return formatted duration with rounding if necessary
      * 
-     * @param sign
-     * @param result
+     * @param duration
      * @return
      */
-    public String decorate(String value, boolean inThePast);
+    public String formatWithoutRounding(Duration duration);
+    
+    
+    /**
+     * Decorate with past prefix/suffix
+     * 
+     * @param value
+     * @return
+     */
+    public String decoratePast(String value);
+    
+    
+    /**
+     * Decorate with future prefix/suffix
+     * 
+     * @param value
+     * @return
+     */
+    public String decorateFuture(String value);
 
 }

@@ -1,7 +1,7 @@
 package com.ocpsoft.pretty.time;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -244,6 +244,22 @@ public class PrettyTimeTest
       assertTrue(durations.size() >= 2); // might be more because of milliseconds between date capturing and result calculation
       assertEquals(-5, durations.get(0).getQuantity());
       assertEquals(-10, durations.get(1).getQuantity());
+    }
+    
+    @Test
+    public void testFormattingDurationListInThePast() throws Exception
+    {
+    	PrettyTime t = new PrettyTime(new Date(1000 * 60 * 60 * 24 * 3 + 1000 * 60 * 60 * 15 + 1000 * 60 * 38));
+    	List<Duration> durations = t.calculatePreciseDuration(new Date(0));
+    	assertEquals("3 days 15 hours 38 minutes ago", t.format(durations));
+    }
+
+    @Test
+    public void testFormattingDurationListInTheFuture() throws Exception
+    {
+    	PrettyTime t = new PrettyTime(new Date(0));
+    	List<Duration> durations = t.calculatePreciseDuration(new Date(1000 * 60 * 60 * 24 * 3 + 1000 * 60 * 60 * 15 + 1000 * 60 * 38));
+    	assertEquals("3 days 15 hours 38 minutes from now", t.format(durations));
     }
 
     // Method tearDown() is called automatically after every test method

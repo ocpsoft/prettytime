@@ -1,74 +1,42 @@
 /*
- * PrettyTime is an OpenSource Java time comparison library for creating human
- * readable time.
+ * Copyright 2012 <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  * 
- * Copyright (C) 2009 - Lincoln Baxter, III <lincoln@ocpsoft.com>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  * 
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation, either version 3 of the License, or (at your option) any
- * later version.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program. If not, see the file COPYING.LESSER3 or visit the
- * GNU website at <http://www.gnu.org/licenses/>.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.ocpsoft.pretty.time;
-
 
 /**
  * Format a Duration object.
  * 
- * @author lb3
+ * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
 public interface TimeFormat
 {
-    /**
-     * Given a populated Duration object. Apply formatting, decorate and output the
-     * result.
-     * 
-     * @param duration
-     * @return
-     */
-    public abstract String format(final Duration duration);
+   /**
+    * Given a populated Duration object. Apply plurality formatting (with rounding) and output the result.
+    */
+   public abstract String format(final Duration duration);
 
-    /**
-     * Return formatted duration without rounding
-     * 
-     * @param duration
-     * @return
-     */
-    public String formatWithRounding(Duration duration);
-    
-    /**
-     * Return formatted duration with rounding if necessary
-     * 
-     * @param duration
-     * @return
-     */
-    public String formatWithoutRounding(Duration duration);
-    
-    
-    /**
-     * Decorate with past prefix/suffix
-     * 
-     * @param value
-     * @return
-     */
-    public String decoratePast(String value);
-    
-    
-    /**
-     * Decorate with future prefix/suffix
-     * 
-     * @param value
-     * @return
-     */
-    public String decorateFuture(String value);
+   /**
+    * Return formatted duration without rounding
+    */
+   public String formatUnrounded(Duration duration);
+
+   /**
+    * Decorate with past or future prefix/suffix
+    * 
+    * @param The original {@link Duration} instance from which the time string should be decorated.
+    */
+   public String decorate(Duration duration, String time);
 
 }

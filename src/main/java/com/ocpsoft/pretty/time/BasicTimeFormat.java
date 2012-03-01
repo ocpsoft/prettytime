@@ -1,25 +1,19 @@
 /*
- * PrettyTime is an OpenSource Java time comparison library for creating human
- * readable time.
+ * Copyright 2012 <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  * 
- * Copyright (C) 2009 - Lincoln Baxter, III <lincoln@ocpsoft.com>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  * 
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation, either version 3 of the License, or (at your option) any
- * later version.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program. If not, see the file COPYING.LESSER3 or visit the
- * GNU website at <http://www.gnu.org/licenses/>.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.ocpsoft.pretty.time;
-
 
 /**
  * Represents a simple method of formatting a specific {@link Duration} of time
@@ -40,55 +34,40 @@ public class BasicTimeFormat implements TimeFormat
    private String pastSuffix = "";
    private int roundingTolerance = 50;
 
-
+   @Override
    public String format(final Duration duration)
    {
-      String result = format(duration, true);
-      String sign = getSign(duration);
-      return decorate(sign, result);
+      return format(duration, true);
    }
-   
-   public String formatWithoutRounding(final Duration duration) {
-	   return format(duration, false);
+
+   @Override
+   public String formatUnrounded(Duration duration)
+   {
+      return format(duration, false);
    }
-   
-   public String formatWithRounding(final Duration duration) {
-	   return format(duration, true);
-   }
-      
+
    private String format(final Duration duration, final boolean doRounding)
    {
       String sign = getSign(duration);
       String unit = getGramaticallyCorrectName(duration);
       long quantity = getQuantity(duration, doRounding);
 
-      String result = applyPattern(sign, unit, quantity);
-      return result;
+      return applyPattern(sign, unit, quantity);
    }
 
-   public String decoratePast(String value) {
-	   return decorate(NEGATIVE, value);
-   }
-   
-   public String decorateFuture(String value) {
-	   return decorate("", value);
-   }
-   
-   private String decorate(final String sign, String result)
+   @Override
+   public String decorate(Duration duration, String time)
    {
-      if (NEGATIVE.equals(sign))
+      StringBuilder result = new StringBuilder();
+      if (duration.isInPast())
       {
-         result = pastPrefix + " " + result + " " + pastSuffix;
+         result.append(pastPrefix).append(" ").append(time).append(" ").append(pastSuffix);
       }
       else
       {
-         result = futurePrefix + " " + result + " " + futureSuffix;
+         result.append(futurePrefix).append(" ").append(time).append(" ").append(futureSuffix);
       }
-      return result.replaceAll("\\s+", " ").trim();
-   }
-   
-   public String decorate(String value, boolean inThePast) {
-	   return decorate(inThePast ? NEGATIVE : "", value);
+      return result.toString().replaceAll("\\s+", " ").trim();
    }
 
    private String applyPattern(final String sign, final String unit, final long quantity)
@@ -99,8 +78,9 @@ public class BasicTimeFormat implements TimeFormat
       return result;
    }
 
-   private long getQuantity(final Duration duration) {
-	  return getQuantity(duration, true);
+   private long getQuantity(final Duration duration)
+   {
+      return getQuantity(duration, true);
    }
 
    private long getQuantity(final Duration duration, boolean doRounding)
@@ -110,7 +90,7 @@ public class BasicTimeFormat implements TimeFormat
       if (duration.getDelta() != 0)
       {
          double threshold = Math
-                    .abs(((double) duration.getDelta() / (double) duration.getUnit().getMillisPerUnit()) * 100);
+                  .abs(((double) duration.getDelta() / (double) duration.getUnit().getMillisPerUnit()) * 100);
          if (doRounding && (threshold > roundingTolerance))
          {
             quantity = quantity + 1;
@@ -216,4 +196,13 @@ public class BasicTimeFormat implements TimeFormat
    {
       return roundingTolerance;
    }
+
+   @Override
+   public String toString()
+   {
+      return "BasicTimeFormat [pattern=" + pattern + ", futurePrefix=" + futurePrefix + ", futureSuffix="
+               + futureSuffix + ", pastPrefix=" + pastPrefix + ", pastSuffix=" + pastSuffix + ", roundingTolerance="
+               + roundingTolerance + "]";
+   }
+
 }

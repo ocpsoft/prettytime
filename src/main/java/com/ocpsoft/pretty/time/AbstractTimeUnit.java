@@ -1,60 +1,58 @@
 /*
- * PrettyTime is an OpenSource Java time comparison library for creating human
- * readable time.
+ * Copyright 2012 <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  * 
- * Copyright (C) 2009 - Lincoln Baxter, III <lincoln@ocpsoft.com>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  * 
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation, either version 3 of the License, or (at your option) any
- * later version.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program. If not, see the file COPYING.LESSER3 or visit the
- * GNU website at <http://www.gnu.org/licenses/>.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.ocpsoft.pretty.time;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
+ */
 public abstract class AbstractTimeUnit
 {
 
-    protected Locale locale;
-    protected TimeFormat format;
-    protected String name;
-    protected String pluralName;
+   protected Locale locale;
+   protected TimeFormat format;
+   protected String name;
+   protected String pluralName;
 
-    // Use sensitive defaults
-    protected long maxQuantity = 0;
-    protected long millisPerUnit = 1;
+   // Use sensitive defaults
+   protected long maxQuantity = 0;
+   protected long millisPerUnit = 1;
 
-    public AbstractTimeUnit(final Locale locale)
-    {
-        this.locale = locale;
+   public AbstractTimeUnit(final Locale locale)
+   {
+      this.locale = locale;
 
-        // Resource bundles need to be in the given package, names start with
-        // 'Resources', e.g. 'Resources_de.java'
-        ResourceBundle bundle = ResourceBundle.getBundle("com.ocpsoft.pretty.time.i18n.Resources", locale);
+      // Resource bundles need to be in the given package, names start with
+      // 'Resources', e.g. 'Resources_de.java'
+      ResourceBundle bundle = ResourceBundle.getBundle("com.ocpsoft.pretty.time.i18n.Resources", locale);
 
-        String pattern = bundle.getString(getResourceKeyPrefix() + "Pattern");
-        String futurePrefix = bundle.getString(getResourceKeyPrefix() + "FuturePrefix");
-        String futureSuffix = bundle.getString(getResourceKeyPrefix() + "FutureSuffix");
-        String pastPrefix = bundle.getString(getResourceKeyPrefix() + "PastPrefix");
-        String pastSuffix = bundle.getString(getResourceKeyPrefix() + "PastSuffix");
-        format = new BasicTimeFormat().setPattern(pattern).setFuturePrefix(futurePrefix).setFutureSuffix(futureSuffix)
-                .setPastPrefix(pastPrefix).setPastSuffix(pastSuffix);
+      String pattern = bundle.getString(getResourceKeyPrefix() + "Pattern");
+      String futurePrefix = bundle.getString(getResourceKeyPrefix() + "FuturePrefix");
+      String futureSuffix = bundle.getString(getResourceKeyPrefix() + "FutureSuffix");
+      String pastPrefix = bundle.getString(getResourceKeyPrefix() + "PastPrefix");
+      String pastSuffix = bundle.getString(getResourceKeyPrefix() + "PastSuffix");
+      format = new BasicTimeFormat().setPattern(pattern).setFuturePrefix(futurePrefix).setFutureSuffix(futureSuffix)
+               .setPastPrefix(pastPrefix).setPastSuffix(pastSuffix);
 
-        name = bundle.getString(getResourceKeyPrefix() + "Name");
-        pluralName = (bundle.getString(getResourceKeyPrefix() + "PluralName"));
-    }
+      name = bundle.getString(getResourceKeyPrefix() + "Name");
+      pluralName = (bundle.getString(getResourceKeyPrefix() + "PluralName"));
+   }
 
-    abstract protected String getResourceKeyPrefix();
+   abstract protected String getResourceKeyPrefix();
 
 }

@@ -1,3 +1,6 @@
+=== 1.0.8 ===
+Support for outputting formatted lists of Duration objects.
+
 === 1.0.7 ===
 
 Croatian - Miroslav Rešetar

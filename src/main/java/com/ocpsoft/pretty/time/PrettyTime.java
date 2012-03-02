@@ -62,12 +62,12 @@ public class PrettyTime
     */
    public PrettyTime()
    {
-      initTimeUnits();
+      initTimeUnits(locale);
    }
 
    /**
-    * Constructor accepting a Date timestamp to represent the point of reference for comparison. This may be changed by
-    * the user, after construction.
+    * Accept a {@link Date} timestamp to represent the point of reference for comparison. This may be changed by the
+    * user, after construction.
     * <p>
     * See {@code PrettyTime.setReference(Date timestamp)}.
     * 
@@ -79,12 +79,21 @@ public class PrettyTime
       setReference(reference);
    }
 
+   /**
+    * Construct a new instance using the given {@link Locale} instead of the system default.
+    */
    public PrettyTime(final Locale locale)
    {
-      this.setLocale(locale);
-      initTimeUnits();
+      this.locale = locale;
+      initTimeUnits(locale);
    }
 
+   /**
+    * Accept a {@link Date} timestamp to represent the point of reference for comparison. This may be changed by the
+    * user, after construction. Use the given {@link Locale} instead of the system default.
+    * <p>
+    * See {@code PrettyTime.setReference(Date timestamp)}.
+    */
    public PrettyTime(final Date reference, final Locale locale)
    {
       this(locale);
@@ -109,7 +118,7 @@ public class PrettyTime
       return calculateDuration(difference);
    }
 
-   private void initTimeUnits()
+   private void initTimeUnits(Locale locale)
    {
       timeUnits = new ArrayList<TimeUnit>();
       timeUnits.add(new JustNow(locale));
@@ -294,8 +303,6 @@ public class PrettyTime
     * If the Date formatted is before the reference timestamp, the format command will produce a String that is in the
     * past tense. If the Date formatted is after the reference timestamp, the format command will produce a string that
     * is in the future tense.
-    * 
-    * @param timestamp
     */
    public void setReference(final Date timestamp)
    {
@@ -303,7 +310,7 @@ public class PrettyTime
    }
 
    /**
-    * Get a {@link List} of the current configured {@link TimeUnit}s in this instance.
+    * Get a {@link List} of the current configured {@link TimeUnit} instances in calculations.
     * 
     * @return
     */
@@ -313,28 +320,40 @@ public class PrettyTime
    }
 
    /**
-    * Set the current configured {@link TimeUnit}s to be used in calculations
-    * 
-    * @return
+    * Set the current configured {@link TimeUnit} instances to be used in calculations
     */
    public void setUnits(final List<TimeUnit> units)
    {
       this.timeUnits = units;
    }
 
+   /**
+    * Set the available {@link TimeUnit} instances with which this {@link PrettyTime} instance will segment any
+    * calculated {@link Duration}.
+    */
    public void setUnits(final TimeUnit... units)
    {
       this.timeUnits = Arrays.asList(units);
    }
 
+   /**
+    * Get the currently configured {@link Locale} for this {@link PrettyTime} object.
+    */
    public Locale getLocale()
    {
       return locale;
    }
 
+   /**
+    * Set the the {@link Locale} for this {@link PrettyTime} object. This may be an expensive operation, since this
+    * operation calls {@link TimeUnit#setLocale(Locale)} for each {@link TimeUnit} in {@link #getUnits()}.
+    */
    public void setLocale(final Locale locale)
    {
       this.locale = locale;
+      for (TimeUnit unit : timeUnits) {
+         unit.setLocale(locale);
+      }
    }
 
    @Override

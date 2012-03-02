@@ -35,6 +35,11 @@ public abstract class AbstractTimeUnit
 
    public AbstractTimeUnit(final Locale locale)
    {
+      setLocale(locale);
+   }
+
+   public void setLocale(Locale locale)
+   {
       this.locale = locale;
 
       // Resource bundles need to be in the given package, names start with

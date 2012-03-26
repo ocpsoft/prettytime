@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ocpsoft.pretty.time.i18n;
+package org.ocpsoft.pretty.time.i18n;
 
 import java.util.ListResourceBundle;
 

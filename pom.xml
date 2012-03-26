@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -12,37 +13,37 @@
 
 	<packaging>jar</packaging>
 
-	<version>1.0.8.Final</version>
+	<version>1.0.8-SNAPSHOT</version>
 	<name>PrettyTime</name>
 	<description>Social networking style time-formatting utilities and web-framework integrations.</description>
-	<url>http://ocpsoft.org/prettytime</url>
+	<url>http://ocpsoft.org/prettytime/</url>
 
-  <properties>
-    <project.build.sourceEncoding>
-      UTF-8
-    </project.build.sourceEncoding>
-    <project.reporting.outputEncoding>
-      UTF-8
-    </project.reporting.outputEncoding>
-  </properties>
+	<properties>
+		<project.build.sourceEncoding>
+			UTF-8
+		</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>
+			UTF-8
+		</project.reporting.outputEncoding>
+	</properties>
 
 	<licenses>
 		<license>
-			<name>GNU LESSER GENERAL PUBLIC LICENSE, Version 3, 29 June 2007</name>
-			<url>http://www.gnu.org/licenses/lgpl-3.0.html</url>
+			<name>Apache License</name>
+			<url>http://www.apache.org/licenses/</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
 
-   <scm>
-      <developerConnection>scm:git:ssh:git@github.com:ocpsoft/prettytime.git</developerConnection>
-      <url>scm:git:ssh:git@github.com:ocpsoft/prettytime.git</url>
-   </scm>
-
+	<scm>
+		<connection>scm:git:git://github.com/ocpsoft/prettytime.git</connection>
+		<developerConnection>scm:git:git@github.com:ocpsoft/prettytime.git</developerConnection>
+		<url>http://github.com/ocpsoft/prettytime</url>
+	</scm>
 
 	<issueManagement>
-		<system>Google Code</system>
-		<url>http://code.google.com/p/prettytime/issues/list</url>
+		<system>GitHub</system>
+		<url>https://github.com/ocpsoft/prettytime/issues</url>
 	</issueManagement>
 
 	<developers>

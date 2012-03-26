@@ -12,7 +12,7 @@
 
 	<packaging>jar</packaging>
 
-	<version>1.0.8.Final</version>
+	<version>1.0.9-SNAPSHOT</version>
 	<name>PrettyTime</name>
 	<description>Social networking style time-formatting utilities and web-framework integrations.</description>
 	<url>http://ocpsoft.org/prettytime/</url>

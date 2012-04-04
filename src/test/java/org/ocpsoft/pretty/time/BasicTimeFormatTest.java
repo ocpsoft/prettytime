@@ -23,14 +23,10 @@ import java.util.Locale;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.ocpsoft.pretty.time.BasicTimeFormat;
-import org.ocpsoft.pretty.time.Duration;
-import org.ocpsoft.pretty.time.PrettyTime;
-import org.ocpsoft.pretty.time.TimeFormat;
+import org.ocpsoft.pretty.time.format.SimpleTimeFormat;
 
 public class BasicTimeFormatTest
 {
-
    // Stores current locale so that it can be restored
    private Locale locale;
 
@@ -47,17 +43,16 @@ public class BasicTimeFormatTest
    {
       PrettyTime t = new PrettyTime(new Date(1000 * 60 * 60 * 3 + 1000 * 60 * 45));
       Duration duration = t.approximateDuration(new Date(0));
-      TimeFormat format = duration.getUnit().getFormat();
 
-      assertEquals("4 hours", format.format(duration));
-      assertEquals("3 hours", format.formatUnrounded(duration));
+      assertEquals("4 hours ago", t.format(duration));
+      assertEquals("3 hours ago", t.formatUnrounded(duration));
    }
 
    @Test
    public void testDecorating() throws Exception
    {
       PrettyTime t = new PrettyTime();
-      TimeFormat format = new BasicTimeFormat().setFutureSuffix("from now").setPastSuffix("ago");
+      TimeFormat format = new SimpleTimeFormat().setFutureSuffix("from now").setPastSuffix("ago");
 
       Duration duration = t.approximateDuration(new Date(System.currentTimeMillis() + 1000));
       assertEquals("some time from now", format.decorate(duration, "some time"));

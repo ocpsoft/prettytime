@@ -27,7 +27,7 @@ import org.junit.Test;
 /**
  * @author Bram
  */
-public class PrettyTimeI18nTest_DA
+public class PrettyTimeI18n_DA_Test
 {
    private Locale locale;
    private final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");

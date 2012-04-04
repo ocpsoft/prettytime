@@ -16,12 +16,16 @@
 package org.ocpsoft.pretty.time;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
+import org.ocpsoft.pretty.time.impl.DurationImpl;
+import org.ocpsoft.pretty.time.impl.ResourcesTimeFormat;
+import org.ocpsoft.pretty.time.impl.ResourcesTimeUnit;
 import org.ocpsoft.pretty.time.units.Century;
 import org.ocpsoft.pretty.time.units.Day;
 import org.ocpsoft.pretty.time.units.Decade;
@@ -32,9 +36,9 @@ import org.ocpsoft.pretty.time.units.Millisecond;
 import org.ocpsoft.pretty.time.units.Minute;
 import org.ocpsoft.pretty.time.units.Month;
 import org.ocpsoft.pretty.time.units.Second;
+import org.ocpsoft.pretty.time.units.TimeUnitComparator;
 import org.ocpsoft.pretty.time.units.Week;
 import org.ocpsoft.pretty.time.units.Year;
-
 
 /**
  * A utility for creating social-networking style timestamps. (e.g. "just now", "moments ago", "3 days ago",
@@ -51,19 +55,19 @@ import org.ocpsoft.pretty.time.units.Year;
  * 
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
  */
-public class PrettyTime
+public class PrettyTime implements LocaleAware
 {
 
    private volatile Date reference;
-   private volatile List<TimeUnit> timeUnits;
    private volatile Locale locale = Locale.getDefault();
+   private volatile Map<TimeUnit, TimeFormat> formatMap = new LinkedHashMap<TimeUnit, TimeFormat>();
 
    /**
     * Default constructor
     */
    public PrettyTime()
    {
-      initTimeUnits(locale);
+      initTimeUnits();
    }
 
    /**
@@ -86,7 +90,7 @@ public class PrettyTime
    public PrettyTime(final Locale locale)
    {
       this.locale = locale;
-      initTimeUnits(locale);
+      initTimeUnits();
    }
 
    /**
@@ -103,9 +107,6 @@ public class PrettyTime
 
    /**
     * Calculate the approximate duration between the referenceDate and date
-    * 
-    * @param date
-    * @return
     */
    public Duration approximateDuration(final Date then)
    {
@@ -119,21 +120,25 @@ public class PrettyTime
       return calculateDuration(difference);
    }
 
-   private void initTimeUnits(Locale locale)
+   private void initTimeUnits()
    {
-      timeUnits = new ArrayList<TimeUnit>();
-      timeUnits.add(new JustNow(locale));
-      timeUnits.add(new Millisecond(locale));
-      timeUnits.add(new Second(locale));
-      timeUnits.add(new Minute(locale));
-      timeUnits.add(new Hour(locale));
-      timeUnits.add(new Day(locale));
-      timeUnits.add(new Week(locale));
-      timeUnits.add(new Month(locale));
-      timeUnits.add(new Year(locale));
-      timeUnits.add(new Decade(locale));
-      timeUnits.add(new Century(locale));
-      timeUnits.add(new Millennium(locale));
+      addUnit(new JustNow());
+      addUnit(new Millisecond());
+      addUnit(new Second());
+      addUnit(new Minute());
+      addUnit(new Hour());
+      addUnit(new Day());
+      addUnit(new Week());
+      addUnit(new Month());
+      addUnit(new Year());
+      addUnit(new Decade());
+      addUnit(new Century());
+      addUnit(new Millennium());
+   }
+
+   private void addUnit(ResourcesTimeUnit unit)
+   {
+      formatMap.put(unit, new ResourcesTimeFormat(unit, locale));
    }
 
    private Duration calculateDuration(final long difference)
@@ -141,10 +146,10 @@ public class PrettyTime
       long absoluteDifference = Math.abs(difference);
 
       // Required for thread-safety
-      List<TimeUnit> units = new ArrayList<TimeUnit>(timeUnits.size());
-      units.addAll(timeUnits);
+      List<TimeUnit> units = new ArrayList<TimeUnit>(getUnits().size());
+      units.addAll(getUnits());
 
-      Duration result = new Duration();
+      DurationImpl result = new DurationImpl();
 
       for (int i = 0; i < units.size(); i++)
       {
@@ -226,7 +231,8 @@ public class PrettyTime
 
    /**
     * Format the given {@link Date} object. This method applies the {@code PrettyTime.approximateDuration(date)} method
-    * to perform its calculation. If {@code then} is null, it will default to {@code new Date()}
+    * to perform its calculation. If {@code then} is null, it will default to {@code new Date()}; also decorate for
+    * past/future tense.
     * 
     * @param duration the {@link Date} to be formatted
     * @return A formatted string representing {@code then}
@@ -242,17 +248,49 @@ public class PrettyTime
    }
 
    /**
+    * Format the given {@link Date} object. This method applies the {@code PrettyTime.approximateDuration(date)} method
+    * to perform its calculation. If {@code then} is null, it will default to {@code new Date()}; also decorate for
+    * past/future tense. Rounding rules are ignored.
+    * 
+    * @param duration the {@link Date} to be formatted
+    * @return A formatted string representing {@code then}
+    */
+   public String formatUnrounded(Date then)
+   {
+      if (then == null)
+      {
+         then = new Date();
+      }
+      Duration d = approximateDuration(then);
+      return formatUnrounded(d);
+   }
+
+   /**
     * Format the given {@link Duration} object, using the {@link TimeFormat} specified by the {@link TimeUnit} contained
-    * within
+    * within; also decorate for past/future tense.
     * 
     * @param duration the {@link Duration} to be formatted
     * @return A formatted string representing {@code duration}
     */
    public String format(final Duration duration)
    {
-      TimeFormat format = duration.getUnit().getFormat();
+      TimeFormat format = getFormat(duration.getUnit());
       String time = format.format(duration);
       return format.decorate(duration, time);
+   }
+
+   /**
+    * Format the given {@link Duration} object, using the {@link TimeFormat} specified by the {@link TimeUnit} contained
+    * within; also decorate for past/future tense. Rounding rules are ignored.
+    * 
+    * @param duration the {@link Duration} to be formatted
+    * @return A formatted string representing {@code duration}
+    */
+   public String formatUnrounded(Duration duration)
+   {
+      TimeFormat format = getFormat(duration.getUnit());
+      String time = format.formatUnrounded(duration);
+      return format.decorateUnrounded(duration, time);
    }
 
    /**
@@ -271,8 +309,9 @@ public class PrettyTime
          TimeFormat format = null;
          for (int i = 0; i < durations.size(); i++) {
             duration = durations.get(i);
+            format = getFormat(duration.getUnit());
+
             boolean isLast = (i == durations.size() - 1);
-            format = duration.getUnit().getFormat();
             if (!isLast) {
                builder.append(format.formatUnrounded(duration));
                builder.append(" ");
@@ -281,9 +320,21 @@ public class PrettyTime
                builder.append(format.format(duration));
             }
          }
-         result = format.decorate(duration, builder.toString());
+         result = format.decorateUnrounded(duration, builder.toString());
       }
       return result;
+   }
+
+   /**
+    * Get the registered {@link TimeFormat} for the given {@link TimeUnit} or null if none exists.
+    */
+   public TimeFormat getFormat(TimeUnit unit)
+   {
+      if (formatMap.get(unit) != null)
+      {
+         return formatMap.get(unit);
+      }
+      return null;
    }
 
    /**
@@ -317,24 +368,19 @@ public class PrettyTime
     */
    public List<TimeUnit> getUnits()
    {
-      return Collections.unmodifiableList(timeUnits);
+      List<TimeUnit> units = new ArrayList<TimeUnit>(formatMap.keySet());
+      Collections.sort(units, new TimeUnitComparator());
+      return Collections.unmodifiableList(units);
    }
 
    /**
-    * Set the current configured {@link TimeUnit} instances to be used in calculations
+    * Register the given {@link TimeUnit} and corresponding {@link TimeFormat} instance to be used in calculations. If
+    * an entry already exists for the given {@link TimeUnit}, its format will be overwritten with the given
+    * {@link TimeFormat}.
     */
-   public void setUnits(final List<TimeUnit> units)
+   public void registerUnit(final TimeUnit unit, TimeFormat format)
    {
-      this.timeUnits = units;
-   }
-
-   /**
-    * Set the available {@link TimeUnit} instances with which this {@link PrettyTime} instance will segment any
-    * calculated {@link Duration}.
-    */
-   public void setUnits(final TimeUnit... units)
-   {
-      this.timeUnits = Arrays.asList(units);
+      formatMap.put(unit, format);
    }
 
    /**
@@ -349,11 +395,13 @@ public class PrettyTime
     * Set the the {@link Locale} for this {@link PrettyTime} object. This may be an expensive operation, since this
     * operation calls {@link TimeUnit#setLocale(Locale)} for each {@link TimeUnit} in {@link #getUnits()}.
     */
+   @Override
    public void setLocale(final Locale locale)
    {
       this.locale = locale;
-      for (TimeUnit unit : timeUnits) {
-         unit.setLocale(locale);
+      for (TimeFormat format : formatMap.values()) {
+         if (format instanceof LocaleAware)
+            ((LocaleAware) format).setLocale(locale);
       }
    }
 
@@ -361,6 +409,14 @@ public class PrettyTime
    public String toString()
    {
       return "PrettyTime [reference=" + reference + ", locale=" + locale + "]";
+   }
+
+   /**
+    * Remove all registered {@link TimeUnit} instances.
+    */
+   public void clearUnits()
+   {
+      formatMap.clear();
    }
 
 }

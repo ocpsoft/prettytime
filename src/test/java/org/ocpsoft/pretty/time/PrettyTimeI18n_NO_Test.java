@@ -23,12 +23,11 @@ import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.ocpsoft.pretty.time.PrettyTime;
 
 /**
  * @author Bram
  */
-public class PrettyTimeI18nTest_NO
+public class PrettyTimeI18n_NO_Test
 {
    private Locale locale;
    private final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");

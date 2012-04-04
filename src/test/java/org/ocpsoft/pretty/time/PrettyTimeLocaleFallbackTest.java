@@ -24,7 +24,6 @@ import java.util.Locale;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.ocpsoft.pretty.time.PrettyTime;
 
 public class PrettyTimeLocaleFallbackTest
 {

@@ -13,19 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ocpsoft.pretty.time;
+package org.ocpsoft.pretty.time.format;
+
+import org.ocpsoft.pretty.time.Duration;
+import org.ocpsoft.pretty.time.TimeFormat;
+import org.ocpsoft.pretty.time.TimeUnit;
+
 
 /**
  * Represents a simple method of formatting a specific {@link Duration} of time
  * 
- * @author lb3
+ * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
-public class BasicTimeFormat implements TimeFormat
+public class SimpleTimeFormat implements TimeFormat
 {
    private static final String NEGATIVE = "-";
    public static final String SIGN = "%s";
    public static final String QUANTITY = "%n";
    public static final String UNIT = "%u";
+
+   private String name = "";
+   private String pluralName = "";
 
    private String pattern = "";
    private String futurePrefix = "";
@@ -46,15 +54,6 @@ public class BasicTimeFormat implements TimeFormat
       return format(duration, false);
    }
 
-   private String format(final Duration duration, final boolean doRounding)
-   {
-      String sign = getSign(duration);
-      String unit = getGramaticallyCorrectName(duration);
-      long quantity = getQuantity(duration, doRounding);
-
-      return applyPattern(sign, unit, quantity);
-   }
-
    @Override
    public String decorate(Duration duration, String time)
    {
@@ -70,6 +69,22 @@ public class BasicTimeFormat implements TimeFormat
       return result.toString().replaceAll("\\s+", " ").trim();
    }
 
+   @Override
+   public String decorateUnrounded(Duration duration, String time)
+   {
+      // This format does not need to know about rounding during decoration.
+      return decorate(duration, time);
+   }
+
+   private String format(final Duration duration, final boolean round)
+   {
+      String sign = getSign(duration);
+      String unit = getGramaticallyCorrectName(duration, round);
+      long quantity = getQuantity(duration, round);
+
+      return applyPattern(sign, unit, quantity);
+   }
+
    private String applyPattern(final String sign, final String unit, final long quantity)
    {
       String result = pattern.replaceAll(SIGN, sign);
@@ -78,33 +93,17 @@ public class BasicTimeFormat implements TimeFormat
       return result;
    }
 
-   private long getQuantity(final Duration duration)
+   private long getQuantity(Duration duration, boolean round)
    {
-      return getQuantity(duration, true);
+      return Math.abs(round ? duration.getQuantityRounded(roundingTolerance) : duration.getQuantity());
    }
 
-   private long getQuantity(final Duration duration, boolean doRounding)
+   private String getGramaticallyCorrectName(final Duration d, boolean round)
    {
-      long quantity = Math.abs(duration.getQuantity());
-
-      if (duration.getDelta() != 0)
+      String result = getName();
+      if ((Math.abs(getQuantity(d, round)) == 0) || (Math.abs(getQuantity(d, round)) > 1))
       {
-         double threshold = Math
-                  .abs(((double) duration.getDelta() / (double) duration.getUnit().getMillisPerUnit()) * 100);
-         if (doRounding && (threshold > roundingTolerance))
-         {
-            quantity = quantity + 1;
-         }
-      }
-      return quantity;
-   }
-
-   private String getGramaticallyCorrectName(final Duration d)
-   {
-      String result = d.getUnit().getName();
-      if ((Math.abs(getQuantity(d)) == 0) || (Math.abs(getQuantity(d)) > 1))
-      {
-         result = d.getUnit().getPluralName();
+         result = getPluralName();
       }
       return result;
    }
@@ -121,31 +120,31 @@ public class BasicTimeFormat implements TimeFormat
    /*
     * Builder Setters
     */
-   public BasicTimeFormat setPattern(final String pattern)
+   public SimpleTimeFormat setPattern(final String pattern)
    {
       this.pattern = pattern;
       return this;
    }
 
-   public BasicTimeFormat setFuturePrefix(final String futurePrefix)
+   public SimpleTimeFormat setFuturePrefix(final String futurePrefix)
    {
       this.futurePrefix = futurePrefix.trim();
       return this;
    }
 
-   public BasicTimeFormat setFutureSuffix(final String futureSuffix)
+   public SimpleTimeFormat setFutureSuffix(final String futureSuffix)
    {
       this.futureSuffix = futureSuffix.trim();
       return this;
    }
 
-   public BasicTimeFormat setPastPrefix(final String pastPrefix)
+   public SimpleTimeFormat setPastPrefix(final String pastPrefix)
    {
       this.pastPrefix = pastPrefix.trim();
       return this;
    }
 
-   public BasicTimeFormat setPastSuffix(final String pastSuffix)
+   public SimpleTimeFormat setPastSuffix(final String pastSuffix)
    {
       this.pastSuffix = pastSuffix.trim();
       return this;
@@ -157,7 +156,7 @@ public class BasicTimeFormat implements TimeFormat
     * @param roundingTolerance
     * @return
     */
-   public BasicTimeFormat setRoundingTolerance(final int roundingTolerance)
+   public SimpleTimeFormat setRoundingTolerance(final int roundingTolerance)
    {
       this.roundingTolerance = roundingTolerance;
       return this;
@@ -200,9 +199,31 @@ public class BasicTimeFormat implements TimeFormat
    @Override
    public String toString()
    {
-      return "BasicTimeFormat [pattern=" + pattern + ", futurePrefix=" + futurePrefix + ", futureSuffix="
+      return "SimpleTimeFormat [pattern=" + pattern + ", futurePrefix=" + futurePrefix + ", futureSuffix="
                + futureSuffix + ", pastPrefix=" + pastPrefix + ", pastSuffix=" + pastSuffix + ", roundingTolerance="
                + roundingTolerance + "]";
+   }
+
+   public String getName()
+   {
+      return name;
+   }
+
+   public SimpleTimeFormat setName(String name)
+   {
+      this.name = name;
+      return this;
+   }
+
+   public String getPluralName()
+   {
+      return pluralName;
+   }
+
+   public SimpleTimeFormat setPluralName(String pluralName)
+   {
+      this.pluralName = pluralName;
+      return this;
    }
 
 }

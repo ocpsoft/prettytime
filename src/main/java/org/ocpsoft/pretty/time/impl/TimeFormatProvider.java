@@ -13,22 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ocpsoft.pretty.time.units;
+package org.ocpsoft.pretty.time.impl;
 
+import org.ocpsoft.pretty.time.TimeFormat;
 import org.ocpsoft.pretty.time.TimeUnit;
-import org.ocpsoft.pretty.time.impl.ResourcesTimeUnit;
 
-
-public class Month extends ResourcesTimeUnit implements TimeUnit {
-
-   public Month()
-   {
-      setMillisPerUnit(2629743830L);
-   }
-
-   @Override
-   protected String getResourceKeyPrefix() {
-      return "Month";
-   }
-
+/**
+ * Produces time formats. Currently only to be used on Resource bundle implementations when used in
+ * {@link ResourcesTimeFormat} instances..
+ * 
+ * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
+ */
+public interface TimeFormatProvider
+{
+   /**
+    * Return the appropriate {@link TimeFormat} for the given {@link TimeUnit}
+    */
+   public TimeFormat getFormatFor(TimeUnit t);
 }

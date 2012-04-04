@@ -15,58 +15,20 @@
  */
 package org.ocpsoft.pretty.time.units;
 
-import java.util.Locale;
-
-import org.ocpsoft.pretty.time.AbstractTimeUnit;
-import org.ocpsoft.pretty.time.TimeFormat;
 import org.ocpsoft.pretty.time.TimeUnit;
+import org.ocpsoft.pretty.time.impl.ResourcesTimeUnit;
 
 
-public class JustNow extends AbstractTimeUnit implements TimeUnit {
+public class JustNow extends ResourcesTimeUnit implements TimeUnit {
 
-	public JustNow(Locale locale) {
-		super(locale);
-		maxQuantity = 1000L * 60L * 5L;
-	}
+   public JustNow()
+   {
+      setMaxQuantity(1000L * 60L * 5L);
+   }
 
-	protected String getResourceKeyPrefix() {
-		return "JustNow";
-	}
-
-	public long getMillisPerUnit() {
-		return millisPerUnit;
-	}
-
-	public TimeFormat getFormat() {
-		return format;
-	}
-
-	public void setFormat(final TimeFormat format) {
-		this.format = format;
-	}
-
-	public long getMaxQuantity() {
-		return maxQuantity;
-	}
-
-	public void setMaxQuantity(final long maxQuantity) {
-		this.maxQuantity = maxQuantity;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(final String name) {
-		this.name = name;
-	}
-
-	public String getPluralName() {
-		return pluralName;
-	}
-
-	public void setPluralName(final String pluralName) {
-		this.pluralName = pluralName;
-	}
+   @Override
+   protected String getResourceKeyPrefix() {
+      return "JustNow";
+   }
 
 }

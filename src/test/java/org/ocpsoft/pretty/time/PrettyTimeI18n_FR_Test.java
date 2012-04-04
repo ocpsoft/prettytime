@@ -24,14 +24,13 @@ import java.util.Locale;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.ocpsoft.pretty.time.PrettyTime;
 
 /**
  * All the tests for PrettyTime.
  * 
  * @author Thomas Weitzel <tweitzel@synformation.com>
  */
-public class PrettyTimeI18nTest_FR
+public class PrettyTimeI18n_FR_Test
 {
 
     /*

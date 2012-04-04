@@ -15,7 +15,6 @@
  */
 package org.ocpsoft.pretty.time;
 
-import java.util.Locale;
 
 /**
  * Defines a Unit of time (e.g. seconds, minutes, hours) and its conversion to milliseconds.
@@ -46,27 +45,4 @@ public interface TimeUnit {
     * TimeUnits
     */
    public long getMaxQuantity();
-
-   /**
-    * The grammatically singular name for this unit of time. (e.g. one
-    * "second")
-    */
-   public String getName();
-
-   /**
-    * The grammatically plural name for this unit of time. (e.g. many
-    * "seconds")
-    */
-   public String getPluralName();
-
-   /**
-    * The current {@link TimeFormat} for this unit of time.
-    */
-   public TimeFormat getFormat();
-
-   /**
-    * Set the {@link Locale} for this unit.
-    */
-   public void setLocale(Locale locale);
-
 }

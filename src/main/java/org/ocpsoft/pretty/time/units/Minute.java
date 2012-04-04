@@ -15,58 +15,20 @@
  */
 package org.ocpsoft.pretty.time.units;
 
-import java.util.Locale;
-
-import org.ocpsoft.pretty.time.AbstractTimeUnit;
-import org.ocpsoft.pretty.time.TimeFormat;
 import org.ocpsoft.pretty.time.TimeUnit;
+import org.ocpsoft.pretty.time.impl.ResourcesTimeUnit;
 
 
-public class Minute extends AbstractTimeUnit implements TimeUnit {
+public class Minute extends ResourcesTimeUnit implements TimeUnit {
 
-	public Minute(Locale locale) {
-		super(locale);
-		millisPerUnit = 1000L * 60L;
-	}
+   public Minute()
+   {
+      setMillisPerUnit(1000L * 60L);
+   }
 
-	protected String getResourceKeyPrefix() {
-		return "Minute";
-	}
-
-	public long getMillisPerUnit() {
-		return millisPerUnit;
-	}
-
-	public TimeFormat getFormat() {
-		return format;
-	}
-
-	public void setFormat(final TimeFormat format) {
-		this.format = format;
-	}
-
-	public long getMaxQuantity() {
-		return maxQuantity;
-	}
-
-	public void setMaxQuantity(final long maxQuantity) {
-		this.maxQuantity = maxQuantity;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(final String name) {
-		this.name = name;
-	}
-
-	public String getPluralName() {
-		return pluralName;
-	}
-
-	public void setPluralName(final String pluralName) {
-		this.pluralName = pluralName;
-	}
+   @Override
+   protected String getResourceKeyPrefix() {
+      return "Minute";
+   }
 
 }

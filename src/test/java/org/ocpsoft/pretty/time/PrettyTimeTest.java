@@ -26,11 +26,7 @@ import java.util.Locale;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.ocpsoft.pretty.time.BasicTimeFormat;
-import org.ocpsoft.pretty.time.Duration;
-import org.ocpsoft.pretty.time.PrettyTime;
-import org.ocpsoft.pretty.time.TimeFormat;
-import org.ocpsoft.pretty.time.TimeUnit;
+import org.ocpsoft.pretty.time.format.SimpleTimeFormat;
 
 public class PrettyTimeTest
 {
@@ -183,17 +179,8 @@ public class PrettyTimeTest
    public void testCustomFormat() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(0));
-      t.setUnits(new TimeUnit()
+      TimeUnit unit = new TimeUnit()
       {
-
-         @Override
-         public TimeFormat getFormat()
-         {
-            return new BasicTimeFormat().setPattern("%n %u").setRoundingTolerance(20).setFutureSuffix("... RUN!")
-                     .setFuturePrefix("self destruct in: ").setPastPrefix("self destruct was: ").setPastSuffix(
-                              " ago...");
-         }
-
          @Override
          public long getMaxQuantity()
          {
@@ -205,23 +192,15 @@ public class PrettyTimeTest
          {
             return 5000;
          }
+      };
+      t.clearUnits();
+      t.registerUnit(unit, new SimpleTimeFormat()
+      .setName("tick").setPluralName("ticks")
+      .setPattern("%n %u").setRoundingTolerance(20)
+      .setFutureSuffix("... RUN!")
+      .setFuturePrefix("self destruct in: ").setPastPrefix("self destruct was: ").setPastSuffix(
+               " ago..."));
 
-         @Override
-         public String getName()
-         {
-            return "tick";
-         }
-
-         @Override
-         public String getPluralName()
-         {
-            return "ticks";
-         }
-
-         @Override
-         public void setLocale(Locale locale)
-         {}
-      });
       assertEquals("self destruct in: 5 ticks ... RUN!", t.format(new Date(25000)));
       t.setReference(new Date(25000));
       assertEquals("self destruct was: 5 ticks ago...", t.format(new Date(0)));

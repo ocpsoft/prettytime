@@ -87,18 +87,22 @@ public class SimpleTimeFormat implements TimeFormat
 
    private String applyPattern(final String sign, final String unit, final long quantity)
    {
-      String result = pattern.replaceAll(SIGN, sign);
+      String result = getPattern(quantity).replaceAll(SIGN, sign);
       result = result.replaceAll(QUANTITY, String.valueOf(quantity));
       result = result.replaceAll(UNIT, unit);
       return result;
    }
 
-   private long getQuantity(Duration duration, boolean round)
+   protected String getPattern(final long quantity) {
+	   return getPattern();
+   }
+
+   protected long getQuantity(Duration duration, boolean round)
    {
       return Math.abs(round ? duration.getQuantityRounded(roundingTolerance) : duration.getQuantity());
    }
 
-   private String getGramaticallyCorrectName(final Duration d, boolean round)
+   protected String getGramaticallyCorrectName(final Duration d, boolean round)
    {
       String result = getName();
       if ((Math.abs(getQuantity(d, round)) == 0) || (Math.abs(getQuantity(d, round)) > 1))

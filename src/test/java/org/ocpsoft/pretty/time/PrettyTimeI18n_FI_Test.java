@@ -16,12 +16,14 @@
 package org.ocpsoft.pretty.time;
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.ocpsoft.pretty.time.units.JustNow;
 
 public class PrettyTimeI18n_FI_Test {
 	private Locale locale;
@@ -30,6 +32,27 @@ public class PrettyTimeI18n_FI_Test {
 	public void setUp() throws Exception
 	{
 		locale = new Locale("fi");
+	}
+	
+	private PrettyTime newPrettyTimeWOJustNow(Date ref, Locale locale) 
+	{
+		PrettyTime t = new PrettyTime(ref, locale);
+		List<TimeUnit> units = t.getUnits();
+		List<TimeFormat> formats = new ArrayList<TimeFormat>();
+		for (TimeUnit timeUnit : units) {
+			if(!(timeUnit instanceof JustNow)) {
+				formats.add(t.getFormat(timeUnit));
+			}
+		}
+		int index = 0;
+		t.clearUnits();
+		for (TimeUnit timeUnit : units) {
+			if(!(timeUnit instanceof JustNow)) {
+				t.registerUnit(timeUnit, formats.get(index));
+				index++;
+			}
+		}
+		return t;
 	}
 
 
@@ -45,6 +68,62 @@ public class PrettyTimeI18n_FI_Test {
 	{
 		PrettyTime t = new PrettyTime(new Date(6000), locale);
 		assertEquals("hetki sitten", t.format(new Date(0)));
+	}
+	
+	@Test
+	public void testMilliSecondsFromNow() throws Exception
+	{
+		PrettyTime t = newPrettyTimeWOJustNow(new Date(0), locale);
+		assertEquals("13 millisekunnin päästä", t.format(new Date(13)));
+	}
+
+	@Test
+	public void testMilliSecondsAgo() throws Exception
+	{
+		PrettyTime t = newPrettyTimeWOJustNow(new Date(13), locale);
+		assertEquals("13 millisekuntia sitten", t.format(new Date(0)));
+	}
+
+	@Test
+	public void testMilliSecondFromNow() throws Exception
+	{
+		PrettyTime t = newPrettyTimeWOJustNow(new Date(0), locale);
+		assertEquals("millisekunnin päästä", t.format(new Date(1)));
+	}
+
+	@Test
+	public void testMilliSecondAgo() throws Exception
+	{
+		PrettyTime t = newPrettyTimeWOJustNow(new Date(1), locale);
+		assertEquals("millisekunti sitten", t.format(new Date(0)));
+	}
+	
+	@Test
+	public void testSecondsFromNow() throws Exception
+	{
+		PrettyTime t = newPrettyTimeWOJustNow(new Date(0), locale);
+		assertEquals("13 sekunnin päästä", t.format(new Date(1000 * 13)));
+	}
+
+	@Test
+	public void testSecondsAgo() throws Exception
+	{
+		PrettyTime t = newPrettyTimeWOJustNow(new Date(1000 * 13), locale);
+		assertEquals("13 sekuntia sitten", t.format(new Date(0)));
+	}
+
+	@Test
+	public void testSecondFromNow() throws Exception
+	{
+		PrettyTime t = newPrettyTimeWOJustNow(new Date(0), locale);
+		assertEquals("sekunnin päästä", t.format(new Date(1000  * 1)));
+	}
+
+	@Test
+	public void testSecondAgo() throws Exception
+	{
+		PrettyTime t = newPrettyTimeWOJustNow(new Date(1000  * 1), locale);
+		assertEquals("sekunti sitten", t.format(new Date(0)));
 	}
 
 	@Test
@@ -64,15 +143,15 @@ public class PrettyTimeI18n_FI_Test {
 	@Test
 	public void testMinuteFromNow() throws Exception
 	{
-		PrettyTime t = new PrettyTime(new Date(0), locale);
-		//		assertEquals("minuutin päästä", t.format(new Date(1000 * 60 * 1)));
+		PrettyTime t = newPrettyTimeWOJustNow(new Date(0), locale);
+		assertEquals("minuutin päästä", t.format(new Date(1000 * 60 * 1)));
 	}
 
 	@Test
 	public void testMinuteAgo() throws Exception
 	{
-		PrettyTime t = new PrettyTime(new Date(1000 * 60 * 1), locale);
-		//		assertEquals("minuutti sitten", t.format(new Date(0)));
+		PrettyTime t = newPrettyTimeWOJustNow(new Date(1000 * 60 * 1), locale);
+		assertEquals("minuutti sitten", t.format(new Date(0)));
 	}
 
 	@Test
@@ -316,5 +395,5 @@ public class PrettyTimeI18n_FI_Test {
 		assertEquals("3 päivän 15 tunnin 38 minuutin päästä", t.format(durations));
 	}
 
-	
+
 }

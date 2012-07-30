@@ -2,7 +2,7 @@ package com.ocpsoft.pretty.time.i18n;
 
 import java.util.ListResourceBundle;
 
-public class Resources_se extends ListResourceBundle {
+public class Resources_sv extends ListResourceBundle {
 
 	private static final Object[][] OBJECTS = new Object[][] {
 			{ "CenturyPattern", "%n %u" }, 

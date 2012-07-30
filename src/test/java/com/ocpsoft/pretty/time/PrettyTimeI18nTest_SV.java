@@ -8,14 +8,14 @@ import java.util.Locale;
 import org.junit.Before;
 import org.junit.Test;
 
-public class PrettyTimeI18nTest_SE {
+public class PrettyTimeI18nTest_SV {
 	private Locale locale;
     private final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
     @Before
     public void setUp() throws Exception
     {
-        locale = new Locale("se");
+        locale = new Locale("sv");
     }
 
     @Test

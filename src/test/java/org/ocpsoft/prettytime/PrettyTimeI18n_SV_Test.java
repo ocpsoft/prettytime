@@ -22,16 +22,15 @@ import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.ocpsoft.prettytime.PrettyTime;
 
-public class PrettyTimeI18n_SE_Test {
+public class PrettyTimeI18n_SV_Test {
 	private Locale locale;
     private final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
     @Before
     public void setUp() throws Exception
     {
-        locale = new Locale("se");
+        locale = new Locale("sv");
     }
 
     @Test

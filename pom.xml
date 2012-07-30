@@ -1,55 +1,55 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.ocpsoft</groupId>
+		<groupId>org.ocpsoft</groupId>
 		<artifactId>ocpsoft-parent</artifactId>
-		<version>2</version>
+		<version>6</version>
 	</parent>
 
-	<artifactId>ocpsoft-pretty-time</artifactId>
+	<groupId>org.ocpsoft.prettytime</groupId>
+	<artifactId>prettytime</artifactId>
 
 	<packaging>jar</packaging>
 
-	<version>1.0.8-SNAPSHOT</version>
+	<version>2.0.0-SNAPSHOT</version>
 	<name>PrettyTime</name>
 	<description>Social networking style time-formatting utilities and web-framework integrations.</description>
-	<url>http://ocpsoft.com/prettytime</url>
+	<url>http://ocpsoft.org/prettytime/</url>
 
-  <properties>
-    <project.build.sourceEncoding>
-      UTF-8
-    </project.build.sourceEncoding>
-    <project.reporting.outputEncoding>
-      UTF-8
-    </project.reporting.outputEncoding>
-  </properties>
+	<properties>
+		<project.build.sourceEncoding>
+			UTF-8
+		</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>
+			UTF-8
+		</project.reporting.outputEncoding>
+	</properties>
 
 	<licenses>
 		<license>
-			<name>GNU LESSER GENERAL PUBLIC LICENSE, Version 3, 29 June 2007</name>
-			<url>http://www.gnu.org/licenses/lgpl-3.0.html</url>
+			<name>Apache License</name>
+			<url>http://www.apache.org/licenses/</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
 
-   <scm>
-      <developerConnection>scm:git:ssh:git@github.com:ocpsoft/prettytime.git</developerConnection>
-      <url>scm:git:ssh:git@github.com:ocpsoft/prettytime.git</url>
-   </scm>
-
+	<scm>
+		<connection>scm:git:git://github.com/ocpsoft/prettytime.git</connection>
+		<developerConnection>scm:git:git@github.com:ocpsoft/prettytime.git</developerConnection>
+		<url>http://github.com/ocpsoft/prettytime</url>
+	</scm>
 
 	<issueManagement>
-		<system>Google Code</system>
-		<url>http://code.google.com/p/prettytime/issues/list</url>
+		<system>GitHub</system>
+		<url>https://github.com/ocpsoft/prettytime/issues</url>
 	</issueManagement>
 
 	<developers>
 		<developer>
 			<id>lincolnbaxter</id>
 			<name>Lincoln Baxter, III</name>
-			<email>lincoln@ocpsoft.com</email>
+			<email>lincoln@ocpsoft.org</email>
 			<timezone>-5</timezone>
 		</developer>
 		<developer>
@@ -74,46 +74,4 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.0.2</version>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-					<encoding>UTF-8</encoding> 
-				</configuration>
-			</plugin>
-			<plugin>
-				<version>2.0.2</version>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
-
-	<reporting>
-		<plugins>
-			<plugin>
-				<version>2.0.2</version>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<keywords>true</keywords>
-					<destDir>${project.artifactId}/${project.version}</destDir>
-				</configuration>
-			</plugin>
-		</plugins>
-	</reporting>
 </project>

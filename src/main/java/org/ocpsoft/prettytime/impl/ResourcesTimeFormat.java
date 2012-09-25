@@ -13,20 +13,19 @@ import org.ocpsoft.prettytime.format.SimpleTimeFormat;
  * 
  * @author lb3
  */
-public class ResourcesTimeFormat extends SimpleTimeFormat implements TimeFormat, LocaleAware
+public class ResourcesTimeFormat extends SimpleTimeFormat implements TimeFormat, LocaleAware<ResourcesTimeFormat>
 {
    private ResourceBundle bundle;
    private final ResourcesTimeUnit unit;
    private TimeFormat override;
 
-   public ResourcesTimeFormat(ResourcesTimeUnit unit, Locale locale)
+   public ResourcesTimeFormat(ResourcesTimeUnit unit)
    {
       this.unit = unit;
-      setLocale(locale);
    }
 
    @Override
-   public void setLocale(Locale locale)
+   public ResourcesTimeFormat setLocale(Locale locale)
    {
       bundle = ResourceBundle.getBundle(unit.getResourceBundleName(), locale);
 
@@ -55,13 +54,15 @@ public class ResourcesTimeFormat extends SimpleTimeFormat implements TimeFormat,
          String pluralName = (bundle.getString(unit.getResourceKeyPrefix() + "PluralName"));
 
          this.setPattern(pattern)
-         .setFuturePrefix(futurePrefix)
-         .setFutureSuffix(futureSuffix)
-         .setPastPrefix(pastPrefix)
-         .setPastSuffix(pastSuffix)
-         .setName(name)
-         .setPluralName(pluralName);
+                  .setFuturePrefix(futurePrefix)
+                  .setFutureSuffix(futureSuffix)
+                  .setPastPrefix(pastPrefix)
+                  .setPastSuffix(pastSuffix)
+                  .setName(name)
+                  .setPluralName(pluralName);
       }
+      
+      return this;
    }
 
    @Override

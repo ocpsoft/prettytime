@@ -55,12 +55,12 @@ import org.ocpsoft.prettytime.units.Year;
  * 
  * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
  */
-public class PrettyTime implements LocaleAware
+public class PrettyTime
 {
 
    private volatile Date reference;
    private volatile Locale locale = Locale.getDefault();
-   private volatile Map<TimeUnit, TimeFormat> formatMap = new LinkedHashMap<TimeUnit, TimeFormat>();
+   private volatile Map<TimeUnit, TimeFormat> units = new LinkedHashMap<TimeUnit, TimeFormat>();
 
    /**
     * Default constructor
@@ -89,7 +89,7 @@ public class PrettyTime implements LocaleAware
     */
    public PrettyTime(final Locale locale)
    {
-      this.locale = locale;
+      setLocale(locale);
       initTimeUnits();
    }
 
@@ -138,7 +138,7 @@ public class PrettyTime implements LocaleAware
 
    private void addUnit(ResourcesTimeUnit unit)
    {
-      formatMap.put(unit, new ResourcesTimeFormat(unit, locale));
+      registerUnit(unit, new ResourcesTimeFormat(unit));
    }
 
    private Duration calculateDuration(final long difference)
@@ -330,9 +330,9 @@ public class PrettyTime implements LocaleAware
     */
    public TimeFormat getFormat(TimeUnit unit)
    {
-      if (formatMap.get(unit) != null)
+      if (units.get(unit) != null)
       {
-         return formatMap.get(unit);
+         return units.get(unit);
       }
       return null;
    }
@@ -356,9 +356,10 @@ public class PrettyTime implements LocaleAware
     * past tense. If the Date formatted is after the reference timestamp, the format command will produce a string that
     * is in the future tense.
     */
-   public void setReference(final Date timestamp)
+   public PrettyTime setReference(final Date timestamp)
    {
       reference = timestamp;
+      return this;
    }
 
    /**
@@ -368,9 +369,9 @@ public class PrettyTime implements LocaleAware
     */
    public List<TimeUnit> getUnits()
    {
-      List<TimeUnit> units = new ArrayList<TimeUnit>(formatMap.keySet());
-      Collections.sort(units, new TimeUnitComparator());
-      return Collections.unmodifiableList(units);
+      List<TimeUnit> result = new ArrayList<TimeUnit>(units.keySet());
+      Collections.sort(result, new TimeUnitComparator());
+      return Collections.unmodifiableList(result);
    }
 
    /**
@@ -378,9 +379,14 @@ public class PrettyTime implements LocaleAware
     * an entry already exists for the given {@link TimeUnit}, its format will be overwritten with the given
     * {@link TimeFormat}.
     */
-   public void registerUnit(final TimeUnit unit, TimeFormat format)
+   public PrettyTime registerUnit(final TimeUnit unit, TimeFormat format)
    {
-      formatMap.put(unit, format);
+      units.put(unit, format);
+      if (unit instanceof LocaleAware)
+         ((LocaleAware<?>) unit).setLocale(locale);
+      if (format instanceof LocaleAware)
+         ((LocaleAware<?>) format).setLocale(locale);
+      return this;
    }
 
    /**
@@ -395,14 +401,18 @@ public class PrettyTime implements LocaleAware
     * Set the the {@link Locale} for this {@link PrettyTime} object. This may be an expensive operation, since this
     * operation calls {@link TimeUnit#setLocale(Locale)} for each {@link TimeUnit} in {@link #getUnits()}.
     */
-   @Override
-   public void setLocale(final Locale locale)
+   public PrettyTime setLocale(final Locale locale)
    {
       this.locale = locale;
-      for (TimeFormat format : formatMap.values()) {
-         if (format instanceof LocaleAware)
-            ((LocaleAware) format).setLocale(locale);
+      for (TimeUnit unit : units.keySet()) {
+         if (unit instanceof LocaleAware)
+            ((LocaleAware<?>) unit).setLocale(locale);
       }
+      for (TimeFormat format : units.values()) {
+         if (format instanceof LocaleAware)
+            ((LocaleAware<?>) format).setLocale(locale);
+      }
+      return this;
    }
 
    @Override
@@ -413,10 +423,14 @@ public class PrettyTime implements LocaleAware
 
    /**
     * Remove all registered {@link TimeUnit} instances.
+    * 
+    * @return The removed {@link TimeUnit} instances.
     */
-   public void clearUnits()
+   public List<TimeUnit> clearUnits()
    {
-      formatMap.clear();
+      List<TimeUnit> result = getUnits();
+      units.clear();
+      return result;
    }
 
 }

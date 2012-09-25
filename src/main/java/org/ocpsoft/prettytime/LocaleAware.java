@@ -7,11 +7,11 @@ import java.util.Locale;
  * 
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
-public interface LocaleAware
+public interface LocaleAware<TYPE>
 {
    /**
     * Set the {@link Locale} for which this instance should behave in.
     */
-   public void setLocale(Locale locale);
+   public TYPE setLocale(Locale locale);
 
 }

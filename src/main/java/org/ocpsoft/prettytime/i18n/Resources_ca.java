@@ -17,7 +17,7 @@ package org.ocpsoft.prettytime.i18n;
 
 import java.util.ListResourceBundle;
 
-public class Resources_ca_es extends ListResourceBundle
+public class Resources_ca extends ListResourceBundle
 {
 
     private static final Object[][] OBJECTS = new Object[][] {

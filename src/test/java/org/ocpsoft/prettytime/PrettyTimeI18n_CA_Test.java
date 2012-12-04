@@ -28,7 +28,7 @@ import java.util.Locale;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class PrettyTimeI18n_CA_ES_Test
+public class PrettyTimeI18n_CA_Test
 {
    SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 
@@ -39,7 +39,7 @@ public class PrettyTimeI18n_CA_ES_Test
    @Before
    public void setUp() throws Exception
    {
-      locale = new Locale( "ca_ES" );
+      locale = new Locale( "ca" );
    }
 
    @Test
@@ -47,7 +47,7 @@ public class PrettyTimeI18n_CA_ES_Test
    {
       Date then = format.parse("5/20/2009");
       Date ref = format.parse("6/17/2009");
-      PrettyTime t = new PrettyTime(ref, new Locale("ca_ES"));
+      PrettyTime t = new PrettyTime(ref, new Locale("ca"));
       assertEquals("fa 1 mes", t.format(then));
    }
 

@@ -51,7 +51,7 @@ public class PrettyTimeI18n_CA_Test
       assertEquals("fa 1 mes", t.format(then));
    }
 
-   @Test
+   @Test(expected=IllegalArgumentException.class)
    public void testNullDate() throws Exception
    {
       PrettyTime t = new PrettyTime();

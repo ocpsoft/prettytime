@@ -109,11 +109,12 @@ public class PrettyTime
     */
    public Duration approximateDuration(final Date then)
    {
+      if (then == null)
+         throw new IllegalArgumentException("Date to approximate must not be null.");
+
       Date ref = reference;
       if (null == ref)
-      {
          ref = new Date();
-      }
 
       long difference = then.getTime() - ref.getTime();
       return calculateDuration(difference);
@@ -211,10 +212,10 @@ public class PrettyTime
     */
    public List<Duration> calculatePreciseDuration(final Date then)
    {
+      if (then == null)
+         throw new IllegalArgumentException("Date to calculate must not be null.");
       if (null == reference)
-      {
          reference = new Date();
-      }
 
       List<Duration> result = new ArrayList<Duration>();
       long difference = then.getTime() - reference.getTime();
@@ -239,9 +240,8 @@ public class PrettyTime
    public String format(Date then)
    {
       if (then == null)
-      {
-         then = new Date();
-      }
+         throw new IllegalArgumentException("Date to format must not be null.");
+
       Duration d = approximateDuration(then);
       return format(d);
    }
@@ -257,9 +257,8 @@ public class PrettyTime
    public String formatUnrounded(Date then)
    {
       if (then == null)
-      {
-         then = new Date();
-      }
+         throw new IllegalArgumentException("Date to format must not be null.");
+
       Duration d = approximateDuration(then);
       return formatUnrounded(d);
    }
@@ -273,6 +272,8 @@ public class PrettyTime
     */
    public String format(final Duration duration)
    {
+      if (duration == null)
+         throw new IllegalArgumentException("Duration to format must not be null.");
       TimeFormat format = getFormat(duration.getUnit());
       String time = format.format(duration);
       return format.decorate(duration, time);
@@ -287,6 +288,9 @@ public class PrettyTime
     */
    public String formatUnrounded(Duration duration)
    {
+      if (duration == null)
+         throw new IllegalArgumentException("Duration to format must not be null.");
+
       TimeFormat format = getFormat(duration.getUnit());
       String time = format.formatUnrounded(duration);
       return format.decorateUnrounded(duration, time);
@@ -301,6 +305,9 @@ public class PrettyTime
     */
    public String format(final List<Duration> durations)
    {
+      if (durations == null)
+         throw new IllegalArgumentException("Duration list must not be null.");
+
       String result = null;
       if (durations != null) {
          StringBuilder builder = new StringBuilder();
@@ -329,6 +336,9 @@ public class PrettyTime
     */
    public TimeFormat getFormat(TimeUnit unit)
    {
+      if (unit == null)
+         throw new IllegalArgumentException("Time unit must not be null.");
+
       if (units.get(unit) != null)
       {
          return units.get(unit);
@@ -380,6 +390,11 @@ public class PrettyTime
     */
    public PrettyTime registerUnit(final TimeUnit unit, TimeFormat format)
    {
+      if (unit == null)
+         throw new IllegalArgumentException("Unit to register must not be null.");
+      if (format == null)
+         throw new IllegalArgumentException("Format to register must not be null.");
+
       units.put(unit, format);
       if (unit instanceof LocaleAware)
          ((LocaleAware<?>) unit).setLocale(locale);

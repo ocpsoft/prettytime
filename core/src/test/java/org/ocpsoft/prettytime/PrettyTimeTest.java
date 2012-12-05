@@ -55,7 +55,7 @@ public class PrettyTimeTest
       assertEquals("1 month ago", t.format(then));
    }
 
-   @Test
+   @Test(expected=IllegalArgumentException.class)
    public void testNullDate() throws Exception
    {
       PrettyTime t = new PrettyTime();

@@ -57,7 +57,6 @@ import org.ocpsoft.prettytime.units.Year;
  */
 public class PrettyTime
 {
-
    private volatile Date reference;
    private volatile Locale locale = Locale.getDefault();
    private volatile Map<TimeUnit, TimeFormat> units = new LinkedHashMap<TimeUnit, TimeFormat>();

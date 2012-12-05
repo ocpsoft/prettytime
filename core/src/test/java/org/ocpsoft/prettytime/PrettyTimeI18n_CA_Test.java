@@ -15,29 +15,29 @@
  */
 package org.ocpsoft.prettytime;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.ocpsoft.prettytime.format.SimpleTimeFormat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.After;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.ocpsoft.prettytime.format.SimpleTimeFormat;
 
 public class PrettyTimeI18n_CA_Test
 {
    SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 
    // Stores current locale so that it can be restored
-   protected Locale locale;
+   protected static Locale locale;
 
    // Method setUp() is called automatically before every test method
-   @Before
-   public void setUp() throws Exception
+   @BeforeClass
+   public static void setUp() throws Exception
    {
       locale = new Locale( "ca" );
    }

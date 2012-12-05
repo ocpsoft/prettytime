@@ -8,14 +8,19 @@
 	</parent>
 
 	<groupId>org.ocpsoft.prettytime</groupId>
-	<artifactId>prettytime</artifactId>
+	<artifactId>prettytime-parent</artifactId>
 
-	<packaging>jar</packaging>
-
+	<packaging>pom</packaging>
 	<version>2.0.0-SNAPSHOT</version>
-	<name>PrettyTime</name>
-	<description>Social networking style time-formatting utilities and web-framework integrations.</description>
+
+	<name>PrettyTime - Parent</name>
+	<description>Social style time-formatting utilities and web-framework integrations.</description>
 	<url>http://ocpsoft.org/prettytime/</url>
+
+	<modules>
+		<module>core</module>
+		<module>jsf</module>
+	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>
@@ -59,19 +64,31 @@
 		</developer>
 	</developers>
 
-	<dependencies>
-		<dependency>
-			<groupId>javax.faces</groupId>
-			<artifactId>jsf-api</artifactId>
-			<version>1.2_02</version>
-			<scope>provided</scope>
-		</dependency>
+   <dependencyManagement>
+	   <dependencies>
+		   <dependency>
+			   <groupId>org.ocpsoft.prettytime</groupId>
+			   <artifactId>prettytime</artifactId>
+			   <version>${project.version}</version>
+		   </dependency>
+		   <dependency>
+			   <groupId>org.ocpsoft.prettytime</groupId>
+			   <artifactId>prettytime-integration-jsf</artifactId>
+			   <version>${project.version}</version>
+		   </dependency>
 
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.5</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+		   <dependency>
+			   <groupId>javax.faces</groupId>
+			   <artifactId>jsf-api</artifactId>
+			   <version>1.2_02</version>
+			   <scope>provided</scope>
+		   </dependency>
+		   <dependency>
+			   <groupId>junit</groupId>
+			   <artifactId>junit</artifactId>
+			   <version>4.5</version>
+			   <scope>test</scope>
+		   </dependency>
+	   </dependencies>
+   </dependencyManagement>
 </project>

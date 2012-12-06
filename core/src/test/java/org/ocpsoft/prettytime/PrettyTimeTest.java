@@ -198,7 +198,7 @@ public class PrettyTimeTest
       };
       t.clearUnits();
       t.registerUnit(unit, new SimpleTimeFormat()
-      .setName("tick").setPluralName("ticks")
+      .setSingularName("tick").setPluralName("ticks")
       .setPattern("%n %u").setRoundingTolerance(20)
       .setFutureSuffix("... RUN!")
       .setFuturePrefix("self destruct in: ").setPastPrefix("self destruct was: ").setPastSuffix(

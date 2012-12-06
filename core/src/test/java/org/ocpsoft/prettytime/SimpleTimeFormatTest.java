@@ -28,7 +28,7 @@ import org.ocpsoft.prettytime.PrettyTime;
 import org.ocpsoft.prettytime.TimeFormat;
 import org.ocpsoft.prettytime.format.SimpleTimeFormat;
 
-public class BasicTimeFormatTest
+public class SimpleTimeFormatTest
 {
    // Stores current locale so that it can be restored
    private Locale locale;

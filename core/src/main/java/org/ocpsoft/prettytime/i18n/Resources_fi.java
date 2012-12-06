@@ -16,87 +16,87 @@ public class Resources_fi extends ListResourceBundle implements TimeFormatProvid
 
 	private static Object[][] CONTENTS =  new Object[][] {
 		{"JustNowPattern", "%u"},
-		{"JustNowPastName", "hetki"},
-		{"JustNowFutureName", "hetken"},
+		{"JustNowPastSingularName", "hetki"},
+		{"JustNowFutureSingularName", "hetken"},
 		{"JustNowPastSuffix", "sitten"},
 		{"JustNowFutureSuffix", "päästä"},
 		{"MillisecondPattern", "%u"},
 		{"MillisecondPluralPattern", "%n %u"},
-		{"MillisecondPastName", "millisekunti"},
+		{"MillisecondPastSingularName", "millisekunti"},
 		{"MillisecondPastPluralName", "millisekuntia"},
-		{"MillisecondFutureName", "millisekunnin"},
+		{"MillisecondFutureSingularName", "millisekunnin"},
 		{"MillisecondPastSuffix", "sitten"},
 		{"MillisecondFutureSuffix", "päästä"},
 		{"SecondPattern", "%u"},
 		{"SecondPluralPattern", "%n %u"},
-		{"SecondPastName", "sekunti"},
+		{"SecondPastSingularName", "sekunti"},
 		{"SecondPastPluralName", "sekuntia"},
-		{"SecondFutureName", "sekunnin"},
+		{"SecondFutureSingularName", "sekunnin"},
 		{"SecondPastSuffix", "sitten"},
 		{"SecondFutureSuffix", "päästä"},
 		{"MinutePattern", "%u"},
 		{"MinutePluralPattern", "%n %u"},
-		{"MinutePastName", "minuutti"},
+		{"MinutePastSingularName", "minuutti"},
 		{"MinutePastPluralName", "minuuttia"},
-		{"MinuteFutureName", "minuutin"},
+		{"MinuteFutureSingularName", "minuutin"},
 		{"MinutePastSuffix", "sitten"},
 		{"MinuteFutureSuffix", "päästä"},
 		{"HourPattern", "%u"},
 		{"HourPluralPattern", "%n %u"},
-		{"HourPastName", "tunti"},
+		{"HourPastSingularName", "tunti"},
 		{"HourPastPluralName", "tuntia"},
-		{"HourFutureName", "tunnin"},
+		{"HourFutureSingularName", "tunnin"},
 		{"HourPastSuffix", "sitten"},
 		{"HourFutureSuffix", "päästä"},
 		{"DayPattern", "%u"},
 		{"DayPluralPattern", "%n %u"},
-		{"DayPastName", "eilen"},
+		{"DayPastSingularName", "eilen"},
 		{"DayPastPluralName", "päivää"},
-		{"DayFutureName", "huomenna"},
+		{"DayFutureSingularName", "huomenna"},
 		{"DayFuturePluralName", "päivän"},
 		{"DayPastSuffix", "sitten"},
 		{"DayFutureSuffix", "päästä"},
 		{"WeekPattern", "%u"},
 		{"WeekPluralPattern", "%n %u"},
-		{"WeekPastName", "viikko"},
+		{"WeekPastSingularName", "viikko"},
 		{"WeekPastPluralName", "viikkoa"},
-		{"WeekFutureName", "viikon"},
+		{"WeekFutureSingularName", "viikon"},
 		{"WeekFuturePluralName", "viikon"},
 		{"WeekPastSuffix", "sitten"},
 		{"WeekFutureSuffix", "päästä"},
 		{"MonthPattern", "%u"},
 		{"MonthPluralPattern", "%n %u"},
-		{"MonthPastName", "kuukausi"},
+		{"MonthPastSingularName", "kuukausi"},
 		{"MonthPastPluralName", "kuukautta"},
-		{"MonthFutureName", "kuukauden"},
+		{"MonthFutureSingularName", "kuukauden"},
 		{"MonthPastSuffix", "sitten"},
 		{"MonthFutureSuffix", "päästä"},
 		{"YearPattern", "%u"},
 		{"YearPluralPattern", "%n %u"},
-		{"YearPastName", "vuosi"},
+		{"YearPastSingularName", "vuosi"},
 		{"YearPastPluralName", "vuotta"},
-		{"YearFutureName", "vuoden"},
+		{"YearFutureSingularName", "vuoden"},
 		{"YearPastSuffix", "sitten"},
 		{"YearFutureSuffix", "päästä"},
 		{"DecadePattern", "%u"},
 		{"DecadePluralPattern", "%n %u"},
-		{"DecadePastName", "vuosikymmen"},
+		{"DecadePastSingularName", "vuosikymmen"},
 		{"DecadePastPluralName", "vuosikymmentä"},
-		{"DecadeFutureName", "vuosikymmenen"},
+		{"DecadeFutureSingularName", "vuosikymmenen"},
 		{"DecadePastSuffix", "sitten"},
 		{"DecadeFutureSuffix", "päästä"},
 		{"CenturyPattern", "%u"},
 		{"CenturyPluralPattern", "%n %u"},
-		{"CenturyPastName", "vuosisata"},
+		{"CenturyPastSingularName", "vuosisata"},
 		{"CenturyPastPluralName", "vuosisataa"},
-		{"CenturyFutureName", "vuosisadan"},
+		{"CenturyFutureSingularName", "vuosisadan"},
 		{"CenturyPastSuffix", "sitten"},
 		{"CenturyFutureSuffix", "päästä"},
 		{"MillenniumPattern", "%u"},
 		{"MillenniumPluralPattern", "%n %u"},
-		{"MillenniumPastName", "vuosituhat"},
+		{"MillenniumPastSingularName", "vuosituhat"},
 		{"MillenniumPastPluralName", "vuosituhatta"},
-		{"MillenniumFutureName", "vuosituhannen"},
+		{"MillenniumFutureSingularName", "vuosituhannen"},
 		{"MillenniumPastSuffix", "sitten"},
 		{"MillenniumFutureSuffix", "päästä"},
 	};
@@ -133,11 +133,11 @@ public class Resources_fi extends ListResourceBundle implements TimeFormatProvid
 			super();
 			this.bundle = rb;
 		
-			if(bundle.containsKey(getUnitName(unit) + "PastName")) {
-				this.setPastName(bundle.getString(getUnitName(unit) + "PastName"))
-				.setFutureName(bundle.getString(getUnitName(unit) + "FutureName"))
-				.setPastPluralName(bundle.getString(getUnitName(unit) + "PastName"))
-				.setFuturePluralName(bundle.getString(getUnitName(unit) + "FutureName"))
+			if(bundle.containsKey(getUnitName(unit) + "PastSingularName")) {
+				this.setPastName(bundle.getString(getUnitName(unit) + "PastSingularName"))
+				.setFutureName(bundle.getString(getUnitName(unit) + "FutureSingularName"))
+				.setPastPluralName(bundle.getString(getUnitName(unit) + "PastSingularName"))
+				.setFuturePluralName(bundle.getString(getUnitName(unit) + "FutureSingularName"))
 				.setPluralPattern(bundle.getString(getUnitName(unit) + "Pattern"));
 
 				if(bundle.containsKey(getUnitName(unit) + "PastPluralName")) {
@@ -157,7 +157,7 @@ public class Resources_fi extends ListResourceBundle implements TimeFormatProvid
 				.setFutureSuffix(bundle.getString(getUnitName(unit) + "FutureSuffix"))
 				.setFuturePrefix("")
 				.setPastPrefix("")
-				.setName("")
+				.setSingularName("")
 				.setPluralName("");
 			}
 		}

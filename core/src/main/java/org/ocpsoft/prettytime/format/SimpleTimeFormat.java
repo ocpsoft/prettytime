@@ -1,12 +1,12 @@
 /*
  * Copyright 2012 <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,10 +19,9 @@ import org.ocpsoft.prettytime.Duration;
 import org.ocpsoft.prettytime.TimeFormat;
 import org.ocpsoft.prettytime.TimeUnit;
 
-
 /**
  * Represents a simple method of formatting a specific {@link Duration} of time
- * 
+ *
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
 public class SimpleTimeFormat implements TimeFormat
@@ -32,8 +31,12 @@ public class SimpleTimeFormat implements TimeFormat
    public static final String QUANTITY = "%n";
    public static final String UNIT = "%u";
 
-   private String name = "";
+   private String singularName = "";
    private String pluralName = "";
+   private String futureSingularName = "";
+   private String futurePluralName = "";
+   private String pastSingularName = "";
+   private String pastPluralName = "";
 
    private String pattern = "";
    private String futurePrefix = "";
@@ -93,8 +96,14 @@ public class SimpleTimeFormat implements TimeFormat
       return result;
    }
 
-   protected String getPattern(final long quantity) {
-	   return getPattern();
+   protected String getPattern(final long quantity)
+   {
+      return pattern;
+   }
+
+   public String getPattern()
+   {
+      return pattern;
    }
 
    protected long getQuantity(Duration duration, boolean round)
@@ -104,10 +113,10 @@ public class SimpleTimeFormat implements TimeFormat
 
    protected String getGramaticallyCorrectName(final Duration d, boolean round)
    {
-      String result = getName();
+      String result = getSingularName(d);
       if ((Math.abs(getQuantity(d, round)) == 0) || (Math.abs(getQuantity(d, round)) > 1))
       {
-         result = getPluralName();
+         result = getPluralName(d);
       }
       return result;
    }
@@ -119,6 +128,26 @@ public class SimpleTimeFormat implements TimeFormat
          return NEGATIVE;
       }
       return "";
+   }
+
+   private String getSingularName(Duration duration)
+   {
+      if (duration.isInFuture() && futureSingularName != null && !futureSingularName.isEmpty())
+         return futureSingularName;
+      else if (duration.isInPast() && pastSingularName != null && !pastSingularName.isEmpty())
+         return pastSingularName;
+      else
+         return singularName;
+   }
+
+   private String getPluralName(Duration duration)
+   {
+      if (duration.isInFuture() && futurePluralName != null && !futurePluralName.isEmpty())
+         return futurePluralName;
+      else if (duration.isInPast() && pastPluralName != null && !pastPluralName.isEmpty())
+         return pastPluralName;
+      else
+         return pluralName;
    }
 
    /*
@@ -156,7 +185,7 @@ public class SimpleTimeFormat implements TimeFormat
 
    /**
     * The percentage of the current {@link TimeUnit}.getMillisPerUnit() for which the quantity may be rounded up by one.
-    * 
+    *
     * @param roundingTolerance
     * @return
     */
@@ -166,38 +195,40 @@ public class SimpleTimeFormat implements TimeFormat
       return this;
    }
 
-   /*
-    * Normal getters
-    */
-
-   public String getPattern()
+   public SimpleTimeFormat setSingularName(String name)
    {
-      return pattern;
+      this.singularName = name;
+      return this;
    }
 
-   public String getFuturePrefix()
+   public SimpleTimeFormat setPluralName(String pluralName)
    {
-      return futurePrefix;
+      this.pluralName = pluralName;
+      return this;
    }
 
-   public String getFutureSuffix()
+   public SimpleTimeFormat setFutureSingularName(String futureSingularName)
    {
-      return futureSuffix;
+      this.futureSingularName = futureSingularName;
+      return this;
    }
 
-   public String getPastPrefix()
+   public SimpleTimeFormat setFuturePluralName(String futurePluralName)
    {
-      return pastPrefix;
+      this.futurePluralName = futurePluralName;
+      return this;
    }
 
-   public String getPastSuffix()
+   public SimpleTimeFormat setPastSingularName(String pastSingularName)
    {
-      return pastSuffix;
+      this.pastSingularName = pastSingularName;
+      return this;
    }
 
-   public int getRoundingTolerance()
+   public SimpleTimeFormat setPastPluralName(String pastPluralName)
    {
-      return roundingTolerance;
+      this.pastPluralName = pastPluralName;
+      return this;
    }
 
    @Override
@@ -207,27 +238,4 @@ public class SimpleTimeFormat implements TimeFormat
                + futureSuffix + ", pastPrefix=" + pastPrefix + ", pastSuffix=" + pastSuffix + ", roundingTolerance="
                + roundingTolerance + "]";
    }
-
-   public String getName()
-   {
-      return name;
-   }
-
-   public SimpleTimeFormat setName(String name)
-   {
-      this.name = name;
-      return this;
-   }
-
-   public String getPluralName()
-   {
-      return pluralName;
-   }
-
-   public SimpleTimeFormat setPluralName(String pluralName)
-   {
-      this.pluralName = pluralName;
-      return this;
-   }
-
 }

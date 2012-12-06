@@ -17,7 +17,7 @@ package org.ocpsoft.prettytime.i18n;
 
 import java.util.ListResourceBundle;
 
-public class Resources_en extends ListResourceBundle
+public class Resources_yy extends ListResourceBundle
 {
    private static final Object[][] OBJECTS = new Object[][] {
             { "CenturyPattern", "%n %u" },
@@ -34,6 +34,10 @@ public class Resources_en extends ListResourceBundle
             { "DayPastSuffix", " ago" },
             { "DaySingularName", "day" },
             { "DayPluralName", "days" },
+            { "DayFutureSingularName", "futureday" },
+            { "DayFuturePluralName", "futuredays" },
+            { "DayPastSingularName", "pastday" },
+            { "DayPastPluralName", "pastdays" },
             { "DecadePattern", "%n %u" },
             { "DecadeFuturePrefix", "" },
             { "DecadeFutureSuffix", " from now" },
@@ -48,6 +52,9 @@ public class Resources_en extends ListResourceBundle
             { "HourPastSuffix", " ago" },
             { "HourSingularName", "hour" },
             { "HourPluralName", "hours" },
+            { "HourFutureSingularName", "hour" },
+            { "HourFuturePluralName", "" },
+            { "HourPastSingularName", "" },
             { "JustNowPattern", "%u" },
             { "JustNowFuturePrefix", "" },
             { "JustNowFutureSuffix", "moments from now" },

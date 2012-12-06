@@ -10,7 +10,7 @@ import org.ocpsoft.prettytime.format.SimpleTimeFormat;
 
 /**
  * Represents a simple method of formatting a specific {@link Duration} of time
- * 
+ *
  * @author lb3
  */
 public class ResourcesTimeFormat extends SimpleTimeFormat implements TimeFormat, LocaleAware<ResourcesTimeFormat>
@@ -44,24 +44,34 @@ public class ResourcesTimeFormat extends SimpleTimeFormat implements TimeFormat,
 
       if (override == null)
       {
-         String pattern = bundle.getString(unit.getResourceKeyPrefix() + "Pattern");
-         String futurePrefix = bundle.getString(unit.getResourceKeyPrefix() + "FuturePrefix");
-         String futureSuffix = bundle.getString(unit.getResourceKeyPrefix() + "FutureSuffix");
-         String pastPrefix = bundle.getString(unit.getResourceKeyPrefix() + "PastPrefix");
-         String pastSuffix = bundle.getString(unit.getResourceKeyPrefix() + "PastSuffix");
+         setPattern(bundle.getString(unit.getResourceKeyPrefix() + "Pattern"));
+         setFuturePrefix(bundle.getString(unit.getResourceKeyPrefix() + "FuturePrefix"));
+         setFutureSuffix(bundle.getString(unit.getResourceKeyPrefix() + "FutureSuffix"));
+         setPastPrefix(bundle.getString(unit.getResourceKeyPrefix() + "PastPrefix"));
+         setPastSuffix(bundle.getString(unit.getResourceKeyPrefix() + "PastSuffix"));
 
-         String name = (bundle.getString(unit.getResourceKeyPrefix() + "Name"));
-         String pluralName = (bundle.getString(unit.getResourceKeyPrefix() + "PluralName"));
+         setSingularName(bundle.getString(unit.getResourceKeyPrefix() + "SingularName"));
+         setPluralName(bundle.getString(unit.getResourceKeyPrefix() + "PluralName"));
 
-         this.setPattern(pattern)
-                  .setFuturePrefix(futurePrefix)
-                  .setFutureSuffix(futureSuffix)
-                  .setPastPrefix(pastPrefix)
-                  .setPastSuffix(pastSuffix)
-                  .setName(name)
-                  .setPluralName(pluralName);
+         try {
+            setFuturePluralName(bundle.getString(unit.getResourceKeyPrefix() + "FuturePluralName"));
+         }
+         catch (Exception e) {}
+         try {
+            setFutureSingularName((bundle.getString(unit.getResourceKeyPrefix() + "FutureSingularName")));
+         }
+         catch (Exception e) {}
+         try {
+            setPastPluralName((bundle.getString(unit.getResourceKeyPrefix() + "PastPluralName")));
+         }
+         catch (Exception e) {}
+         try {
+            setPastSingularName((bundle.getString(unit.getResourceKeyPrefix() + "PastSingularName")));
+         }
+         catch (Exception e) {}
+
       }
-      
+
       return this;
    }
 

@@ -132,9 +132,9 @@ public class SimpleTimeFormat implements TimeFormat
 
    private String getSingularName(Duration duration)
    {
-      if (duration.isInFuture() && futureSingularName != null && !futureSingularName.isEmpty())
+      if (duration.isInFuture() && futureSingularName != null && futureSingularName.length() > 0)
          return futureSingularName;
-      else if (duration.isInPast() && pastSingularName != null && !pastSingularName.isEmpty())
+      else if (duration.isInPast() && pastSingularName != null && pastSingularName.length() > 0)
          return pastSingularName;
       else
          return singularName;
@@ -142,9 +142,9 @@ public class SimpleTimeFormat implements TimeFormat
 
    private String getPluralName(Duration duration)
    {
-      if (duration.isInFuture() && futurePluralName != null && !futurePluralName.isEmpty())
+      if (duration.isInFuture() && futurePluralName != null && futureSingularName.length() > 0)
          return futurePluralName;
-      else if (duration.isInPast() && pastPluralName != null && !pastPluralName.isEmpty())
+      else if (duration.isInPast() && pastPluralName != null && pastSingularName.length() > 0)
          return pastPluralName;
       else
          return pluralName;

@@ -404,6 +404,38 @@ public class PrettyTime
    }
 
    /**
+    * Removes the mapping for the given {@link TimeUnit} type. This effectively de-registers the unit so it will not be
+    * used in formatting. Returns the {@link TimeFormat} that was registered for the given {@link TimeUnit} type, or
+    * null if no unit of the given type was registered.
+    */
+   public <UNIT extends TimeUnit> TimeFormat removeUnit(final Class<UNIT> unitType)
+   {
+      if (unitType == null)
+         throw new IllegalArgumentException("Unit type to remove must not be null.");
+
+      for (TimeUnit unit : units.keySet()) {
+         if (unitType.isAssignableFrom(unit.getClass()))
+         {
+            return units.remove(unit);
+         }
+      }
+      return null;
+   }
+
+   /**
+    * Removes the mapping for the given {@link TimeUnit}. This effectively de-registers the unit so it will not be used
+    * in formatting. Returns the {@link TimeFormat} that was registered for the given {@link TimeUnit}, or null if no
+    * such unit was registered.
+    */
+   public TimeFormat removeUnit(final TimeUnit unit)
+   {
+      if (unit == null)
+         throw new IllegalArgumentException("Unit to remove must not be null.");
+
+      return units.remove(unit);
+   }
+
+   /**
     * Get the currently configured {@link Locale} for this {@link PrettyTime} object.
     */
    public Locale getLocale()

@@ -111,4 +111,16 @@ public class PrettyTimeAPIManipulationTest
       t.toString();
    }
 
+   @Test(expected = IllegalArgumentException.class)
+   public void testApiMisuse16() throws Exception
+   {
+      t.removeUnit((Class<TimeUnit>) null);
+   }
+
+   @Test(expected = IllegalArgumentException.class)
+   public void testApiMisuse17() throws Exception
+   {
+      t.removeUnit((TimeUnit) null);
+   }
+
 }

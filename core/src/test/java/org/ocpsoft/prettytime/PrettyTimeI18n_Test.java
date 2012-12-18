@@ -53,8 +53,8 @@ public class PrettyTimeI18n_Test
    public void testPrettyTimeDefault()
    {
       // The default resource bundle should be used
-      PrettyTime p = new PrettyTime(Locale.ROOT);
-      assertEquals("moments from now", p.format(new Date()));
+      PrettyTime p = new PrettyTime(new Date(0), Locale.ROOT);
+      assertEquals("moments from now", p.format(new Date(1)));
    }
 
    @Test
@@ -62,7 +62,8 @@ public class PrettyTimeI18n_Test
    {
       // The German resource bundle should be used
       PrettyTime p = new PrettyTime(Locale.GERMAN);
-      assertEquals("Jetzt", p.format(new Date()));
+      p.setReference(new Date(0));
+      assertEquals("Jetzt", p.format(new Date(1)));
    }
 
    @Test
@@ -94,8 +95,8 @@ public class PrettyTimeI18n_Test
    {
       // The default resource bundle should be used
       Locale.setDefault(Locale.ROOT);
-      PrettyTime p = new PrettyTime();
-      assertEquals(p.format(new Date()), "moments from now");
+      PrettyTime p = new PrettyTime(new Date(0));
+      assertEquals(p.format(new Date(1)), "moments from now");
    }
 
    @Test
@@ -103,8 +104,8 @@ public class PrettyTimeI18n_Test
    {
       // The German resource bundle should be used
       Locale.setDefault(Locale.GERMAN);
-      PrettyTime p = new PrettyTime();
-      assertEquals(p.format(new Date()), "Jetzt");
+      PrettyTime p = new PrettyTime(new Date(0));
+      assertEquals(p.format(new Date(1)), "Jetzt");
    }
 
    @Test

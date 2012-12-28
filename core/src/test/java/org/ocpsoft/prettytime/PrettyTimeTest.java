@@ -19,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -55,6 +56,25 @@ public class PrettyTimeTest
       assertEquals("1 month ago", t.format(then));
    }
 
+   public static void main(String[] args) {
+	   PrettyTime pt = new PrettyTime();
+//	   pt.setLocale(new Locale("ar"));
+	   pt.setLocale(Locale.ENGLISH);
+	   
+	   Calendar cal = Calendar.getInstance();
+	   Date r = cal.getTime();
+	   cal.add(Calendar.DAY_OF_YEAR, 201);
+	   Date n = cal.getTime();
+	   pt.setReference(r);
+	   
+	   System.out.println(pt.format(cal));
+	   System.out.println(pt.format(pt.calculatePreciseDuration(cal.getTime())));
+	   System.out.println(pt.formatUnrounded(cal.getTime()));
+	   System.out.println(pt.formatUnrounded(pt.approximateDuration(cal.getTime())));
+	   
+	   System.out.println(javax.xml.bind.DatatypeConverter.parseDateTime("2010-01-01T12:00:00Z"));
+   }
+   
    @Test(expected=IllegalArgumentException.class)
    public void testNullDate() throws Exception
    {

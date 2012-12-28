@@ -16,6 +16,7 @@
 package org.ocpsoft.prettytime;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -244,6 +245,21 @@ public class PrettyTime
 
       Duration d = approximateDuration(then);
       return format(d);
+   }
+   
+   /**
+    * Format the given {@link Calendar} object. This method applies the {@code PrettyTime.approximateDuration(date)} method
+    * to perform its calculation. If {@code then} is null, it will default to {@code new Date()}; also decorate for
+    * past/future tense.
+    * 
+    * @param duration the {@link Calendar} whose date is to be formatted
+    * @return A formatted string representing {@code then}
+    */
+   public String format(Calendar then)
+   {
+      if (then == null)
+         throw new IllegalArgumentException("Provided Calendar must not be null.");
+      return format(then.getTime());
    }
 
    /**

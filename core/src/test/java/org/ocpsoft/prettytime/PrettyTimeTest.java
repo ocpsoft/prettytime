@@ -55,25 +55,6 @@ public class PrettyTimeTest
       PrettyTime t = new PrettyTime(ref);
       assertEquals("1 month ago", t.format(then));
    }
-
-   public static void main(String[] args) {
-	   PrettyTime pt = new PrettyTime();
-//	   pt.setLocale(new Locale("ar"));
-	   pt.setLocale(Locale.ENGLISH);
-	   
-	   Calendar cal = Calendar.getInstance();
-	   Date r = cal.getTime();
-	   cal.add(Calendar.DAY_OF_YEAR, 201);
-	   Date n = cal.getTime();
-	   pt.setReference(r);
-	   
-	   System.out.println(pt.format(cal));
-	   System.out.println(pt.format(pt.calculatePreciseDuration(cal.getTime())));
-	   System.out.println(pt.formatUnrounded(cal.getTime()));
-	   System.out.println(pt.formatUnrounded(pt.approximateDuration(cal.getTime())));
-	   
-	   System.out.println(javax.xml.bind.DatatypeConverter.parseDateTime("2010-01-01T12:00:00Z"));
-   }
    
    @Test(expected=IllegalArgumentException.class)
    public void testNullDate() throws Exception
@@ -305,6 +286,22 @@ public class PrettyTimeTest
       assertEquals("3 decades ago", t.format(new Date(0)));
       t.setLocale(Locale.GERMAN);
       assertEquals("vor 3 Jahrzehnten", t.format(new Date(0)));
+   }
+   
+   /**
+    * Since {@link PrettyTime#format(Calendar)} is just delegating to {@link PrettyTime#format(Date)} a single simple test is sufficient.
+    * @throws Exception
+    */
+   @Test
+   public void testCalendarParameter() throws Exception
+   {
+	   Calendar c = Calendar.getInstance();
+	   Date r = c.getTime();
+	   PrettyTime t = new PrettyTime();
+	   t.setLocale(Locale.ENGLISH);
+	   t.setReference(r);
+	   c.add(Calendar.YEAR, -1);	   
+	   assertEquals("1 year ago", t.format(c));
    }
 
    // Method tearDown() is called automatically after every test method

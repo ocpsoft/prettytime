@@ -164,7 +164,7 @@ public class Resources_ua extends ListResourceBundle implements TimeFormatProvid
         } else if (t instanceof Decade) {
             return new TimeFormatAided("десятиліття", "десятиліття", "десятиліть");
         } else if (t instanceof Hour) {
-            return new TimeFormatAided("година", "години", "годин");
+            return new TimeFormatAided("годину", "години", "годин");
         } else if (t instanceof Millennium) {
             return new TimeFormatAided("тисячоліття", "тисячоліття", "тисячоліть");
         } else if (t instanceof Millisecond) {
@@ -178,7 +178,7 @@ public class Resources_ua extends ListResourceBundle implements TimeFormatProvid
         } else if (t instanceof Week) {
             return new TimeFormatAided("тиждень", "тижні", "тижнів");
         } else if (t instanceof Year) {
-            return new TimeFormatAided("рік", "роки", "рік");
+            return new TimeFormatAided("рік", "роки", "років");
         }
         return null; // error
     }

@@ -163,10 +163,24 @@ public class PrettyTimeI18n_UA_Test {
     }
 
     @Test
-    public void testHoursAgo() throws Exception
+    public void test1HourAgo() throws Exception
+    {
+        PrettyTime t = new PrettyTime(new Date(1000 * 60 * 60 * 1), locale);
+        assertEquals("1 годину тому", t.format(new Date(0)));
+    }
+
+    @Test
+    public void test3HoursAgo() throws Exception
     {
         PrettyTime t = new PrettyTime(new Date(1000 * 60 * 60 * 3), locale);
         assertEquals("3 години тому", t.format(new Date(0)));
+    }
+
+    @Test
+    public void test6HoursAgo() throws Exception
+    {
+        PrettyTime t = new PrettyTime(new Date(1000 * 60 * 60 * 6), locale);
+        assertEquals("6 годин тому", t.format(new Date(0)));
     }
 
     @Test
@@ -198,10 +212,24 @@ public class PrettyTimeI18n_UA_Test {
     }
 
     @Test
+    public void test8YearsAgo() throws Exception
+    {
+        PrettyTime t = new PrettyTime(new Date(2629743830L * 12L * 8L), locale);
+        assertEquals("8 років тому", t.format(new Date(0)));
+    }
+
+    @Test
     public void testDecadesAgo() throws Exception
     {
         PrettyTime t = new PrettyTime(new Date(315569259747L * 3L), locale);
         assertEquals("3 десятиліття тому", t.format(new Date(0)));
+    }
+
+    @Test
+    public void test8DecadesAgo() throws Exception
+    {
+        PrettyTime t = new PrettyTime(new Date(315569259747L * 8L), locale);
+        assertEquals("8 десятиліть тому", t.format(new Date(0)));
     }
 
     @Test
@@ -210,7 +238,6 @@ public class PrettyTimeI18n_UA_Test {
         PrettyTime t = new PrettyTime(new Date(3155692597470L * 3L), locale);
         assertEquals("3 століття тому", t.format(new Date(0)));
     }
-
 
     @After
     public void tearDown() throws Exception

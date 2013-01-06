@@ -145,9 +145,9 @@ public class Resources_ru extends ListResourceBundle implements TimeFormatProvid
         } else if (t instanceof Hour) {
             return new TimeFormatAided("час", "часа", "часов");
         } else if (t instanceof Millennium) {
-            return new TimeFormatAided("тысячелетие", "тысячелетия", "тысячилетий");
+            return new TimeFormatAided("тысячелетие", "тысячелетия", "тысячелетий");
         } else if (t instanceof Millisecond) {
-            return new TimeFormatAided("миллисекунду", "миллисекунды", "миллесекунд");
+            return new TimeFormatAided("миллисекунду", "миллисекунды", "миллисекунд");
         } else if (t instanceof Minute) {
             return new TimeFormatAided("минуту", "минуты", "минут");
         } else if (t instanceof Month) {

@@ -7,7 +7,7 @@ import java.util.ListResourceBundle;
  * 
  * @author xsalefter (xsalefter[at]gmail.com)
  */
-public class Resources_in_ID extends ListResourceBundle {
+public class Resources_in extends ListResourceBundle {
 
 	private static final Object[][] OBJECTS = new Object[][] {
 		{ "CenturyPattern", "%n %u" },

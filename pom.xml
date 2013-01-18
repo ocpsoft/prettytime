@@ -20,7 +20,8 @@
 	<modules>
 		<module>core</module>
 		<module>jsf</module>
-	</modules>
+        <module>jstl</module>
+    </modules>
 
 	<properties>
 		<project.build.sourceEncoding>

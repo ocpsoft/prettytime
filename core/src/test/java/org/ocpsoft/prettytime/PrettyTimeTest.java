@@ -19,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -54,7 +55,7 @@ public class PrettyTimeTest
       PrettyTime t = new PrettyTime(ref);
       assertEquals("1 month ago", t.format(then));
    }
-
+   
    @Test(expected=IllegalArgumentException.class)
    public void testNullDate() throws Exception
    {
@@ -285,6 +286,22 @@ public class PrettyTimeTest
       assertEquals("3 decades ago", t.format(new Date(0)));
       t.setLocale(Locale.GERMAN);
       assertEquals("vor 3 Jahrzehnten", t.format(new Date(0)));
+   }
+   
+   /**
+    * Since {@link PrettyTime#format(Calendar)} is just delegating to {@link PrettyTime#format(Date)} a single simple test is sufficient.
+    * @throws Exception
+    */
+   @Test
+   public void testCalendarParameter() throws Exception
+   {
+	   Calendar c = Calendar.getInstance();
+	   Date r = c.getTime();
+	   PrettyTime t = new PrettyTime();
+	   t.setLocale(Locale.ENGLISH);
+	   t.setReference(r);
+	   c.add(Calendar.YEAR, -1);	   
+	   assertEquals("1 year ago", t.format(c));
    }
 
    // Method tearDown() is called automatically after every test method

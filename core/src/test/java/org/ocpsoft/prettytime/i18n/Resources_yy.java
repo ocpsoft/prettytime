@@ -53,7 +53,7 @@ public class Resources_yy extends ListResourceBundle
             { "HourSingularName", "hour" },
             { "HourPluralName", "hours" },
             { "HourFutureSingularName", "hour" },
-            { "HourFuturePluralName", "" },
+            { "HourFuturePluralName", "hours" },
             { "HourPastSingularName", "" },
             { "JustNowPattern", "%u" },
             { "JustNowFuturePrefix", "" },

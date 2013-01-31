@@ -67,7 +67,7 @@ public class SimpleTimeFormatTimeQuantifiedNameTest
    public void testFuturePluralNameEmpty() throws Exception
    {
       PrettyTime p = new PrettyTime(new Date(0));
-      Assert.assertEquals("2 hours from now", p.format(new Date(1000 * 60 * 60 * 2)));
+      Assert.assertEquals("2 from now", p.format(new Date(1000 * 60 * 60 * 2)));
    }
 
    @Test

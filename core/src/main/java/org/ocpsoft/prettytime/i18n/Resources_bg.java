@@ -33,7 +33,7 @@ public class Resources_bg extends ListResourceBundle
                                    { "DayPastPrefix", "преди " },
                                    { "DayPastSuffix", "" },
                                    { "DaySingularName", "ден" },
-                                   { "DayPluralName", "дена" },
+                                   { "DayPluralName", "дни" },
                                    { "DecadePattern", "%n %u" },
                                    { "DecadeFuturePrefix", "след " },
                                    { "DecadeFutureSuffix", "" },

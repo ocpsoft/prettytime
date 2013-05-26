@@ -1,5 +1,6 @@
 package org.ocpsoft.prettytime.nlp;
 
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -115,8 +116,9 @@ public class PrettyTimeParser
 
       List<DateGroup> result = new ArrayList<DateGroup>();
       List<com.joestelmach.natty.DateGroup> groups = parser.parse(language);
+      Date now = new Date();
       for (com.joestelmach.natty.DateGroup group : groups) {
-         result.add(new DateGroupImpl(group));
+         result.add(new DateGroupImpl(now, group));
       }
       return result;
    }
@@ -167,9 +169,11 @@ public class PrettyTimeParser
       private Date recursUntil;
       private String text;
       private boolean recurring;
+      private Date now;
 
-      public DateGroupImpl(com.joestelmach.natty.DateGroup group)
+      public DateGroupImpl(Date now, com.joestelmach.natty.DateGroup group)
       {
+         this.now = now;
          dates = group.getDates();
          line = group.getLine();
          position = group.getPosition();
@@ -207,6 +211,15 @@ public class PrettyTimeParser
       public boolean isRecurring()
       {
          return recurring;
+      }
+
+      @Override
+      public long getRecurInterval()
+      {
+         if (isRecurring())
+            return getDates().get(0).getTime() - now.getTime();
+         else
+            return -1;
       }
 
    }

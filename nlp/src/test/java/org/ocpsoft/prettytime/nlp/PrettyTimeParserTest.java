@@ -59,6 +59,22 @@ public class PrettyTimeParserTest
       Assert.assertEquals(1, parse.get(0).getDates().size());
       Assert.assertNull(parse.get(0).getRecursUntil());
       Assert.assertFalse(parse.get(0).isRecurring());
+      Assert.assertEquals(-1, parse.get(0).getRecurInterval());
+   }
+
+   @Test
+   public void testParseSyntaxRecurring()
+   {
+      List<DateGroup> parse = new PrettyTimeParser().parseSyntax("I do it every three days");
+      Assert.assertFalse(parse.isEmpty());
+      String formatted = new PrettyTime().format(parse.get(0).getDates().get(0));
+      Assert.assertEquals("3 days from now", formatted);
+      Assert.assertEquals(1, parse.get(0).getLine());
+      Assert.assertEquals(14, parse.get(0).getPosition());
+      Assert.assertEquals(1, parse.get(0).getDates().size());
+      Assert.assertNull(parse.get(0).getRecursUntil());
+      Assert.assertTrue(parse.get(0).isRecurring());
+      Assert.assertEquals(1000 * 60 * 60 * 24 * 3, parse.get(0).getRecurInterval());
    }
 
 }

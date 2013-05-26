@@ -39,4 +39,10 @@ public interface DateGroup
     * Return <code>true</code> if this {@link DateGroup} is a recurring event.
     */
    boolean isRecurring();
+
+   /**
+    * If this {@link DateGroup} is recurring, return the interval in milliseconds with which this {@link DateGroup}
+    * recurs, otherwise return -1;
+    */
+   long getRecurInterval();
 }

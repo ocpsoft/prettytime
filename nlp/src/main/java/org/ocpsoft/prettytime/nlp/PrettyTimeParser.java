@@ -1,23 +1,56 @@
 package org.ocpsoft.prettytime.nlp;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TimeZone;
 
-import com.joestelmach.natty.DateGroup;
-import com.joestelmach.natty.ParseLocation;
+import org.ocpsoft.prettytime.nlp.parse.DateGroup;
+
 import com.joestelmach.natty.Parser;
 
+/**
+ * A utility for parsing natural language date and time expressions. (e.g. "Let's get lunch at two pm",
+ * "I did it 3 days ago")
+ * <p>
+ * <b>Usage:</b>
+ * <p>
+ * <code>
+ * PrettyTimeParser p = new PrettyTimeParser();<br/>
+ * List&lt;Date&gt; parsed = p.parse("I'll be there at two");<br/>
+ * //result: Date - 2:00PM
+ * <p>
+ * </code>
+ * 
+ * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
+ */
 public class PrettyTimeParser
 {
+
    private Parser parser = new Parser();
    private Map<String, String> translations = new HashMap<String, String>();
+   private Set<String> periods = new HashSet<String>();
 
+   /**
+    * Create a new {@link PrettyTimeParser} with the given {@link TimeZone}.
+    */
+   public PrettyTimeParser(TimeZone timezone)
+   {
+      parser = new Parser(timezone);
+   }
+
+   /**
+    * Create a new {@link PrettyTimeParser} with the current system default {@link TimeZone}.
+    */
    public PrettyTimeParser()
    {
+      this(TimeZone.getDefault());
       translations.put("zero", "0");
       translations.put("one", "1");
       translations.put("two", "2");
@@ -46,24 +79,44 @@ public class PrettyTimeParser
       translations.put("seventy", "70");
       translations.put("eighty", "80");
       translations.put("ninety", "90");
+
+      periods.add("morning");
+      periods.add("afternooon");
+      periods.add("evening");
+      periods.add("night");
+      periods.add("am");
+      periods.add("pm");
+      periods.add("ago");
+      periods.add("from now");
    }
 
+   /**
+    * Parse the given language and return a {@link List} with all discovered {@link Date} instances.
+    */
    public List<Date> parse(String language)
    {
       language = words2numbers(language);
 
       List<Date> result = new ArrayList<Date>();
-      List<DateGroup> groups = parser.parse(language);
-      for (DateGroup group : groups) {
-         List<Date> dates = group.getDates();
-         int line = group.getLine();
-         int column = group.getPosition();
-         String matchingValue = group.getText();
-         String syntaxTree = group.getSyntaxTree().toStringTree();
-         Map<String, List<ParseLocation>> parseMap = group.getParseLocations();
-         boolean isRecurreing = group.isRecurring();
-         Date recursUntil = group.getRecursUntil();
+      List<com.joestelmach.natty.DateGroup> groups = parser.parse(language);
+      for (com.joestelmach.natty.DateGroup group : groups) {
+         List<Date> dates = relativize(group);
          result.addAll(dates);
+      }
+      return result;
+   }
+
+   /**
+    * Parse the given language and return a {@link List} with all discovered {@link DateGroup} instances.
+    */
+   public List<DateGroup> parseSyntax(String language)
+   {
+      language = words2numbers(language);
+
+      List<DateGroup> result = new ArrayList<DateGroup>();
+      List<com.joestelmach.natty.DateGroup> groups = parser.parse(language);
+      for (com.joestelmach.natty.DateGroup group : groups) {
+         result.add(new DateGroupImpl(group));
       }
       return result;
    }
@@ -74,5 +127,79 @@ public class PrettyTimeParser
          language = language.replaceAll("\\b" + entry.getKey() + "\\b", entry.getValue());
       }
       return language;
+   }
+
+   private List<Date> relativize(com.joestelmach.natty.DateGroup group)
+   {
+      String matchingValue = group.getText();
+      boolean ambiguous = true;
+
+      for (String qualifier : periods)
+      {
+         if (matchingValue.contains(qualifier))
+            ambiguous = false;
+      }
+
+      List<Date> result = group.getDates();
+      if (ambiguous)
+      {
+         Date now = new Date();
+         for (int i = 0; i < result.size(); i++) {
+            Date date = result.get(i);
+            if (date.before(now))
+            {
+               Calendar calendar = Calendar.getInstance();
+               calendar.setTime(date);
+               calendar.add(Calendar.HOUR_OF_DAY, 12);
+               date = calendar.getTime();
+               result.set(i, date);
+            }
+         }
+      }
+      return result;
+   }
+
+   private class DateGroupImpl implements DateGroup
+   {
+      private List<Date> dates;
+      private int line;
+      private int position;
+      private Date recursUntil;
+      private String text;
+
+      public DateGroupImpl(com.joestelmach.natty.DateGroup group)
+      {
+         dates = group.getDates();
+         line = group.getLine();
+         position = group.getPosition();
+         recursUntil = group.getRecursUntil();
+         text = group.getText();
+      }
+
+      public List<Date> getDates()
+      {
+         return dates;
+      }
+
+      public int getLine()
+      {
+         return line;
+      }
+
+      public int getPosition()
+      {
+         return position;
+      }
+
+      public Date getRecursUntil()
+      {
+         return recursUntil;
+      }
+
+      public String getText()
+      {
+         return text;
+      }
+
    }
 }

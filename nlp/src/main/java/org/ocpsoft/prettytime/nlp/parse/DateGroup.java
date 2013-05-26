@@ -34,4 +34,9 @@ public interface DateGroup
     * Get all {@link Date} instances parsed from the language text.
     */
    List<Date> getDates();
+
+   /**
+    * Return <code>true</code> if this {@link DateGroup} is a recurring event.
+    */
+   boolean isRecurring();
 }

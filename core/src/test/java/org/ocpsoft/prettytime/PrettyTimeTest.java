@@ -26,6 +26,7 @@ import java.util.Locale;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.ocpsoft.prettytime.Duration;
 import org.ocpsoft.prettytime.PrettyTime;
@@ -55,8 +56,8 @@ public class PrettyTimeTest
       PrettyTime t = new PrettyTime(ref);
       assertEquals("1 month ago", t.format(then));
    }
-   
-   @Test(expected=IllegalArgumentException.class)
+
+   @Test(expected = IllegalArgumentException.class)
    public void testNullDate() throws Exception
    {
       PrettyTime t = new PrettyTime();
@@ -199,11 +200,11 @@ public class PrettyTimeTest
       };
       t.clearUnits();
       t.registerUnit(unit, new SimpleTimeFormat()
-      .setSingularName("tick").setPluralName("ticks")
-      .setPattern("%n %u").setRoundingTolerance(20)
-      .setFutureSuffix("... RUN!")
-      .setFuturePrefix("self destruct in: ").setPastPrefix("self destruct was: ").setPastSuffix(
-               " ago..."));
+               .setSingularName("tick").setPluralName("ticks")
+               .setPattern("%n %u").setRoundingTolerance(20)
+               .setFutureSuffix("... RUN!")
+               .setFuturePrefix("self destruct in: ").setPastPrefix("self destruct was: ").setPastSuffix(
+                        " ago..."));
 
       assertEquals("self destruct in: 5 ticks ... RUN!", t.format(new Date(25000)));
       t.setReference(new Date(25000));
@@ -287,21 +288,24 @@ public class PrettyTimeTest
       t.setLocale(Locale.GERMAN);
       assertEquals("vor 3 Jahrzehnten", t.format(new Date(0)));
    }
-   
+
    /**
-    * Since {@link PrettyTime#format(Calendar)} is just delegating to {@link PrettyTime#format(Date)} a single simple test is sufficient.
+    * Since {@link PrettyTime#format(Calendar)} is just delegating to {@link PrettyTime#format(Date)} a single simple
+    * test is sufficient.
+    * 
     * @throws Exception
     */
    @Test
+   @Ignore
    public void testCalendarParameter() throws Exception
    {
-	   Calendar c = Calendar.getInstance();
-	   Date r = c.getTime();
-	   PrettyTime t = new PrettyTime();
-	   t.setLocale(Locale.ENGLISH);
-	   t.setReference(r);
-	   c.add(Calendar.YEAR, -1);	   
-	   assertEquals("1 year ago", t.format(c));
+      Calendar c = Calendar.getInstance();
+      Date r = c.getTime();
+      PrettyTime t = new PrettyTime();
+      t.setLocale(Locale.ENGLISH);
+      t.setReference(r);
+      c.add(Calendar.YEAR, -1);
+      assertEquals("1 year ago", t.format(c));
    }
 
    // Method tearDown() is called automatically after every test method

@@ -166,6 +166,7 @@ public class PrettyTimeParser
       private int position;
       private Date recursUntil;
       private String text;
+      private boolean recurring;
 
       public DateGroupImpl(com.joestelmach.natty.DateGroup group)
       {
@@ -174,6 +175,7 @@ public class PrettyTimeParser
          position = group.getPosition();
          recursUntil = group.getRecursUntil();
          text = group.getText();
+         recurring = group.isRecurring();
       }
 
       public List<Date> getDates()
@@ -199,6 +201,12 @@ public class PrettyTimeParser
       public String getText()
       {
          return text;
+      }
+
+      @Override
+      public boolean isRecurring()
+      {
+         return recurring;
       }
 
    }

@@ -148,7 +148,7 @@ public class PrettyTimeParser
          Date now = new Date();
          for (int i = 0; i < result.size(); i++) {
             Date date = result.get(i);
-            if (date.before(now))
+            while (date.before(now))
             {
                Calendar calendar = Calendar.getInstance();
                calendar.setTime(date);

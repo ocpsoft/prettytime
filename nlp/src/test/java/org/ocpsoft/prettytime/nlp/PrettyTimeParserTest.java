@@ -3,6 +3,7 @@ package org.ocpsoft.prettytime.nlp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import junit.framework.Assert;
 
@@ -43,7 +44,7 @@ public class PrettyTimeParserTest
    {
       List<Date> parse = new PrettyTimeParser().parse("I did it three days ago");
       Assert.assertFalse(parse.isEmpty());
-      String formatted = new PrettyTime().format(parse.get(0));
+      String formatted = new PrettyTime(Locale.ENGLISH).format(parse.get(0));
       Assert.assertEquals("3 days ago", formatted);
    }
 
@@ -52,7 +53,7 @@ public class PrettyTimeParserTest
    {
       List<DateGroup> parse = new PrettyTimeParser().parseSyntax("I did it three days ago");
       Assert.assertFalse(parse.isEmpty());
-      String formatted = new PrettyTime().format(parse.get(0).getDates().get(0));
+      String formatted = new PrettyTime(Locale.ENGLISH).format(parse.get(0).getDates().get(0));
       Assert.assertEquals("3 days ago", formatted);
       Assert.assertEquals(1, parse.get(0).getLine());
       Assert.assertEquals(9, parse.get(0).getPosition());
@@ -67,7 +68,7 @@ public class PrettyTimeParserTest
    {
       List<DateGroup> parse = new PrettyTimeParser().parseSyntax("I do it every three days");
       Assert.assertFalse(parse.isEmpty());
-      String formatted = new PrettyTime().format(parse.get(0).getDates().get(0));
+      String formatted = new PrettyTime(Locale.ENGLISH).format(parse.get(0).getDates().get(0));
       Assert.assertEquals("3 days from now", formatted);
       Assert.assertEquals(1, parse.get(0).getLine());
       Assert.assertEquals(14, parse.get(0).getPosition());

@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<artifactId>prettytime-parent</artifactId>
@@ -61,10 +62,15 @@
 							</artifactSet>
 							<relocations>
 								<relocation>
-									<excludes>
-										<exclude>org.ocpsoft.**</exclude>
-									</excludes>
-									<shadedPattern>org.ocpsoft.prettytime.natty.</shadedPattern>
+									<includes>
+										<include>com.joestelmach.**</include>
+										<include>edu.emory.**</include>
+										<include>net.fortuna.**</include>
+										<include>org.antlr.**</include>
+										<include>org.apache.**</include>
+										<include>zoneinfo.**</include>
+									</includes>
+									<shadedPattern>org.ocpsoft.prettytime.shade.</shadedPattern>
 								</relocation>
 							</relocations>
 						</configuration>

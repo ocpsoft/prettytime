@@ -74,7 +74,7 @@ public class PrettyTimeParserTest
       Assert.assertEquals(1, parse.get(0).getDates().size());
       Assert.assertNull(parse.get(0).getRecursUntil());
       Assert.assertTrue(parse.get(0).isRecurring());
-      Assert.assertEquals(1000 * 60 * 60 * 24 * 3, parse.get(0).getRecurInterval());
+      Assert.assertEquals(1000 * 60 * 60 * 24 * 3, parse.get(0).getRecurInterval(), 1d);
    }
 
 }

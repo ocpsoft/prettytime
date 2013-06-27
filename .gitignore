@@ -10,3 +10,4 @@ target/
 bin/
 /*/src/main/java/META-INF
 docs/reference/src/main/docbook/en-US/version_info.xml
+.idea

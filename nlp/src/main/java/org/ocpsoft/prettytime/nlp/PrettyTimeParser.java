@@ -97,7 +97,7 @@ public class PrettyTimeParser
       translations.put(provideRepresentation(100), ""+100);
       
       periods.add("morning");
-      periods.add("afternooon");
+      periods.add("afternoon");
       periods.add("evening");
       periods.add("night");
       periods.add("am");

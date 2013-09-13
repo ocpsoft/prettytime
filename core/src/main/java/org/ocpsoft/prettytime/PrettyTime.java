@@ -348,6 +348,29 @@ public class PrettyTime
    }
 
    /**
+    * Given a date, returns a non-relative format string for the
+    * approximate duration of the difference between the date and now.
+    * 
+    * @param date the date to be formatted
+    * @return A formatted string of the approximate duration
+    */
+   public String formatApproximateDuration(Date date) {
+       Duration duration = approximateDuration(date);
+       return formatDuration(duration);
+   }
+   
+   /**
+    * Given a duration, returns a non-relative format string.
+    * 
+    * @param duration the duration to be formatted
+    * @return A formatted string of the duration
+    */
+   public String formatDuration(Duration duration) {
+        TimeFormat timeFormat = getFormat(duration.getUnit());
+        return timeFormat.format(duration);
+   }
+   
+   /**
     * Get the registered {@link TimeFormat} for the given {@link TimeUnit} or null if none exists.
     */
    public TimeFormat getFormat(TimeUnit unit)

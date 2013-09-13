@@ -307,6 +307,21 @@ public class PrettyTimeTest
       c.add(Calendar.YEAR, -1);
       assertEquals("1 year ago", t.format(c));
    }
+   
+   /**
+    * Tests formatApproximateDuration and by proxy, formatDuration.
+    * 
+    * @throws Exception
+    */
+   @Test
+   public void testFormatApproximateDuration() throws Exception 
+   {
+        long tenMinMillis = java.util.concurrent.TimeUnit.MINUTES.toMillis(10);
+        Date tenMinAgo = new Date(System.currentTimeMillis()-tenMinMillis);
+        PrettyTime t = new PrettyTime();
+        String result = t.formatApproximateDuration(tenMinAgo);
+        assert result.equals("10 minutes");       
+   }
 
    // Method tearDown() is called automatically after every test method
    @After

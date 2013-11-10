@@ -15,10 +15,14 @@
  */
 package org.ocpsoft.prettytime;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
+import org.ocpsoft.prettytime.units.JustNow;
 
 public class PrettyTimeAPIManipulationTest
 {
@@ -123,4 +127,29 @@ public class PrettyTimeAPIManipulationTest
       t.removeUnit((TimeUnit) null);
    }
 
+   @Test(expected = IllegalArgumentException.class)
+   public void testApiMisuse18() throws Exception
+   {
+      t.getUnit(null);
+   }
+  
+   @Test(expected = IllegalArgumentException.class)
+   public void testApiMisuse19() throws Exception
+   {
+      t.getUnit((Class<TimeUnit>) null);
+   }
+  
+   @Test
+   public void testGetUnit() {
+       JustNow unit = t.getUnit(JustNow.class);
+       assertNotNull(unit);
+   }
+  
+   @Test
+   public void testChangeUnit() {
+       JustNow unit = t.getUnit(JustNow.class);
+       assertEquals(1000L * 60L * 5L, unit.getMaxQuantity());
+       unit.setMaxQuantity(1);
+       assertEquals(1, t.getUnit(JustNow.class).getMaxQuantity());
+   }
 }

@@ -423,6 +423,26 @@ public class PrettyTime
    }
 
    /**
+    * Get the registered {@link TimeUnit} for the given {@link TimeUnit} type or null if none exists.
+    * 
+    * @return
+    */
+   @SuppressWarnings("unchecked")
+   public <UNIT extends TimeUnit> UNIT getUnit(final Class<UNIT> unitType)
+   {
+       if (unitType == null)
+           throw new IllegalArgumentException("Unit type to get must not be null.");
+      
+       for (TimeUnit unit : units.keySet()) {
+           if (unitType.isAssignableFrom(unit.getClass()))
+           {
+              return (UNIT) unit;
+           }
+        }
+        return null;
+   }
+
+   /**
     * Register the given {@link TimeUnit} and corresponding {@link TimeFormat} instance to be used in calculations. If
     * an entry already exists for the given {@link TimeUnit}, its format will be overwritten with the given
     * {@link TimeFormat}.

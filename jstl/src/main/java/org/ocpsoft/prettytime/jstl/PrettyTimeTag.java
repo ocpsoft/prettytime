@@ -36,8 +36,11 @@ public class PrettyTimeTag extends SimpleTagSupport {
 
     @Override
     public void doTag() throws JspException, IOException {
-        Locale locale = SetLocaleSupport.parseLocale(this.locale);
-        prettyTime.setLocale(locale);
+        if (locale != null) {
+            Locale locale = SetLocaleSupport.parseLocale(this.locale);
+            prettyTime.setLocale(locale);
+        }
+
         JspWriter out = getJspContext().getOut();
         out.print(prettyTime.format(date));
     }

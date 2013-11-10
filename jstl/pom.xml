@@ -16,7 +16,6 @@
         <dependency>
             <groupId>org.ocpsoft.prettytime</groupId>
             <artifactId>prettytime</artifactId>
-            <scope>provided</scope>
         </dependency>
 
         <!--   dependencies needed to implement custom JSTL tags-->

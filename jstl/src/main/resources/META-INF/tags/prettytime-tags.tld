@@ -17,6 +17,7 @@
         <attribute>
             <name>date</name>
             <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
             <name>locale</name>

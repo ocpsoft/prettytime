@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.ocpsoft.prettytime.format.SimpleTimeFormat;
@@ -32,14 +32,13 @@ public class PrettyTimeI18n_CA_Test
 {
    SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 
-   // Stores current locale so that it can be restored
    protected static Locale locale;
 
-   // Method setUp() is called automatically before every test method
    @BeforeClass
    public static void setUp() throws Exception
    {
-      locale = new Locale( "ca" );
+      locale = Locale.getDefault();
+      Locale.setDefault(new Locale("ca"));
    }
 
    @Test
@@ -51,7 +50,7 @@ public class PrettyTimeI18n_CA_Test
       assertEquals("fa 1 mes", t.format(then));
    }
 
-   @Test(expected=IllegalArgumentException.class)
+   @Test(expected = IllegalArgumentException.class)
    public void testNullDate() throws Exception
    {
       PrettyTime t = new PrettyTime();
@@ -194,11 +193,11 @@ public class PrettyTimeI18n_CA_Test
       };
       t.clearUnits();
       t.registerUnit(unit, new SimpleTimeFormat()
-      .setSingularName("tick").setPluralName("ticks")
-      .setPattern("%n %u").setRoundingTolerance(20)
-      .setFutureSuffix("... RUN!")
-      .setFuturePrefix("self destruct in: ").setPastPrefix("self destruct was: ").setPastSuffix(
-               " ago..."));
+               .setSingularName("tick").setPluralName("ticks")
+               .setPattern("%n %u").setRoundingTolerance(20)
+               .setFutureSuffix("... RUN!")
+               .setFuturePrefix("self destruct in: ").setPastPrefix("self destruct was: ").setPastSuffix(
+                        " ago..."));
 
       assertEquals("self destruct in: 5 ticks ... RUN!", t.format(new Date(25000)));
       t.setReference(new Date(25000));
@@ -283,9 +282,8 @@ public class PrettyTimeI18n_CA_Test
       assertEquals("vor 3 Jahrzehnten", t.format(new Date(0)));
    }
 
-   // Method tearDown() is called automatically after every test method
-   @After
-   public void tearDown() throws Exception
+   @AfterClass
+   public static void tearDown() throws Exception
    {
       Locale.setDefault(locale);
    }

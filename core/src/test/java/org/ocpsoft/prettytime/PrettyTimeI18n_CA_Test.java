@@ -135,7 +135,7 @@ public class PrettyTimeI18n_CA_Test
    public void testMomentsAgo() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(6000));
-      assertEquals("en uns instants", t.format(new Date(0)));
+      assertEquals("fa uns instants", t.format(new Date(0)));
    }
 
    @Test

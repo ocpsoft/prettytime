@@ -52,7 +52,7 @@ public class Resources_ca extends ListResourceBundle
                                                               { "JustNowPattern", "%u" },
                                                               { "JustNowFuturePrefix", "" },
                                                               { "JustNowFutureSuffix", "en un instant" },
-                                                              { "JustNowPastPrefix", "en uns instants" },
+                                                              { "JustNowPastPrefix", "fa uns instants" },
                                                               { "JustNowPastSuffix", "" },
                                                               { "JustNowSingularName", "" },
                                                               { "JustNowPluralName", "" },

@@ -3,7 +3,7 @@
 	<parent>
 		<artifactId>prettytime-parent</artifactId>
 		<groupId>org.ocpsoft.prettytime</groupId>
-		<version>3.2.2-SNAPSHOT</version>
+		<version>3.2.2.Final</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 

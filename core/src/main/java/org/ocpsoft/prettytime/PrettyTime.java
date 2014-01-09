@@ -172,13 +172,14 @@ public class PrettyTime
             if (millisPerUnit > absoluteDifference)
             {
                // we are rounding up: get 1 or -1 for past or future
-               result.setQuantity(getSign(difference, absoluteDifference));
+               result.setQuantity(getSign(difference));
+               result.setDelta(0);
             }
             else
             {
                result.setQuantity(difference / millisPerUnit);
+               result.setDelta(difference - result.getQuantity() * millisPerUnit);
             }
-            result.setDelta(difference - result.getQuantity() * millisPerUnit);
             break;
          }
 
@@ -186,7 +187,7 @@ public class PrettyTime
       return result;
    }
 
-   private long getSign(final long difference, final long absoluteDifference)
+   private long getSign(final long difference)
    {
       if (0 > difference)
       {

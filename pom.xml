@@ -22,6 +22,7 @@
 		<module>jsf</module>
 		<module>jstl</module>
 		<module>nlp</module>
+        <module>samples</module>
     </modules>
 
 	<properties>

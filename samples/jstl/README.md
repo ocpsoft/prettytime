@@ -1,6 +1,4 @@
-## This module contains PrettyTime integration samples
-
-### JSTL integration sample
+## This folder contains PrettyTime JSTL integration sample
 
 To use PrettyTime JSTL tag, you simply have to :
 
@@ -40,7 +38,3 @@ PrettyTime JSTL Integration Sample
 
 PrettyTime date : moments ago
 ```
-
-### JSF integration sample
-
-// TODO

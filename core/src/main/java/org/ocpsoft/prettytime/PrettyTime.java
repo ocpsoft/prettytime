@@ -61,6 +61,7 @@ public class PrettyTime
    private volatile Date reference;
    private volatile Locale locale = Locale.getDefault();
    private volatile Map<TimeUnit, TimeFormat> units = new LinkedHashMap<TimeUnit, TimeFormat>();
+  private List<TimeUnit> mCachedUnits;
 
    /**
     * Default constructor
@@ -147,22 +148,21 @@ public class PrettyTime
       long absoluteDifference = Math.abs(difference);
 
       // Required for thread-safety
-      List<TimeUnit> units = new ArrayList<TimeUnit>(getUnits().size());
-      units.addAll(getUnits());
+      List<TimeUnit> localUnits = getUnits();
 
       DurationImpl result = new DurationImpl();
 
-      for (int i = 0; i < units.size(); i++)
+      for (int i = 0; i < localUnits.size(); i++)
       {
-         TimeUnit unit = units.get(i);
+         TimeUnit unit = localUnits.get(i);
          long millisPerUnit = Math.abs(unit.getMillisPerUnit());
          long quantity = Math.abs(unit.getMaxQuantity());
 
-         boolean isLastUnit = (i == units.size() - 1);
+         boolean isLastUnit = (i == localUnits.size() - 1);
 
          if ((0 == quantity) && !isLastUnit)
          {
-            quantity = units.get(i + 1).getMillisPerUnit() / unit.getMillisPerUnit();
+            quantity = localUnits.get(i + 1).getMillisPerUnit() / unit.getMillisPerUnit();
          }
 
          // does our unit encompass the time duration?
@@ -418,10 +418,14 @@ public class PrettyTime
     */
    public List<TimeUnit> getUnits()
    {
-      List<TimeUnit> result = new ArrayList<TimeUnit>(units.keySet());
-      Collections.sort(result, new TimeUnitComparator());
-      return Collections.unmodifiableList(result);
-   }
+     if (mCachedUnits == null) {
+       List<TimeUnit> result = new ArrayList<TimeUnit>(units.keySet());
+       Collections.sort(result, new TimeUnitComparator());
+       mCachedUnits = Collections.unmodifiableList(result);
+     }
+
+     return mCachedUnits;
+     }
 
    /**
     * Get the registered {@link TimeUnit} for the given {@link TimeUnit} type or null if none exists.
@@ -455,7 +459,9 @@ public class PrettyTime
       if (format == null)
          throw new IllegalArgumentException("Format to register must not be null.");
 
-      units.put(unit, format);
+     mCachedUnits = null;
+
+     units.put(unit, format);
       if (unit instanceof LocaleAware)
          ((LocaleAware<?>) unit).setLocale(locale);
       if (format instanceof LocaleAware)
@@ -476,7 +482,9 @@ public class PrettyTime
       for (TimeUnit unit : units.keySet()) {
          if (unitType.isAssignableFrom(unit.getClass()))
          {
-            return units.remove(unit);
+           mCachedUnits = null;
+
+           return units.remove(unit);
          }
       }
       return null;
@@ -492,7 +500,9 @@ public class PrettyTime
       if (unit == null)
          throw new IllegalArgumentException("Unit to remove must not be null.");
 
-      return units.remove(unit);
+     mCachedUnits = null;
+
+     return units.remove(unit);
    }
 
    /**
@@ -535,7 +545,9 @@ public class PrettyTime
    public List<TimeUnit> clearUnits()
    {
       List<TimeUnit> result = getUnits();
-      units.clear();
+
+     mCachedUnits = null;
+     units.clear();
       return result;
    }
 

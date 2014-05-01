@@ -11,7 +11,7 @@
 	<artifactId>prettytime-parent</artifactId>
 
 	<packaging>pom</packaging>
-	<version>3.2.5.Final</version>
+	<version>3.2.6-SNAPSHOT</version>
 
 	<name>PrettyTime - Parent</name>
 	<description>Social style time-formatting utilities and web-framework integrations.</description>
@@ -46,7 +46,7 @@
 		<connection>scm:git:git://github.com/ocpsoft/prettytime.git</connection>
 		<developerConnection>scm:git:git@github.com:ocpsoft/prettytime.git</developerConnection>
 		<url>http://github.com/ocpsoft/prettytime</url>
-	  <tag>3.2.5.Final</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 	<issueManagement>

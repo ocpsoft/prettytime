@@ -73,7 +73,7 @@ public class Resources_ja extends ListResourceBundle implements TimeFormatProvid
             {"MonthFutureSuffix", ""},
             {"MonthPastPrefix", ""},
             {"MonthPastSuffix", "前"},
-            {"MonthSingularName", "月"},
+            {"MonthSingularName", "ヶ月"},
             {"MonthPluralName", "ヶ月"},
             {"SecondPattern", "%n%u"},
             {"SecondFuturePrefix", ""},

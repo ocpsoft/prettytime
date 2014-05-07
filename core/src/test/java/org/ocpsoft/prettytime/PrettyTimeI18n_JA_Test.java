@@ -165,6 +165,14 @@ public class PrettyTimeI18n_JA_Test {
     }
 
     @Test
+    public void testOneMonthAgo() throws Exception
+    {
+        PrettyTime t = new PrettyTime(new Date(2629743830L * 1L), locale);
+        // 3 months ago
+        assertEquals("1 months ago", "1ヶ月前", t.format(new Date(0)));
+    }
+
+    @Test
     public void testMonthsAgo() throws Exception
     {
         PrettyTime t = new PrettyTime(new Date(2629743830L * 3L), locale);

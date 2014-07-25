@@ -142,7 +142,7 @@ public class Resources_ua extends ListResourceBundle implements TimeFormatProvid
                         return "зараз";
                     }
                     if (duration.isInPast()) {
-                        return "тільки що";
+                        return "щойно";
                     }
                     return null;
                 }

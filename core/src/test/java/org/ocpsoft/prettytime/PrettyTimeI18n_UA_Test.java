@@ -152,7 +152,7 @@ public class PrettyTimeI18n_UA_Test {
     public void testMomentsAgo() throws Exception
     {
         PrettyTime t = new PrettyTime(new Date(6000), locale);
-        assertEquals("тільки що", t.format(new Date(0)));
+        assertEquals("щойно", t.format(new Date(0)));
     }
 
     @Test

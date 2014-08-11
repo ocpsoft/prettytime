@@ -32,6 +32,8 @@ import org.ocpsoft.prettytime.Duration;
 import org.ocpsoft.prettytime.PrettyTime;
 import org.ocpsoft.prettytime.TimeUnit;
 import org.ocpsoft.prettytime.format.SimpleTimeFormat;
+import org.ocpsoft.prettytime.impl.ResourcesTimeFormat;
+import org.ocpsoft.prettytime.units.Minute;
 
 public class PrettyTimeTest
 {
@@ -321,6 +323,17 @@ public class PrettyTimeTest
         PrettyTime t = new PrettyTime();
         String result = t.formatApproximateDuration(tenMinAgo);
         assert result.equals("10 minutes");       
+   }
+
+   @Test
+   public void testCalculatePreciseDuration()
+   {
+       PrettyTime prettyTime = new PrettyTime();
+       prettyTime.clearUnits();
+       Minute minutes = new Minute();
+       prettyTime.registerUnit(minutes, new ResourcesTimeFormat(minutes));
+       assertEquals("40 minutes ago",
+               prettyTime.format(prettyTime.calculatePreciseDuration(new Date(new Date().getTime() - 40*60*1000 - 40*1000))));
    }
 
    // Method tearDown() is called automatically after every test method

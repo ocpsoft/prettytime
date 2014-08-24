@@ -14,6 +14,8 @@ import org.ocpsoft.prettytime.units.Day;
 
 public class Resources_fi extends ListResourceBundle implements TimeFormatProvider {
 
+	private static final int tolerance = 50;
+
 	private static Object[][] CONTENTS =  new Object[][] {
 		{"JustNowPattern", "%u"},
 		{"JustNowPastSingularName", "hetki"},
@@ -229,7 +231,7 @@ public class Resources_fi extends ListResourceBundle implements TimeFormatProvid
 		@Override
 		public String decorate(Duration duration, String time) {
 			String result ="";
-			if(duration.getUnit() instanceof Day && Math.abs(duration.getQuantity()) == 1) {
+			if(duration.getUnit() instanceof Day && Math.abs(duration.getQuantityRounded(tolerance)) == 1) {
 				result = time;
 			} else {
 				result = super.decorate(duration, time);

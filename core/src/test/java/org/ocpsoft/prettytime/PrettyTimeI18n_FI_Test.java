@@ -59,7 +59,6 @@ public class PrettyTimeI18n_FI_Test {
 		return t;
 	}
 
-
 	@Test
 	public void testRightNow() throws Exception
 	{
@@ -194,7 +193,17 @@ public class PrettyTimeI18n_FI_Test {
 	}
 
 	@Test
-	public void testDaysAgo() throws Exception
+	public void testNear2DaysAgo() throws Exception
+	{
+		int hour = 1000 * 60 * 60;
+		PrettyTime t = new PrettyTime(new Date(hour * 24 * 2 - 11*hour), locale);
+		assertEquals("2 päivää sitten", t.format(new Date(0)));
+		t = new PrettyTime(new Date(hour * 24 * 2 - 13*hour), locale);
+		assertEquals("eilen", t.format(new Date(0)));
+	}
+
+	@Test
+	public void test3DaysAgo() throws Exception
 	{
 		PrettyTime t = new PrettyTime(new Date(1000 * 60 * 60 * 24 * 3), locale);
 		assertEquals("3 päivää sitten", t.format(new Date(0)));

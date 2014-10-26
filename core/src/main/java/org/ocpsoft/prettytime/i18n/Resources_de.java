@@ -51,7 +51,7 @@ public class Resources_de extends ListResourceBundle
                                                               { "JustNowPattern", "%u" },
                                                               { "JustNowFuturePrefix", "Jetzt" },
                                                               { "JustNowFutureSuffix", "" },
-                                                              { "JustNowPastPrefix", "vor einem Augenblick" },
+                                                              { "JustNowPastPrefix", "gerade eben" },
                                                               { "JustNowPastSuffix", "" },
                                                               { "JustNowSingularName", "" },
                                                               { "JustNowPluralName", "" },

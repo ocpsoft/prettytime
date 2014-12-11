@@ -54,7 +54,7 @@ import org.ocpsoft.prettytime.units.Year;
  * <p>
  * </code>
  * 
- * @author <a href="mailto:lincolnbaxter@gmail.com>Lincoln Baxter, III</a>
+ * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
 public class PrettyTime
 {

@@ -44,7 +44,7 @@ public class Resources_tk_TM extends ListResourceBundle {
             {"DecadeFutureSuffix", " soňra"},
             {"DecadePastPrefix", ""},
             {"DecadePastSuffix", " öň"},
-            {"DecadeSingularName", "on ýyll"},
+            {"DecadeSingularName", "on ýyl"},
             {"DecadePluralName", "on ýyl"},
             {"HourPattern", "%n %u"},
             {"HourFuturePrefix", ""},

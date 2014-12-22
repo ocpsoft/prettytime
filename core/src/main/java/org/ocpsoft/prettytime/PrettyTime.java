@@ -233,8 +233,7 @@ public class PrettyTime
 
    /**
     * Format the given {@link Date} object. This method applies the {@code PrettyTime.approximateDuration(date)} method
-    * to perform its calculation. If {@code then} is null, it will default to {@code new Date()}; also decorate for
-    * past/future tense.
+    * to perform its calculation; also decorate for past/future tense.
     * 
     * @param duration the {@link Date} to be formatted
     * @return A formatted string representing {@code then}

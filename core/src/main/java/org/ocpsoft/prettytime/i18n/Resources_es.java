@@ -51,7 +51,7 @@ public class Resources_es extends ListResourceBundle
                                                               { "HourPluralName", "horas" },
                                                               { "JustNowPattern", "%u" },
                                                               { "JustNowFuturePrefix", "" },
-                                                              { "JustNowFutureSuffix", "en un instante" },
+                                                              { "JustNowFutureSuffix", "hace un instante" },
                                                               { "JustNowPastPrefix", "hace instantes" },
                                                               { "JustNowPastSuffix", "" },
                                                               { "JustNowSingularName", "" },

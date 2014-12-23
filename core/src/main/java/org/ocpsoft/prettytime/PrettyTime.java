@@ -61,7 +61,7 @@ public class PrettyTime
    private volatile Date reference;
    private volatile Locale locale = Locale.getDefault();
    private volatile Map<TimeUnit, TimeFormat> units = new LinkedHashMap<TimeUnit, TimeFormat>();
-  private List<TimeUnit> mCachedUnits;
+   private List<TimeUnit> mCachedUnits;
 
    /**
     * Default constructor
@@ -226,6 +226,14 @@ public class PrettyTime
       while (0 != duration.getDelta())
       {
          duration = calculateDuration(duration.getDelta());
+         if (result.size() > 0)
+         {
+            Duration last = result.get(result.size() - 1);
+            if (last.getUnit().equals(duration.getUnit()))
+            {
+               break;
+            }
+         }
          result.add(duration);
       }
       return result;
@@ -246,11 +254,11 @@ public class PrettyTime
       Duration d = approximateDuration(then);
       return format(d);
    }
-   
+
    /**
-    * Format the given {@link Calendar} object. This method applies the {@code PrettyTime.approximateDuration(date)} method
-    * to perform its calculation. If {@code then} is null, it will default to {@code new Date()}; also decorate for
-    * past/future tense.
+    * Format the given {@link Calendar} object. This method applies the {@code PrettyTime.approximateDuration(date)}
+    * method to perform its calculation. If {@code then} is null, it will default to {@code new Date()}; also decorate
+    * for past/future tense.
     * 
     * @param duration the {@link Calendar} whose date is to be formatted
     * @return A formatted string representing {@code then}
@@ -333,43 +341,40 @@ public class PrettyTime
             duration = durations.get(i);
             format = getFormat(duration.getUnit());
 
-            boolean isLast = (i == durations.size() - 1);
-            if (!isLast) {
-               builder.append(format.formatUnrounded(duration));
-               builder.append(" ");
-            }
-            else {
-               builder.append(format.format(duration));
-            }
+            builder.append(format.formatUnrounded(duration));
+            builder.append(" ");
          }
          result = format.decorateUnrounded(duration, builder.toString());
       }
+      
       return result;
    }
 
    /**
-    * Given a date, returns a non-relative format string for the
-    * approximate duration of the difference between the date and now.
+    * Given a date, returns a non-relative format string for the approximate duration of the difference between the date
+    * and now.
     * 
     * @param date the date to be formatted
     * @return A formatted string of the approximate duration
     */
-   public String formatApproximateDuration(Date date) {
-       Duration duration = approximateDuration(date);
-       return formatDuration(duration);
+   public String formatApproximateDuration(Date date)
+   {
+      Duration duration = approximateDuration(date);
+      return formatDuration(duration);
    }
-   
+
    /**
     * Given a duration, returns a non-relative format string.
     * 
     * @param duration the duration to be formatted
     * @return A formatted string of the duration
     */
-   public String formatDuration(Duration duration) {
-        TimeFormat timeFormat = getFormat(duration.getUnit());
-        return timeFormat.format(duration);
+   public String formatDuration(Duration duration)
+   {
+      TimeFormat timeFormat = getFormat(duration.getUnit());
+      return timeFormat.format(duration);
    }
-   
+
    /**
     * Get the registered {@link TimeFormat} for the given {@link TimeUnit} or null if none exists.
     */
@@ -417,14 +422,14 @@ public class PrettyTime
     */
    public List<TimeUnit> getUnits()
    {
-     if (mCachedUnits == null) {
-       List<TimeUnit> result = new ArrayList<TimeUnit>(units.keySet());
-       Collections.sort(result, new TimeUnitComparator());
-       mCachedUnits = Collections.unmodifiableList(result);
-     }
+      if (mCachedUnits == null) {
+         List<TimeUnit> result = new ArrayList<TimeUnit>(units.keySet());
+         Collections.sort(result, new TimeUnitComparator());
+         mCachedUnits = Collections.unmodifiableList(result);
+      }
 
-     return mCachedUnits;
-     }
+      return mCachedUnits;
+   }
 
    /**
     * Get the registered {@link TimeUnit} for the given {@link TimeUnit} type or null if none exists.
@@ -434,16 +439,16 @@ public class PrettyTime
    @SuppressWarnings("unchecked")
    public <UNIT extends TimeUnit> UNIT getUnit(final Class<UNIT> unitType)
    {
-       if (unitType == null)
-           throw new IllegalArgumentException("Unit type to get must not be null.");
-      
-       for (TimeUnit unit : units.keySet()) {
-           if (unitType.isAssignableFrom(unit.getClass()))
-           {
-              return (UNIT) unit;
-           }
-        }
-        return null;
+      if (unitType == null)
+         throw new IllegalArgumentException("Unit type to get must not be null.");
+
+      for (TimeUnit unit : units.keySet()) {
+         if (unitType.isAssignableFrom(unit.getClass()))
+         {
+            return (UNIT) unit;
+         }
+      }
+      return null;
    }
 
    /**
@@ -458,9 +463,9 @@ public class PrettyTime
       if (format == null)
          throw new IllegalArgumentException("Format to register must not be null.");
 
-     mCachedUnits = null;
+      mCachedUnits = null;
 
-     units.put(unit, format);
+      units.put(unit, format);
       if (unit instanceof LocaleAware)
          ((LocaleAware<?>) unit).setLocale(locale);
       if (format instanceof LocaleAware)
@@ -481,9 +486,9 @@ public class PrettyTime
       for (TimeUnit unit : units.keySet()) {
          if (unitType.isAssignableFrom(unit.getClass()))
          {
-           mCachedUnits = null;
+            mCachedUnits = null;
 
-           return units.remove(unit);
+            return units.remove(unit);
          }
       }
       return null;
@@ -499,9 +504,9 @@ public class PrettyTime
       if (unit == null)
          throw new IllegalArgumentException("Unit to remove must not be null.");
 
-     mCachedUnits = null;
+      mCachedUnits = null;
 
-     return units.remove(unit);
+      return units.remove(unit);
    }
 
    /**
@@ -545,8 +550,8 @@ public class PrettyTime
    {
       List<TimeUnit> result = getUnits();
 
-     mCachedUnits = null;
-     units.clear();
+      mCachedUnits = null;
+      units.clear();
       return result;
    }
 

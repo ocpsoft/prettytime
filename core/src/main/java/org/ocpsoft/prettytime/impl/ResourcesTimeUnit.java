@@ -17,7 +17,6 @@ package org.ocpsoft.prettytime.impl;
 
 import org.ocpsoft.prettytime.TimeUnit;
 
-
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
@@ -56,6 +55,12 @@ public abstract class ResourcesTimeUnit implements TimeUnit
    public void setMillisPerUnit(long millisPerUnit)
    {
       this.millisPerUnit = millisPerUnit;
+   }
+
+   @Override
+   public String toString()
+   {
+      return getResourceKeyPrefix();
    }
 
 }

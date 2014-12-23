@@ -71,7 +71,7 @@ public class PrettyTimeI18n_Test
    {
       // The Spanish resource bundle should be used
       PrettyTime p = new PrettyTime(new Locale("es"));
-      assertEquals("en un instante", p.format(new Date()));
+      assertEquals("hace un instante", p.format(new Date()));
    }
 
    @Test

@@ -20,6 +20,7 @@ import org.ocpsoft.prettytime.TimeUnit;
 
 public class DurationImpl implements Duration
 {
+
    private long quantity;
    private long delta;
    private TimeUnit unit;
@@ -84,5 +85,11 @@ public class DurationImpl implements Duration
          }
       }
       return quantity;
+   }
+
+   @Override
+   public String toString()
+   {
+      return "DurationImpl [" + quantity + " " + unit + ", delta=" + delta + "]";
    }
 }

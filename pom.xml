@@ -4,14 +4,14 @@
 	<parent>
 		<groupId>org.ocpsoft</groupId>
 		<artifactId>ocpsoft-parent</artifactId>
-		<version>9</version>
+		<version>10</version>
 	</parent>
 
 	<groupId>org.ocpsoft.prettytime</groupId>
 	<artifactId>prettytime-parent</artifactId>
 
 	<packaging>pom</packaging>
-	<version>3.2.6-SNAPSHOT</version>
+	<version>3.2.7-SNAPSHOT</version>
 
 	<name>PrettyTime - Parent</name>
 	<description>Social style time-formatting utilities and web-framework integrations.</description>

@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<taglib xmlns="http://java.sun.com/xml/ns/javaee"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
-        version="2.1">
+<taglib xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+   version="2.1">
 
-    <tlib-version>1.0</tlib-version>
-    <short-name>prettytime-jstl</short-name>
-    <uri>http://ocpsoft.org/prettytime/tags</uri>
+   <tlib-version>1.0</tlib-version>
+   <short-name>prettytime-jstl</short-name>
+   <uri>http://ocpsoft.org/prettytime/tags</uri>
 
-    <tag>
-        <description>Custom tag to pretty print java.util.Date objects using Prettytime </description>
-        <name>prettytime</name>
-        <tag-class>org.ocpsoft.prettytime.jstl.PrettyTimeTag</tag-class>
-        <body-content>empty</body-content>
-        <attribute>
-            <name>date</name>
-            <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>locale</name>
-            <required>false</required>
-        </attribute>
-    </tag>
+   <tag>
+      <description>Custom tag to pretty print java.util.Date objects using Prettytime </description>
+      <name>prettytime</name>
+      <tag-class>org.ocpsoft.prettytime.jstl.PrettyTimeTag</tag-class>
+      <body-content>empty</body-content>
+      <attribute>
+         <name>date</name>
+         <required>true</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+      <attribute>
+         <name>locale</name>
+         <required>false</required>
+      </attribute>
+   </tag>
 
 
 </taglib>

@@ -264,7 +264,7 @@ public class PrettyTimeI18n_CS_Test
       long tenMinMillis = java.util.concurrent.TimeUnit.MINUTES.toMillis(10);
       Date tenMinAgo = new Date(System.currentTimeMillis() - tenMinMillis);
       PrettyTime t = new PrettyTime();
-      String result = t.formatApproximateDuration(tenMinAgo);
+      String result = t.formatDuration(tenMinAgo);
       Assert.assertEquals("10 minutami", result);
    }
 

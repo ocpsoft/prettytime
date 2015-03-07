@@ -164,187 +164,210 @@ public class Resources_cs extends ListResourceBundle implements TimeFormatProvid
       return OBJECTS;
    }
 
-    @Override
-    public TimeFormat getFormatFor(TimeUnit t) {
-        if(t instanceof Minute) {
-            return new CsTimeFormatBuilder("Minute")
-                    .addFutureName("minutu", 1)
-                    .addFutureName("minuty", 4)
-                    .addFutureName("minut", Long.MAX_VALUE)
-                    .addPastName("minutou", 1)
-                    .addPastName("minutami", Long.MAX_VALUE)
-                    .build(this);
-        } else if(t instanceof Hour) {
-            return new CsTimeFormatBuilder("Hour")
-                    .addFutureName("hodinu", 1)
-                    .addFutureName("hodiny", 4)
-                    .addFutureName("hodin", Long.MAX_VALUE)
-                    .addPastName("hodinou", 1)
-                    .addPastName("hodinami", Long.MAX_VALUE)
-                    .build(this);
-        } else if(t instanceof Day) {
-            return new CsTimeFormatBuilder("Day")
-                    .addFutureName("den", 1)
-                    .addFutureName("dny", 4)
-                    .addFutureName("dní", Long.MAX_VALUE)
-                    .addPastName("dnem", 1)
-                    .addPastName("dny", Long.MAX_VALUE)
-                    .build(this);
-        }  else if(t instanceof Week) {
-            return new CsTimeFormatBuilder("Week")
-                    .addFutureName("týden", 1)
-                    .addFutureName("týdny", 4)
-                    .addFutureName("týdnů", Long.MAX_VALUE)
-                    .addPastName("týdnem", 1)
-                    .addPastName("týdny", Long.MAX_VALUE)
-                    .build(this);
-        } else if(t instanceof Month) {
-            return new CsTimeFormatBuilder("Month")
-                    .addFutureName("měsíc", 1)
-                    .addFutureName("měsíce", 4)
-                    .addFutureName("měsíců", Long.MAX_VALUE)
-                    .addPastName("měsícem", 1)
-                    .addPastName("měsíci", Long.MAX_VALUE)
-                    .build(this);
-        } else if(t instanceof Year) {
-            return new CsTimeFormatBuilder("Year")
-                    .addFutureName("rok", 1)
-                    .addFutureName("roky", 4)
-                    .addFutureName("let", Long.MAX_VALUE)
-                    .addPastName("rokem", 1)
-                    .addPastName("roky", Long.MAX_VALUE)
-                    .build(this);
-        }
-        // Don't override format for other time units
-        return null;
-    }
+   @Override
+   public TimeFormat getFormatFor(TimeUnit t)
+   {
+      if (t instanceof Minute) {
+         return new CsTimeFormatBuilder("Minute")
+                  .addFutureName("minutu", 1)
+                  .addFutureName("minuty", 4)
+                  .addFutureName("minut", Long.MAX_VALUE)
+                  .addPastName("minutou", 1)
+                  .addPastName("minutami", Long.MAX_VALUE)
+                  .build(this);
+      }
+      else if (t instanceof Hour) {
+         return new CsTimeFormatBuilder("Hour")
+                  .addFutureName("hodinu", 1)
+                  .addFutureName("hodiny", 4)
+                  .addFutureName("hodin", Long.MAX_VALUE)
+                  .addPastName("hodinou", 1)
+                  .addPastName("hodinami", Long.MAX_VALUE)
+                  .build(this);
+      }
+      else if (t instanceof Day) {
+         return new CsTimeFormatBuilder("Day")
+                  .addFutureName("den", 1)
+                  .addFutureName("dny", 4)
+                  .addFutureName("dní", Long.MAX_VALUE)
+                  .addPastName("dnem", 1)
+                  .addPastName("dny", Long.MAX_VALUE)
+                  .build(this);
+      }
+      else if (t instanceof Week) {
+         return new CsTimeFormatBuilder("Week")
+                  .addFutureName("týden", 1)
+                  .addFutureName("týdny", 4)
+                  .addFutureName("týdnů", Long.MAX_VALUE)
+                  .addPastName("týdnem", 1)
+                  .addPastName("týdny", Long.MAX_VALUE)
+                  .build(this);
+      }
+      else if (t instanceof Month) {
+         return new CsTimeFormatBuilder("Month")
+                  .addFutureName("měsíc", 1)
+                  .addFutureName("měsíce", 4)
+                  .addFutureName("měsíců", Long.MAX_VALUE)
+                  .addPastName("měsícem", 1)
+                  .addPastName("měsíci", Long.MAX_VALUE)
+                  .build(this);
+      }
+      else if (t instanceof Year) {
+         return new CsTimeFormatBuilder("Year")
+                  .addFutureName("rok", 1)
+                  .addFutureName("roky", 4)
+                  .addFutureName("let", Long.MAX_VALUE)
+                  .addPastName("rokem", 1)
+                  .addPastName("roky", Long.MAX_VALUE)
+                  .build(this);
+      }
+      // Don't override format for other time units
+      return null;
+   }
 
-    private static class CsTimeFormatBuilder {
+   private static class CsTimeFormatBuilder
+   {
 
-        private List<CsName> names = new ArrayList<Resources_cs.CsName>();
+      private List<CsName> names = new ArrayList<Resources_cs.CsName>();
 
-        private String resourceKeyPrefix;
+      private String resourceKeyPrefix;
 
-        CsTimeFormatBuilder(String resourceKeyPrefix) {
-            this.resourceKeyPrefix = resourceKeyPrefix;
-        }
+      CsTimeFormatBuilder(String resourceKeyPrefix)
+      {
+         this.resourceKeyPrefix = resourceKeyPrefix;
+      }
 
-        CsTimeFormatBuilder addFutureName(String name, long limit) {
-            return addName(true, name, limit);
-        }
+      CsTimeFormatBuilder addFutureName(String name, long limit)
+      {
+         return addName(true, name, limit);
+      }
 
-        CsTimeFormatBuilder addPastName(String name, long limit) {
-           return addName(false, name, limit);
-        }
+      CsTimeFormatBuilder addPastName(String name, long limit)
+      {
+         return addName(false, name, limit);
+      }
 
-        private CsTimeFormatBuilder addName(boolean isFuture, String name, long limit) {
-            if(name == null) {
-                throw new IllegalArgumentException();
+      private CsTimeFormatBuilder addName(boolean isFuture, String name, long limit)
+      {
+         if (name == null) {
+            throw new IllegalArgumentException();
+         }
+         names.add(new CsName(isFuture, name, limit));
+         return this;
+      }
+
+      CsTimeFormat build(final ResourceBundle bundle)
+      {
+         return new CsTimeFormat(resourceKeyPrefix, bundle, names);
+      }
+
+   }
+
+   private static class CsTimeFormat extends SimpleTimeFormat implements TimeFormat
+   {
+
+      private final List<CsName> futureNames = new ArrayList<Resources_cs.CsName>();
+
+      private final List<CsName> pastNames = new ArrayList<Resources_cs.CsName>();
+
+      public CsTimeFormat(String resourceKeyPrefix, ResourceBundle bundle, Collection<CsName> names)
+      {
+         setPattern(bundle.getString(resourceKeyPrefix + "Pattern"));
+         setFuturePrefix(bundle.getString(resourceKeyPrefix + "FuturePrefix"));
+         setFutureSuffix(bundle.getString(resourceKeyPrefix + "FutureSuffix"));
+         setPastPrefix(bundle.getString(resourceKeyPrefix + "PastPrefix"));
+         setPastSuffix(bundle.getString(resourceKeyPrefix + "PastSuffix"));
+         setSingularName(bundle.getString(resourceKeyPrefix + "SingularName"));
+         setPluralName(bundle.getString(resourceKeyPrefix + "PluralName"));
+
+         try {
+            setFuturePluralName(bundle.getString(resourceKeyPrefix + "FuturePluralName"));
+         }
+         catch (Exception e) {}
+         try {
+            setFutureSingularName((bundle.getString(resourceKeyPrefix + "FutureSingularName")));
+         }
+         catch (Exception e) {}
+         try {
+            setPastPluralName((bundle.getString(resourceKeyPrefix + "PastPluralName")));
+         }
+         catch (Exception e) {}
+         try {
+            setPastSingularName((bundle.getString(resourceKeyPrefix + "PastSingularName")));
+         }
+         catch (Exception e) {}
+
+         for (CsName name : names) {
+            if (name.isFuture()) {
+               futureNames.add(name);
             }
-            names.add(new CsName(isFuture, name, limit));
-            return this;
-        }
-
-        CsTimeFormat build(final ResourceBundle bundle) {
-            return new CsTimeFormat(resourceKeyPrefix, bundle, names);
-        }
-
-    }
-
-    private static class CsTimeFormat extends SimpleTimeFormat implements TimeFormat {
-
-        private final List<CsName> futureNames = new ArrayList<Resources_cs.CsName>();
-
-        private final List<CsName> pastNames = new ArrayList<Resources_cs.CsName>();
-
-        public CsTimeFormat(String resourceKeyPrefix, ResourceBundle bundle, Collection<CsName> names) {
-            setPattern(bundle.getString(resourceKeyPrefix + "Pattern"));
-            setFuturePrefix(bundle.getString(resourceKeyPrefix + "FuturePrefix"));
-            setFutureSuffix(bundle.getString(resourceKeyPrefix + "FutureSuffix"));
-            setPastPrefix(bundle.getString(resourceKeyPrefix + "PastPrefix"));
-            setPastSuffix(bundle.getString(resourceKeyPrefix + "PastSuffix"));
-            setSingularName(bundle.getString(resourceKeyPrefix + "SingularName"));
-            setPluralName(bundle.getString(resourceKeyPrefix + "PluralName"));
-
-            try {
-               setFuturePluralName(bundle.getString(resourceKeyPrefix + "FuturePluralName"));
+            else {
+               pastNames.add(name);
             }
-            catch (Exception e) {}
-            try {
-               setFutureSingularName((bundle.getString(resourceKeyPrefix + "FutureSingularName")));
+         }
+         Collections.sort(futureNames);
+         Collections.sort(pastNames);
+      }
+
+      @Override
+      protected String getGramaticallyCorrectName(Duration d, boolean round)
+      {
+         long quantity = Math.abs(getQuantity(d, round));
+         if (d.isInFuture()) {
+            return getGramaticallyCorrectName(quantity, futureNames);
+         }
+         return getGramaticallyCorrectName(quantity, pastNames);
+      }
+
+      private String getGramaticallyCorrectName(long quantity, List<CsName> names)
+      {
+         for (CsName name : names) {
+            if (name.getThreshold() >= quantity) {
+               return name.get();
             }
-            catch (Exception e) {}
-            try {
-               setPastPluralName((bundle.getString(resourceKeyPrefix + "PastPluralName")));
-            }
-            catch (Exception e) {}
-            try {
-               setPastSingularName((bundle.getString(resourceKeyPrefix + "PastSingularName")));
-            }
-            catch (Exception e) {}
+         }
+         throw new IllegalStateException("Invalid resource bundle configuration");
+      }
 
-            for (CsName name : names) {
-                if(name.isFuture()) {
-                    futureNames.add(name);
-                } else {
-                    pastNames.add(name);
-                }
-            }
-            Collections.sort(futureNames);
-            Collections.sort(pastNames);
-        }
+   }
 
-        @Override
-        protected String getGramaticallyCorrectName(Duration d, boolean round) {
-            long quantity = Math.abs(getQuantity(d, round));
-            if(d.isInFuture()) {
-                return getGramaticallyCorrectName(quantity, futureNames);
-            }
-            return getGramaticallyCorrectName(quantity, pastNames);
-        }
+   private static class CsName implements Comparable<CsName>
+   {
 
-        private String getGramaticallyCorrectName(long quantity, List<CsName> names) {
-            for (CsName name : names) {
-                if(name.getThreshold() >= quantity) {
-                    return name.get();
-                }
-            }
-            throw new IllegalStateException("Invalid resource bundle configuration");
-        }
+      private final boolean isFuture;
 
-    }
+      private final String value;
 
-    private static class CsName implements Comparable<CsName>{
+      private final Long threshold;
 
-        private final boolean isFuture;
+      public CsName(boolean isFuture, String value, Long threshold)
+      {
+         this.isFuture = isFuture;
+         this.value = value;
+         this.threshold = threshold;
+      }
 
-        private final String value;
+      public boolean isFuture()
+      {
+         return isFuture;
+      }
 
-        private final Long threshold;
+      public String get()
+      {
+         return value;
+      }
 
-        public CsName(boolean isFuture, String value, Long threshold) {
-            this.isFuture = isFuture;
-            this.value = value;
-            this.threshold = threshold;
-        }
+      public long getThreshold()
+      {
+         return threshold;
+      }
 
-        public boolean isFuture() {
-            return isFuture;
-        }
+      @Override
+      public int compareTo(CsName o)
+      {
+         return threshold.compareTo(o.getThreshold());
+      }
 
-        public String get() {
-            return value;
-        }
-
-        public long getThreshold() {
-            return threshold;
-        }
-
-        @Override
-        public int compareTo(CsName o) {
-            return threshold.compareTo(o.getThreshold());
-        }
-
-    }
+   }
 
 }

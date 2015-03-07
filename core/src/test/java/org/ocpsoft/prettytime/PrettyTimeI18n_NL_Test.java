@@ -23,7 +23,6 @@ import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.ocpsoft.prettytime.PrettyTime;
 
 /**
  * @author Bram
@@ -65,7 +64,7 @@ public class PrettyTimeI18n_NL_Test
       assertEquals("1 maand geleden", t.format(then));
    }
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test
    public void testNullDate() throws Exception
    {
       PrettyTime t = new PrettyTime(locale);

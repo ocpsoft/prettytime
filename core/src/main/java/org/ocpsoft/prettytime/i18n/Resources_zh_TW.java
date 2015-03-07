@@ -3,10 +3,10 @@ package org.ocpsoft.prettytime.i18n;
 /**
  * Created by edward_chiang on 13/6/27.
  */
-public class Resources_zh_TW extends java.util.ListResourceBundle {
+public class Resources_zh_TW extends java.util.ListResourceBundle
+{
 
-
-    private static final Object[][] OBJECTS = new Object[][] {
+   private static final Object[][] OBJECTS = new Object[][] {
             { "CenturyPattern", "%n %u" },
             { "CenturyFuturePrefix", "" },
             { "CenturyFutureSuffix", "後" },
@@ -99,16 +99,15 @@ public class Resources_zh_TW extends java.util.ListResourceBundle {
             { "AbstractTimeUnitSingularName", "" },
             { "AbstractTimeUnitPluralName", "" } };
 
-    /**
-     * Returns an {@code Object} array containing the resources of this
-     * {@code ListResourceBundle}. Each element in the array is an array of two
-     * elements, the first is the resource key string and the second is the
-     * resource.
-     *
-     * @return a {@code Object} array containing the resources.
-     */
-    @Override
-    protected Object[][] getContents() {
-        return OBJECTS;
-    }
+   /**
+    * Returns an {@code Object} array containing the resources of this {@code ListResourceBundle}. Each element in the
+    * array is an array of two elements, the first is the resource key string and the second is the resource.
+    *
+    * @return a {@code Object} array containing the resources.
+    */
+   @Override
+   protected Object[][] getContents()
+   {
+      return OBJECTS;
+   }
 }

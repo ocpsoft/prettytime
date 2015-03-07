@@ -18,8 +18,8 @@ package org.ocpsoft.prettytime.units;
 import org.ocpsoft.prettytime.TimeUnit;
 import org.ocpsoft.prettytime.impl.ResourcesTimeUnit;
 
-
-public class Decade extends ResourcesTimeUnit implements TimeUnit {
+public class Decade extends ResourcesTimeUnit implements TimeUnit
+{
 
    public Decade()
    {
@@ -27,7 +27,8 @@ public class Decade extends ResourcesTimeUnit implements TimeUnit {
    }
 
    @Override
-   protected String getResourceKeyPrefix() {
+   protected String getResourceKeyPrefix()
+   {
       return "Decade";
    }
 

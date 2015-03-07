@@ -18,8 +18,8 @@ package org.ocpsoft.prettytime.units;
 import org.ocpsoft.prettytime.TimeUnit;
 import org.ocpsoft.prettytime.impl.ResourcesTimeUnit;
 
-
-public class Hour extends ResourcesTimeUnit implements TimeUnit {
+public class Hour extends ResourcesTimeUnit implements TimeUnit
+{
 
    public Hour()
    {
@@ -27,7 +27,8 @@ public class Hour extends ResourcesTimeUnit implements TimeUnit {
    }
 
    @Override
-   protected String getResourceKeyPrefix() {
+   protected String getResourceKeyPrefix()
+   {
       return "Hour";
    }
 

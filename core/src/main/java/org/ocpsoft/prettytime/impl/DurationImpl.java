@@ -92,4 +92,38 @@ public class DurationImpl implements Duration
    {
       return "DurationImpl [" + quantity + " " + unit + ", delta=" + delta + "]";
    }
+
+   @Override
+   public int hashCode()
+   {
+      final int prime = 31;
+      int result = 1;
+      result = prime * result + (int) (delta ^ (delta >>> 32));
+      result = prime * result + (int) (quantity ^ (quantity >>> 32));
+      result = prime * result + ((unit == null) ? 0 : unit.hashCode());
+      return result;
+   }
+
+   @Override
+   public boolean equals(Object obj)
+   {
+      if (this == obj)
+         return true;
+      if (obj == null)
+         return false;
+      if (getClass() != obj.getClass())
+         return false;
+      DurationImpl other = (DurationImpl) obj;
+      if (delta != other.delta)
+         return false;
+      if (quantity != other.quantity)
+         return false;
+      if (unit == null) {
+         if (other.unit != null)
+            return false;
+      }
+      else if (!unit.equals(other.unit))
+         return false;
+      return true;
+   }
 }

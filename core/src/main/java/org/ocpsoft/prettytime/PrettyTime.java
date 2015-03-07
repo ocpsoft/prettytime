@@ -146,7 +146,8 @@ public class PrettyTime
     * the difference between the reference {@link Date}, and the given {@link Date}. If the given {@link Date} is
     * <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used instead.
     * <p>
-    * <b>Note</b>: Precision may be lost if no supplied {@link TimeUnit} is granular enough to represent one millisecond
+    * <b>Note</b>: Precision may be lost if no supplied {@link TimeUnit} is granular enough to represent the remainder
+    * of time (in milliseconds).
     * 
     * @param then The {@link Date} to be compared against the reference timestamp, or <i>now</i> if no reference
     *           timestamp was provided
@@ -177,7 +178,9 @@ public class PrettyTime
                break;
             }
          }
-         result.add(duration);
+
+         if (duration.getUnit().isPrecise())
+            result.add(duration);
       }
       return result;
    }

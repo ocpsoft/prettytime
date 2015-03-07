@@ -58,6 +58,12 @@ public abstract class ResourcesTimeUnit implements TimeUnit
    }
 
    @Override
+   public boolean isPrecise()
+   {
+      return true;
+   }
+
+   @Override
    public String toString()
    {
       return getResourceKeyPrefix();

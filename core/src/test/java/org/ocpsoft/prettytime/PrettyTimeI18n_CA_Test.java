@@ -190,6 +190,12 @@ public class PrettyTimeI18n_CA_Test
          {
             return 5000;
          }
+         
+         @Override
+         public boolean isPrecise()
+         {
+            return false;
+         }
       };
       t.clearUnits();
       t.registerUnit(unit, new SimpleTimeFormat()

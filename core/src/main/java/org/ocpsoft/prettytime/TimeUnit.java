@@ -41,4 +41,10 @@ public interface TimeUnit
     * this.getMillisPerUnit()</code> or infinity if there are no greater TimeUnits
     */
    public long getMaxQuantity();
+
+   /**
+    * Whether or not this {@link TimeUnit} represents a price measurement of time, or a general concept of time. E.g:
+    * "minute" as opposed to "moment".
+    */
+   public boolean isPrecise();
 }

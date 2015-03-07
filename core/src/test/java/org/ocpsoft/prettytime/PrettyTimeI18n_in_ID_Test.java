@@ -194,6 +194,12 @@ public class PrettyTimeI18n_in_ID_Test
          {
             return 5000;
          }
+         
+         @Override
+         public boolean isPrecise()
+         {
+            return false;
+         }
       };
       t.clearUnits();
       t.registerUnit(

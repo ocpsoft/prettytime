@@ -32,4 +32,10 @@ public class JustNow extends ResourcesTimeUnit implements TimeUnit
       return "JustNow";
    }
 
+   @Override
+   public boolean isPrecise()
+   {
+      return false;
+   }
+
 }

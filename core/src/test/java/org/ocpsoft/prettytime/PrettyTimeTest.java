@@ -75,6 +75,19 @@ public class PrettyTimeTest
                new Date(System.currentTimeMillis() - (2 * 60 * 60 * 1000) - (2 * 60 * 1000)));
       Assert.assertEquals("2 hours 2 minutes ago", t.format(preciseDuration));
       Assert.assertEquals("2 hours 2 minutes", t.formatDuration(preciseDuration));
+      Assert.assertEquals("moments from now", t.format(t.calculatePreciseDuration(new Date())));
+   }
+
+   @Test
+   @SuppressWarnings("deprecation")
+   public void testCalculatePreciceDurationMillenia() throws Exception
+   {
+      PrettyTime t = new PrettyTime(new Date(2014, 8, 15, 0, 0));
+      List<Duration> durations = t.calculatePreciseDuration(new Date(0));
+      Assert.assertEquals("1 millennium 9 centuries 4 decades 4 years 8 months 1 week 6 days 20 hours 5 minutes ago",
+               t.format(durations));
+      Assert.assertEquals("1 millennium 9 centuries 4 decades 4 years 8 months 1 week 6 days 20 hours 5 minutes",
+               t.formatDuration(durations));
    }
 
    @Test
@@ -215,6 +228,12 @@ public class PrettyTimeTest
          public long getMillisPerUnit()
          {
             return 5000;
+         }
+
+         @Override
+         public boolean isPrecise()
+         {
+            return false;
          }
       };
       t.clearUnits();

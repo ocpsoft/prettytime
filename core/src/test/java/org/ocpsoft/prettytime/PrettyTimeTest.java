@@ -91,6 +91,17 @@ public class PrettyTimeTest
    }
 
    @Test
+   public void testCalculatePreciseDuration2()
+   {
+      PrettyTime prettyTime = new PrettyTime();
+      prettyTime.clearUnits();
+      Minute minutes = new Minute();
+      prettyTime.registerUnit(minutes, new ResourcesTimeFormat(minutes));
+      Assert.assertEquals("40 minutes ago", prettyTime.formatUnrounded(prettyTime.calculatePreciseDuration(
+               new Date(new Date().getTime() - 40 * 60 * 1000 - 40 * 1000))));
+   }
+
+   @Test
    public void testRightNowVariance() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(0));

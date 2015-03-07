@@ -23,7 +23,7 @@ public class JustNow extends ResourcesTimeUnit implements TimeUnit
 
    public JustNow()
    {
-      setMaxQuantity(1000L * 60L * 5L);
+      setMaxQuantity(1000L * 60L);
    }
 
    @Override

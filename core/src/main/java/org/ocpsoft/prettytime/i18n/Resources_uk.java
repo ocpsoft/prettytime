@@ -29,7 +29,7 @@ import java.util.ListResourceBundle;
  * reedit to Ukrainian with Eclipse). User: Ihor Lavrynuk Date: 2013-01-06 Time: 15:04
  * 
  */
-public class Resources_ua extends ListResourceBundle implements TimeFormatProvider
+public class Resources_uk extends ListResourceBundle implements TimeFormatProvider
 {
    private static final Object[][] OBJECTS = new Object[0][0];
 

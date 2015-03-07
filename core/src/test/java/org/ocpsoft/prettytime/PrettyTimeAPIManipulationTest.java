@@ -167,7 +167,7 @@ public class PrettyTimeAPIManipulationTest
    public void testChangeUnit()
    {
       JustNow unit = t.getUnit(JustNow.class);
-      assertEquals(1000L * 60L * 5L, unit.getMaxQuantity());
+      assertEquals(1000L * 60L, unit.getMaxQuantity());
       unit.setMaxQuantity(1);
       assertEquals(1, t.getUnit(JustNow.class).getMaxQuantity());
    }

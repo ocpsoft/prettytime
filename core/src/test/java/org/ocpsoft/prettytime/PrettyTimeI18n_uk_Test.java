@@ -28,7 +28,7 @@ import org.junit.Test;
 /**
  * User: Ihor Lavrynuk Date: 2013-01-05 Time: 16:57
  */
-public class PrettyTimeI18n_UA_Test
+public class PrettyTimeI18n_uk_Test
 {
    private final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
    private Locale locale;
@@ -36,7 +36,7 @@ public class PrettyTimeI18n_UA_Test
    @Before
    public void setUp() throws Exception
    {
-      locale = new Locale("ua");
+      locale = new Locale("uk");
       Locale.setDefault(locale);
    }
 

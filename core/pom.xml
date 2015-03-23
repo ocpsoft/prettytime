@@ -10,6 +10,26 @@
 
 	<artifactId>prettytime</artifactId>
 	<name>PrettyTime - Core</name>
+	<packaging>bundle</packaging>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Bundle-Name>Pretty Time Core</Bundle-Name>
+						<Bundle-SymbolicName>org.ocpsoft.prettytime.core</Bundle-SymbolicName>
+
+						<Export-Package></Export-Package>
+						<Import-Package></Import-Package>
+						<_exportcontents>org.ocpsoft.prettytime*</_exportcontents>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 	<dependencies>
 		<dependency>

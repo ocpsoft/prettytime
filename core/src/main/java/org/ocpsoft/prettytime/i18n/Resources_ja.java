@@ -1,60 +1,62 @@
 package org.ocpsoft.prettytime.i18n;
 
-import org.ocpsoft.prettytime.Duration;
-import org.ocpsoft.prettytime.TimeFormat;
-import org.ocpsoft.prettytime.TimeUnit;
-import org.ocpsoft.prettytime.impl.TimeFormatProvider;
-
 import java.util.ListResourceBundle;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
+import org.ocpsoft.prettytime.Duration;
+import org.ocpsoft.prettytime.TimeFormat;
+import org.ocpsoft.prettytime.TimeUnit;
+import org.ocpsoft.prettytime.impl.TimeFormatProvider;
+import org.ocpsoft.prettytime.units.Decade;
+import org.ocpsoft.prettytime.units.Millennium;
 
 public class Resources_ja extends ListResourceBundle implements TimeFormatProvider
 {
    private static final Object[][] OBJECTS = new Object[][] {
             { "CenturyPattern", "%n%u" },
             { "CenturyFuturePrefix", "今から" },
-            { "CenturyFutureSuffix", "世紀にもわたっ" },
+            { "CenturyFutureSuffix", "後" },
             { "CenturyPastPrefix", "" },
-            { "CenturyPastSuffix", "世紀前" },
-            { "CenturySingularName", "" },
-            { "CenturyPluralName", "" },
+            { "CenturyPastSuffix", "前" },
+            { "CenturySingularName", "世紀" },
+            { "CenturyPluralName", "世紀" },
             { "DayPattern", "%n%u" },
             { "DayFuturePrefix", "今から" },
-            { "DayFutureSuffix", "間" },
+            { "DayFutureSuffix", "後" },
             { "DayPastPrefix", "" },
             { "DayPastSuffix", "前" },
             { "DaySingularName", "日" },
             { "DayPluralName", "日" },
             { "DecadePattern", "%n%u" },
             { "DecadeFuturePrefix", "今から" },
-            { "DecadeFutureSuffix", "年間" },
+            { "DecadeFutureSuffix", "後" },
             { "DecadePastPrefix", "" },
-            { "DecadePastSuffix", "年前" },
-            { "DecadeSingularName", "" },
-            { "DecadePluralName", "" },
+            { "DecadePastSuffix", "前" },
+            { "DecadeSingularName", "年" },
+            { "DecadePluralName", "年" },
             { "HourPattern", "%n%u" },
             { "HourFuturePrefix", "今から" },
-            { "HourFutureSuffix", "" },
+            { "HourFutureSuffix", "後" },
             { "HourPastPrefix", "" },
             { "HourPastSuffix", "前" },
             { "HourSingularName", "時間" },
             { "HourPluralName", "時間" },
             { "JustNowPattern", "%u" },
-            { "JustNowFuturePrefix", "" },
-            { "JustNowFutureSuffix", "今からすぐ" },
+            { "JustNowFuturePrefix", "今から" },
+            { "JustNowFutureSuffix", "すぐ" },
             { "JustNowPastPrefix", "" },
-            { "JustNowPastSuffix", "さっき" },
+            { "JustNowPastSuffix", "たった今" },
             { "JustNowSingularName", "" },
             { "JustNowPluralName", "" },
-            { "MillenniumPattern", "%n %u" },
-            { "MillenniumFuturePrefix", "" },
-            { "MillenniumFutureSuffix", "今から" },
+            { "MillenniumPattern", "%n%u" },
+            { "MillenniumFuturePrefix", "今から" },
+            { "MillenniumFutureSuffix", "後" },
             { "MillenniumPastPrefix", "" },
             { "MillenniumPastSuffix", "前" },
-            { "MillenniumSingularName", "千年" },
-            { "MillenniumPluralName", "千年" },
+            { "MillenniumSingularName", "年" },
+            { "MillenniumPluralName", "年" },
             { "MillisecondPattern", "%n%u" },
             { "MillisecondFuturePrefix", "" },
             { "MillisecondFutureSuffix", "今から" },
@@ -64,14 +66,14 @@ public class Resources_ja extends ListResourceBundle implements TimeFormatProvid
             { "MillisecondPluralName", "ミリ秒" },
             { "MinutePattern", "%n%u" },
             { "MinuteFuturePrefix", "今から" },
-            { "MinuteFutureSuffix", "" },
+            { "MinuteFutureSuffix", "後" },
             { "MinutePastPrefix", "" },
             { "MinutePastSuffix", "前" },
             { "MinuteSingularName", "分" },
             { "MinutePluralName", "分" },
             { "MonthPattern", "%n%u" },
             { "MonthFuturePrefix", "今から" },
-            { "MonthFutureSuffix", "" },
+            { "MonthFutureSuffix", "後" },
             { "MonthPastPrefix", "" },
             { "MonthPastSuffix", "前" },
             { "MonthSingularName", "ヶ月" },
@@ -85,18 +87,18 @@ public class Resources_ja extends ListResourceBundle implements TimeFormatProvid
             { "SecondPluralName", "秒" },
             { "WeekPattern", "%n%u" },
             { "WeekFuturePrefix", "今から" },
-            { "WeekFutureSuffix", "週間" },
+            { "WeekFutureSuffix", "後" },
             { "WeekPastPrefix", "" },
-            { "WeekPastSuffix", "週間前" },
-            { "WeekSingularName", "" },
-            { "WeekPluralName", "" },
+            { "WeekPastSuffix", "前" },
+            { "WeekSingularName", "週間" },
+            { "WeekPluralName", "週間" },
             { "YearPattern", "%n%u" },
-            { "YearFuturePrefix", "" },
-            { "YearFutureSuffix", "年後の" },
+            { "YearFuturePrefix", "今から" },
+            { "YearFutureSuffix", "後" },
             { "YearPastPrefix", "" },
-            { "YearPastSuffix", "年前" },
-            { "YearSingularName", "" },
-            { "YearPluralName", "" },
+            { "YearPastSuffix", "前" },
+            { "YearSingularName", "年" },
+            { "YearPluralName", "年" },
             { "AbstractTimeUnitPattern", "" },
             { "AbstractTimeUnitFuturePrefix", "" },
             { "AbstractTimeUnitFutureSuffix", "" },
@@ -199,6 +201,8 @@ public class Resources_ja extends ListResourceBundle implements TimeFormatProvid
          String sign = getSign(duration);
          String unit = getGramaticallyCorrectName(duration, round);
          long quantity = getQuantity(duration, round);
+         if (duration.getUnit() instanceof Decade) quantity *= 10;
+         if (duration.getUnit() instanceof Millennium) quantity *= 1000;
 
          return applyPattern(sign, unit, quantity);
       }
@@ -208,6 +212,7 @@ public class Resources_ja extends ListResourceBundle implements TimeFormatProvid
          String result = getPattern(quantity).replaceAll(SIGN, sign);
          result = result.replaceAll(QUANTITY, String.valueOf(quantity));
          result = result.replaceAll(UNIT, unit);
+
          return result;
       }
 

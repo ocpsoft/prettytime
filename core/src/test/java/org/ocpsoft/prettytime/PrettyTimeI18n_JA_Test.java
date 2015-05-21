@@ -57,6 +57,29 @@ public class PrettyTimeI18n_JA_Test
    }
 
    @Test
+   public void testMillisecondsFromNow() throws Exception
+   {
+      PrettyTime t = new PrettyTime(new Date(0), locale);
+      t.removeUnit(org.ocpsoft.prettytime.units.JustNow.class);
+      // 450 milliseconds from now
+      assertEquals("450 milliseconds from now", "今から450ミリ秒後", t.format(new Date(450L)));
+   }
+
+   @Test
+   public void testSecondsFromNow() throws Exception
+   {
+      PrettyTime t = new PrettyTime(new Date(0), locale);
+      t.removeUnit(org.ocpsoft.prettytime.units.JustNow.class);
+      // 36 seconds from now
+      assertEquals("36 seconds from now", "今から36秒後", t.format(new Date(1000L * 36L)));
+      t.removeUnit(org.ocpsoft.prettytime.units.Millisecond.class);
+      // 1 second from now
+      assertEquals("1 second from now", "今から1秒後", t.format(new Date(10)));
+      // 1 second from now
+      assertEquals("1 second from now", "今から1秒後", t.formatUnrounded(new Date(10)));
+   }
+
+   @Test
    public void testMinutesFromNow() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(0), locale);
@@ -137,6 +160,27 @@ public class PrettyTimeI18n_JA_Test
       PrettyTime t = new PrettyTime(new Date(6000), locale);
       // moments ago
       assertEquals("たった今", t.format(new Date(0)));
+   }
+
+   @Test
+   public void testMillisecondsAgo() throws Exception
+   {
+      PrettyTime t = new PrettyTime(new Date(450L), locale);
+      t.removeUnit(org.ocpsoft.prettytime.units.JustNow.class);
+      // 450 milliseconds ago
+      assertEquals("450 milliseconds ago", "450ミリ秒前", t.format(new Date(0)));
+   }
+
+   @Test
+   public void testSecondsAgo() throws Exception
+   {
+     PrettyTime t = new PrettyTime(new Date(1000 * 36), locale);
+     t.removeUnit(org.ocpsoft.prettytime.units.JustNow.class);
+     // 36 seconds ago
+     assertEquals("36 seconds ago", "36秒前", t.format(new Date(0)));
+     t.setReference(new Date(10)).removeUnit(org.ocpsoft.prettytime.units.Millisecond.class);
+     // 1 second ago
+     assertEquals("1 second ago", "1秒前", t.format(new Date(0)));
    }
 
    @Test

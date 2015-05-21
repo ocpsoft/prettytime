@@ -61,7 +61,7 @@ public class PrettyTimeI18n_JA_Test
    {
       PrettyTime t = new PrettyTime(new Date(0), locale);
       // 12 minutes from now
-      assertEquals("12 minutes from now", "今から12分", t.format(new Date(1000 * 60 * 12)));
+      assertEquals("12 minutes from now", "今から12分後", t.format(new Date(1000 * 60 * 12)));
    }
 
    @Test
@@ -69,7 +69,7 @@ public class PrettyTimeI18n_JA_Test
    {
       PrettyTime t = new PrettyTime(new Date(0), locale);
       // 3 hours from now
-      assertEquals("3 hours from now", "今から3時間", t.format(new Date(1000 * 60 * 60 * 3)));
+      assertEquals("3 hours from now", "今から3時間後", t.format(new Date(1000 * 60 * 60 * 3)));
    }
 
    @Test
@@ -77,7 +77,7 @@ public class PrettyTimeI18n_JA_Test
    {
       PrettyTime t = new PrettyTime(new Date(0), locale);
       // 3 days from now
-      assertEquals("3 days from now", "今から3日間", t.format(new Date(1000 * 60 * 60 * 24 * 3)));
+      assertEquals("3 days from now", "今から3日後", t.format(new Date(1000 * 60 * 60 * 24 * 3)));
    }
 
    @Test
@@ -85,7 +85,7 @@ public class PrettyTimeI18n_JA_Test
    {
       PrettyTime t = new PrettyTime(new Date(0), locale);
       // 3 weeks from now
-      assertEquals("3 weeks from now", "今から3週間", t.format(new Date(1000 * 60 * 60 * 24 * 7 * 3)));
+      assertEquals("3 weeks from now", "今から3週間後", t.format(new Date(1000 * 60 * 60 * 24 * 7 * 3)));
    }
 
    @Test
@@ -93,7 +93,7 @@ public class PrettyTimeI18n_JA_Test
    {
       PrettyTime t = new PrettyTime(new Date(0), locale);
       // 3 months from now
-      assertEquals("3 months from now", "今から3ヶ月", t.format(new Date(2629743830L * 3L)));
+      assertEquals("3 months from now", "今から3ヶ月後", t.format(new Date(2629743830L * 3L)));
    }
 
    @Test
@@ -101,7 +101,7 @@ public class PrettyTimeI18n_JA_Test
    {
       PrettyTime t = new PrettyTime(new Date(0), locale);
       // 3 years from now
-      assertEquals("3 years from now", "3年後の", t.format(new Date(2629743830L * 12L * 3L)));
+      assertEquals("3 years from now", "今から3年後", t.format(new Date(2629743830L * 12L * 3L)));
    }
 
    @Test
@@ -109,7 +109,7 @@ public class PrettyTimeI18n_JA_Test
    {
       PrettyTime t = new PrettyTime(new Date(0), locale);
       // 1 decade from now
-      assertEquals("今から1年間", t.format(new Date(315569259747L * 1L)));
+      assertEquals("今から10年後", t.format(new Date(315569259747L * 1L)));
    }
 
    @Test
@@ -117,7 +117,15 @@ public class PrettyTimeI18n_JA_Test
    {
       PrettyTime t = new PrettyTime(new Date(0), locale);
       // 3 centuries from now
-      assertEquals("3 centuries from now", "今から3世紀にもわたっ", t.format(new Date(3155692597470L * 3L)));
+      assertEquals("3 centuries from now", "今から3世紀後", t.format(new Date(3155692597470L * 3L)));
+   }
+
+   @Test
+   public void testMillenniumFromNow() throws Exception
+   {
+      PrettyTime t = new PrettyTime(new Date(0), locale);
+      // 3 millennia from now
+      assertEquals("3 millennia from now", "今から3000年後", t.format(new Date(3155692597470L * 10L * 3L)));
    }
 
    /*
@@ -128,7 +136,7 @@ public class PrettyTimeI18n_JA_Test
    {
       PrettyTime t = new PrettyTime(new Date(6000), locale);
       // moments ago
-      assertEquals("さっき", t.format(new Date(0)));
+      assertEquals("たった今", t.format(new Date(0)));
    }
 
    @Test
@@ -196,7 +204,7 @@ public class PrettyTimeI18n_JA_Test
          {
             return 5000;
          }
-         
+
          @Override
          public boolean isPrecise()
          {
@@ -229,7 +237,7 @@ public class PrettyTimeI18n_JA_Test
    {
       PrettyTime t = new PrettyTime(new Date(315569259747L * 1L), locale);
       // 1 decade ago
-      assertEquals("1年前", t.format(new Date(0)));
+      assertEquals("10年前", t.format(new Date(0)));
    }
 
    @Test
@@ -238,6 +246,14 @@ public class PrettyTimeI18n_JA_Test
       PrettyTime t = new PrettyTime(new Date(3155692597470L * 3L), locale);
       // 3 centuries ago
       assertEquals("3 centuries ago", "3世紀前", t.format(new Date(0)));
+   }
+
+   @Test
+   public void testMilleniumAgo() throws Exception
+   {
+      PrettyTime t = new PrettyTime(new Date(3155692597470L * 10 * 3L), locale);
+      // 3 millennia ago
+      assertEquals("3 millennia ago", "3000年前", t.format(new Date(0)));
    }
 
    @Test
@@ -275,7 +291,7 @@ public class PrettyTimeI18n_JA_Test
    {
       PrettyTime t = new PrettyTime(new Date(315569259747L * 1L), locale);
       // 1 decade ago
-      assertEquals("1年前", t.format(new Date(0)));
+      assertEquals("10年前", t.format(new Date(0)));
       t.setLocale(Locale.GERMAN);
       assertEquals("vor 1 Jahrzehnt", t.format(new Date(0)));
    }

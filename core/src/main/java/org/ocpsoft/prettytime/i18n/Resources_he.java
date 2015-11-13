@@ -2,9 +2,6 @@ package org.ocpsoft.prettytime.i18n;
 
 import java.util.ListResourceBundle;
 
-/**
- * Created by admin on 8/31/15.
- */
 public class Resources_he_IL extends ListResourceBundle {
     private static final Object[][] OBJECTS = new Object[][] {
             { "CenturyPattern", "%n %u" },

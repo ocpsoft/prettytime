@@ -2,7 +2,7 @@ package org.ocpsoft.prettytime.i18n;
 
 import java.util.ListResourceBundle;
 
-public class Resources_he_IL extends ListResourceBundle {
+public class Resources_he extends ListResourceBundle {
     private static final Object[][] OBJECTS = new Object[][] {
             { "CenturyPattern", "%n %u" },
             { "CenturyFuturePrefix", "בעוד " },
@@ -44,8 +44,8 @@ public class Resources_he_IL extends ListResourceBundle {
             { "MillenniumFutureSuffix", "" },
             { "MillenniumPastPrefix", "לפני " },
             { "MillenniumPastSuffix", "" },
-            { "MillenniumSingularName", "אלף שנים" },
-            { "MillenniumPluralName", "אלפי שנים" },
+            { "MillenniumSingularName", "מילניום" },
+            { "MillenniumPluralName", "מילניומים" },
             { "MillisecondPattern", "%n %u" },
             { "MillisecondFuturePrefix", "בעוד " },
             { "MillisecondFutureSuffix", "" },

@@ -27,8 +27,8 @@ public class PrettyTimeI18n_HE_Test
    @Before
    public void setUp() throws Exception
    {
-	   locale = new Locale("he");
-	   Locale.setDefault(locale);
+      locale = new Locale("he");
+      Locale.setDefault(locale);
    }
 
    @Test
@@ -36,14 +36,14 @@ public class PrettyTimeI18n_HE_Test
    {
       PrettyTime t = new PrettyTime();
       Date date = null;
-      Assert.assertEquals("בעוד מספר רגעים", t.format(date));
+      Assert.assertEquals("עוד רגע", t.format(date));
    }
 
    @Test
    public void testRightNow() throws Exception
    {
       PrettyTime t = new PrettyTime();
-      Assert.assertEquals("בעוד מספר רגעים", t.format(new Date()));
+      Assert.assertEquals("עוד רגע", t.format(new Date()));
    }
 
    @Test
@@ -51,10 +51,10 @@ public class PrettyTimeI18n_HE_Test
    {
       PrettyTime t = new PrettyTime();
       List<Duration> preciseDuration = t.calculatePreciseDuration(
-               new Date(System.currentTimeMillis() - (2 * 60 * 60 * 1000) - (2 * 60 * 1000)));
+              new Date(System.currentTimeMillis() - (2 * 60 * 60 * 1000) - (2 * 60 * 1000)));
       Assert.assertEquals("לפני 2 שעות 2 דקות", t.format(preciseDuration));
       Assert.assertEquals("2 שעות 2 דקות", t.formatDuration(preciseDuration));
-      Assert.assertEquals("בעוד מספר רגעים", t.format(t.calculatePreciseDuration(new Date())));
+      Assert.assertEquals("עוד רגע", t.format(t.calculatePreciseDuration(new Date())));
    }
 
    @Test
@@ -64,9 +64,9 @@ public class PrettyTimeI18n_HE_Test
       PrettyTime t = new PrettyTime(new Date(2014, 8, 15, 0, 0));
       List<Duration> durations = t.calculatePreciseDuration(new Date(0));
       Assert.assertEquals("לפני 1 מילניום 9 מאות 4 עשורים 4 שנים 8 חודשים 1 שבוע 6 ימים 13 שעות 5 דקות",
-               t.format(durations));
+              t.format(durations));
       Assert.assertEquals("1 מילניום 9 מאות 4 עשורים 4 שנים 8 חודשים 1 שבוע 6 ימים 13 שעות 5 דקות",
-               t.formatDuration(durations));
+              t.formatDuration(durations));
    }
 
    @Test
@@ -77,70 +77,70 @@ public class PrettyTimeI18n_HE_Test
       Minute minutes = new Minute();
       prettyTime.registerUnit(minutes, new ResourcesTimeFormat(minutes));
       Assert.assertEquals("לפני 40 דקות", prettyTime.formatUnrounded(prettyTime.calculatePreciseDuration(
-               new Date(new Date().getTime() - 40 * 60 * 1000 - 40 * 1000))));
+              new Date(new Date().getTime() - 40 * 60 * 1000 - 40 * 1000))));
    }
 
    @Test
    public void testRightNowVariance() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(0));
-      Assert.assertEquals("בעוד מספר רגעים", t.format(new Date(600)));
+      Assert.assertEquals("עוד רגע", t.format(new Date(600)));
    }
 
    @Test
    public void testMinutesFromNow() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(0));
-      Assert.assertEquals("12 דקות מעכשיו", t.format(new Date(1000 * 60 * 12)));
+      Assert.assertEquals("בעוד 12 דקות", t.format(new Date(1000 * 60 * 12)));
    }
 
    @Test
    public void testHoursFromNow() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(0));
-      Assert.assertEquals("3 שעות מעכשיו", t.format(new Date(1000 * 60 * 60 * 3)));
+      Assert.assertEquals("בעוד 3 שעות", t.format(new Date(1000 * 60 * 60 * 3)));
    }
 
    @Test
    public void testDaysFromNow() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(0));
-      Assert.assertEquals("3 ימים מעכשיו", t.format(new Date(1000 * 60 * 60 * 24 * 3)));
+      Assert.assertEquals("בעוד 3 ימים", t.format(new Date(1000 * 60 * 60 * 24 * 3)));
    }
 
    @Test
    public void testWeeksFromNow() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(0));
-      Assert.assertEquals("3 שבועות מעכשיו", t.format(new Date(1000 * 60 * 60 * 24 * 7 * 3)));
+      Assert.assertEquals("בעוד 3 שבועות", t.format(new Date(1000 * 60 * 60 * 24 * 7 * 3)));
    }
 
    @Test
    public void testMonthsFromNow() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(0));
-      Assert.assertEquals("3 חודשים מעכשיו", t.format(new Date(2629743830L * 3L)));
+      Assert.assertEquals("בעוד 3 חודשים", t.format(new Date(2629743830L * 3L)));
    }
 
    @Test
    public void testYearsFromNow() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(0));
-      Assert.assertEquals("3 שנים מעכשיו", t.format(new Date(2629743830L * 12L * 3L)));
+      Assert.assertEquals("בעוד 3 שנים", t.format(new Date(2629743830L * 12L * 3L)));
    }
 
    @Test
    public void testDecadesFromNow() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(0));
-      Assert.assertEquals("3 עשורים מעכשיו", t.format(new Date(315569259747L * 3L)));
+      Assert.assertEquals("בעוד 3 עשורים", t.format(new Date(315569259747L * 3L)));
    }
 
    @Test
    public void testCenturiesFromNow() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(0));
-      Assert.assertEquals("3 מאות מעכשיו", t.format(new Date(3155692597470L * 3L)));
+      Assert.assertEquals("בעוד 3 מאות", t.format(new Date(3155692597470L * 3L)));
    }
 
    /*
@@ -150,7 +150,7 @@ public class PrettyTimeI18n_HE_Test
    public void testMomentsAgo() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(6000));
-      Assert.assertEquals("לפני מספר רגעים", t.format(new Date(0)));
+      Assert.assertEquals("לפני רגע", t.format(new Date(0)));
    }
 
    @Test
@@ -164,7 +164,7 @@ public class PrettyTimeI18n_HE_Test
    public void testMinutesFromNowDefaultReference() throws Exception
    {
       PrettyTime t = new PrettyTime();
-      Assert.assertEquals("12 דקות מעכשיו", t.format(new Date(System.currentTimeMillis() + 1000 * 60 * 12)));
+      Assert.assertEquals("בעוד 12 דקות", t.format(new Date(System.currentTimeMillis() + 1000 * 60 * 12)));
    }
 
    @Test
@@ -228,11 +228,11 @@ public class PrettyTimeI18n_HE_Test
       };
       t.clearUnits();
       t.registerUnit(unit, new SimpleTimeFormat()
-               .setSingularName("tick").setPluralName("ticks")
-               .setPattern("%n %u").setRoundingTolerance(20)
-               .setFutureSuffix("... RUN!")
-               .setFuturePrefix("self destruct in: ").setPastPrefix("self destruct was: ").setPastSuffix(
-                        " ago..."));
+              .setSingularName("tick").setPluralName("ticks")
+              .setPattern("%n %u").setRoundingTolerance(20)
+              .setFutureSuffix("... RUN!")
+              .setFuturePrefix("self destruct in: ").setPastPrefix("self destruct was: ").setPastSuffix(
+                      " ago..."));
 
       Assert.assertEquals("self destruct in: 5 ticks ... RUN!", t.format(new Date(25000)));
       t.setReference(new Date(25000));
@@ -272,7 +272,7 @@ public class PrettyTimeI18n_HE_Test
    {
       PrettyTime t = new PrettyTime();
       List<Duration> durations = t.calculatePreciseDuration(new Date(new Date().getTime() + 1000
-               * (10 * 60 + 5 * 60 * 60)));
+              * (10 * 60 + 5 * 60 * 60)));
       Assert.assertTrue(durations.size() >= 2);
       Assert.assertEquals(5, durations.get(0).getQuantity());
       Assert.assertEquals(10, durations.get(1).getQuantity());
@@ -283,7 +283,7 @@ public class PrettyTimeI18n_HE_Test
    {
       PrettyTime t = new PrettyTime();
       List<Duration> durations = t.calculatePreciseDuration(new Date(new Date().getTime() - 1000
-               * (10 * 60 + 5 * 60 * 60)));
+              * (10 * 60 + 5 * 60 * 60)));
       Assert.assertTrue(durations.size() >= 2);
       Assert.assertEquals(-5, durations.get(0).getQuantity());
       Assert.assertEquals(-10, durations.get(1).getQuantity());
@@ -302,8 +302,8 @@ public class PrettyTimeI18n_HE_Test
    {
       PrettyTime t = new PrettyTime(new Date(0));
       List<Duration> durations = t.calculatePreciseDuration(new Date(1000 * 60 * 60 * 24 * 3 + 1000 * 60 * 60 * 15
-               + 1000 * 60 * 38));
-      Assert.assertEquals("3 ימים 15 שעות 38 דקות מעכשיו", t.format(durations));
+              + 1000 * 60 * 38));
+      Assert.assertEquals("בעוד 3 ימים 15 שעות 38 דקות", t.format(durations));
    }
 
    @Test
@@ -318,7 +318,7 @@ public class PrettyTimeI18n_HE_Test
    /**
     * Since {@link PrettyTime#format(Calendar)} is just delegating to {@link PrettyTime#format(Date)} a single simple
     * test is sufficient.
-    * 
+    *
     * @throws Exception
     */
    @Test
@@ -336,7 +336,7 @@ public class PrettyTimeI18n_HE_Test
 
    /**
     * Tests formatApproximateDuration and by proxy, formatDuration.
-    * 
+    *
     * @throws Exception
     */
    @Test
@@ -377,8 +377,8 @@ public class PrettyTimeI18n_HE_Test
       Minute minutes = new Minute();
       prettyTime.registerUnit(minutes, new ResourcesTimeFormat(minutes));
       Assert.assertEquals("לפני 41 דקות",
-               prettyTime.format(prettyTime.calculatePreciseDuration(
-                        new Date(new Date().getTime() - 40 * 60 * 1000 - 40 * 1000))));
+              prettyTime.format(prettyTime.calculatePreciseDuration(
+                      new Date(new Date().getTime() - 40 * 60 * 1000 - 40 * 1000))));
    }
 
    @Test
@@ -389,8 +389,8 @@ public class PrettyTimeI18n_HE_Test
       Minute minutes = new Minute();
       prettyTime.registerUnit(minutes, new ResourcesTimeFormat(minutes));
       Assert.assertEquals("לפני 40 דקות",
-               prettyTime.formatUnrounded(prettyTime.calculatePreciseDuration(
-                        new Date(new Date().getTime() - 40 * 60 * 1000 - 40 * 1000))));
+              prettyTime.formatUnrounded(prettyTime.calculatePreciseDuration(
+                      new Date(new Date().getTime() - 40 * 60 * 1000 - 40 * 1000))));
    }
 
    @Test
@@ -401,8 +401,8 @@ public class PrettyTimeI18n_HE_Test
       Minute minutes = new Minute();
       prettyTime.registerUnit(minutes, new ResourcesTimeFormat(minutes));
       Assert.assertEquals("41 דקות",
-               prettyTime.formatDuration(prettyTime.calculatePreciseDuration(
-                        new Date(new Date().getTime() - 40 * 60 * 1000 - 40 * 1000))));
+              prettyTime.formatDuration(prettyTime.calculatePreciseDuration(
+                      new Date(new Date().getTime() - 40 * 60 * 1000 - 40 * 1000))));
    }
 
    @Test
@@ -413,8 +413,8 @@ public class PrettyTimeI18n_HE_Test
       Minute minutes = new Minute();
       prettyTime.registerUnit(minutes, new ResourcesTimeFormat(minutes));
       Assert.assertEquals("40 דקות",
-               prettyTime.formatDurationUnrounded(prettyTime.calculatePreciseDuration(
-                        new Date(new Date().getTime() - 40 * 60 * 1000 - 40 * 1000))));
+              prettyTime.formatDurationUnrounded(prettyTime.calculatePreciseDuration(
+                      new Date(new Date().getTime() - 40 * 60 * 1000 - 40 * 1000))));
    }
 
    @Test
@@ -425,8 +425,8 @@ public class PrettyTimeI18n_HE_Test
       Minute minutes = new Minute();
       prettyTime.registerUnit(minutes, new ResourcesTimeFormat(minutes));
       Assert.assertEquals("לפני 41 דקות",
-               prettyTime.format(prettyTime.calculatePreciseDuration(
-                        new Date(new Date().getTime() - 40 * 60 * 1000 - 40 * 1000))));
+              prettyTime.format(prettyTime.calculatePreciseDuration(
+                      new Date(new Date().getTime() - 40 * 60 * 1000 - 40 * 1000))));
    }
 
    @Test
@@ -437,8 +437,8 @@ public class PrettyTimeI18n_HE_Test
       Minute minutes = new Minute();
       prettyTime.registerUnit(minutes, new ResourcesTimeFormat(minutes));
       Assert.assertEquals("לפני 40 דקות",
-               prettyTime.formatUnrounded(prettyTime.calculatePreciseDuration(
-                        new Date(new Date().getTime() - 40 * 60 * 1000 - 40 * 1000))));
+              prettyTime.formatUnrounded(prettyTime.calculatePreciseDuration(
+                      new Date(new Date().getTime() - 40 * 60 * 1000 - 40 * 1000))));
    }
 
    @After

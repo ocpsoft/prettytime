@@ -59,9 +59,9 @@ public class PrettyTimeI18n_IW_Test
    {
       PrettyTime t = new PrettyTime(new Date(2014, 8, 15, 0, 0));
       List<Duration> durations = t.calculatePreciseDuration(new Date(0));
-      Assert.assertEquals("לפני 1 מילניום 9 מאות 4 עשורים 4 שנים 8 חודשים 1 שבוע 6 ימים 13 שעות 5 דקות",
+      Assert.assertEquals("לפני 1 מילניום 9 מאות 4 עשורים 4 שנים 8 חודשים 1 שבוע 6 ימים 20 שעות 5 דקות",
               t.format(durations));
-      Assert.assertEquals("1 מילניום 9 מאות 4 עשורים 4 שנים 8 חודשים 1 שבוע 6 ימים 13 שעות 5 דקות",
+      Assert.assertEquals("1 מילניום 9 מאות 4 עשורים 4 שנים 8 חודשים 1 שבוע 6 ימים 20 שעות 5 דקות",
               t.formatDuration(durations));
    }
 

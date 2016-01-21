@@ -67,6 +67,7 @@ public class PrettyTime
    private volatile Locale locale = Locale.getDefault();
    private volatile Map<TimeUnit, TimeFormat> units = new LinkedHashMap<TimeUnit, TimeFormat>();
    private volatile List<TimeUnit> cachedUnits;
+   private String overrideResourceBundle;
 
    /**
     * Create a new {@link PrettyTime} instance that will always use the current value of
@@ -75,6 +76,18 @@ public class PrettyTime
     */
    public PrettyTime()
    {
+      initTimeUnits();
+   }
+
+   /**
+    * Create a new {@link PrettyTime} instance that will always use the current value of
+    * {@link System#currentTimeMillis()} to represent the reference point for {@link Date} comparison, and will use
+    * {@link Locale#getDefault()} as the selected {@link Locale} for language and dialect formatting.
+    * Will use {@link String} as an optional override to the default resource bundles.
+    */
+   public PrettyTime(String overrideResourceBundle)
+   {
+      this.overrideResourceBundle = overrideResourceBundle;
       initTimeUnits();
    }
 
@@ -95,6 +108,23 @@ public class PrettyTime
    }
 
    /**
+    * Create a new {@link PrettyTime} instance that will use the given {@link Date} timestamp to represent the reference
+    * point for {@link Date} comparison, and will use {@link Locale#getDefault()} as the selected {@link Locale} for
+    * language and dialect formatting. If the given {@link Date} is <code>null</code>, this instance will always use the
+    * current value of {@link System#currentTimeMillis()} to represent the reference point for {@link Date} comparison.
+    * Will use {@link String} as an optional override to the default resource bundles.
+    * <p>
+    *
+    * <p>
+    * See {@code PrettyTime#setReference(Date timestamp)}.
+    */
+   public PrettyTime(final Date reference, String overrideResourceBundle)
+   {
+      this(overrideResourceBundle);
+      setReference(reference);
+   }
+
+   /**
     * Construct a new {@link PrettyTime} instance that will always use the current value of
     * {@link System#currentTimeMillis()} to represent the reference point for {@link Date} comparison. This instance
     * will use the given {@link Locale} instead of the system default. If the provided {@link Locale} is
@@ -102,6 +132,20 @@ public class PrettyTime
     */
    public PrettyTime(final Locale locale)
    {
+      setLocale(locale);
+      initTimeUnits();
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will always use the current value of
+    * {@link System#currentTimeMillis()} to represent the reference point for {@link Date} comparison. This instance
+    * will use the given {@link Locale} instead of the system default. If the provided {@link Locale} is
+    * <code>null</code>, {@link Locale#getDefault()} will be used.
+    * Will use {@link String} as an optional override to the default resource bundles.
+    */
+   public PrettyTime(final Locale locale, String overrideResourceBundle)
+   {
+      this.overrideResourceBundle = overrideResourceBundle;
       setLocale(locale);
       initTimeUnits();
    }
@@ -119,6 +163,23 @@ public class PrettyTime
    public PrettyTime(final Date reference, final Locale locale)
    {
       this(locale);
+      setReference(reference);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link Date} timestamp to represent the
+    * reference point for {@link Date} comparison, and will use the given {@link Locale} instead of the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link Date} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Date} comparison.
+    * Will use {@link String} as an optional override to the default resource bundles.
+    * <p>
+    * See {@code PrettyTime#setReference(Date timestamp)}.
+    */
+   public PrettyTime(final Date reference, final Locale locale, String overrideResourceBundle)
+   {
+      this(locale, overrideResourceBundle);
       setReference(reference);
    }
 
@@ -711,7 +772,7 @@ public class PrettyTime
 
    private void addUnit(ResourcesTimeUnit unit)
    {
-      registerUnit(unit, new ResourcesTimeFormat(unit));
+      registerUnit(unit, new ResourcesTimeFormat(unit, overrideResourceBundle));
    }
 
    private Duration calculateDuration(final long difference)

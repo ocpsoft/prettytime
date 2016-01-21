@@ -1,12 +1,12 @@
 package org.ocpsoft.prettytime.impl;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-
 import org.ocpsoft.prettytime.Duration;
 import org.ocpsoft.prettytime.LocaleAware;
 import org.ocpsoft.prettytime.TimeFormat;
 import org.ocpsoft.prettytime.format.SimpleTimeFormat;
+
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * Represents a simple method of formatting a specific {@link Duration} of time
@@ -18,16 +18,35 @@ public class ResourcesTimeFormat extends SimpleTimeFormat implements TimeFormat,
    private ResourceBundle bundle;
    private final ResourcesTimeUnit unit;
    private TimeFormat override;
+   private String overrideResourceBundle; // If used this bundle will override the included bundle
 
    public ResourcesTimeFormat(ResourcesTimeUnit unit)
    {
       this.unit = unit;
    }
 
+   public ResourcesTimeFormat(ResourcesTimeUnit unit, String overrideResourceBundle)
+   {
+      this.unit = unit;
+      this.overrideResourceBundle = overrideResourceBundle;
+   }
+
    @Override
    public ResourcesTimeFormat setLocale(Locale locale)
    {
-      bundle = ResourceBundle.getBundle(unit.getResourceBundleName(), locale);
+      if (overrideResourceBundle != null) {
+         try {
+            // Attempt to load the bundle that the user passed in, maybe it exists, maybe not
+            bundle = ResourceBundle.getBundle(overrideResourceBundle, locale);
+         } catch (Exception e) {
+            // Throw away if the bundle doesn't contain this local
+         }
+      }
+
+      // If the bundle doesn't exist then load the default included one
+      if (bundle == null) {
+         bundle = ResourceBundle.getBundle(unit.getResourceBundleName(), locale);
+      }
 
       if (bundle instanceof TimeFormatProvider)
       {

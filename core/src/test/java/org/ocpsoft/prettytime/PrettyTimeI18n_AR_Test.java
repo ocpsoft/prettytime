@@ -47,7 +47,14 @@ public class PrettyTimeI18n_AR_Test
       Date then = format.parse("5/20/2009");
       Date ref = format.parse("6/17/2009");
       PrettyTime t = new PrettyTime(ref);
-      assertEquals("1 شهر مضت", t.format(then));
+      assertEquals("منذ 1 شهر", t.format(then));
+   }
+
+   @Test
+   public void testFromNow()
+   {
+      PrettyTime prettyTime = new PrettyTime(locale);
+      assertEquals("بعد لحظات", prettyTime.format(new Date()));
    }
 
    @Test
@@ -73,64 +80,74 @@ public class PrettyTimeI18n_AR_Test
    }
 
    @Test
+   public void testPrettyTimeDefault()
+   {
+      PrettyTime p = new PrettyTime(locale);
+      assertEquals(p.format(new Date()), "بعد لحظات");
+   }
+
+   @Test
    public void testMinutesFromNow() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(0));
-      assertEquals("12 دقائق من الآن", t.format(new Date(1000 * 60 * 12)));
+      assertEquals("بعد 12 دقائق", t.format(new Date(1000 * 60 * 12)));
    }
 
    @Test
    public void testHoursFromNow() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(0));
-      assertEquals("3 ساعات من الآن", t.format(new Date(1000 * 60 * 60 * 3)));
+      assertEquals("بعد 3 ساعات", t.format(new Date(1000 * 60 * 60 * 3)));
    }
 
    @Test
    public void testDaysFromNow() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(0));
-      assertEquals("3 ايام من الآن", t.format(new Date(1000 * 60 * 60 * 24 * 3)));
+      assertEquals("بعد 3 ايام",
+              t.format(new Date(1000 * 60 * 60 * 24 * 3)));
    }
 
    @Test
    public void testWeeksFromNow() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(0));
-      assertEquals("3 أسابيع من الآن", t.format(new Date(1000 * 60 * 60 * 24 * 7 * 3)));
+      assertEquals("بعد 3 أسابيع" ,
+              t.format(new Date(1000 * 60 * 60 * 24 * 7 * 3)));
    }
 
    @Test
    public void testMonthsFromNow() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(0));
-      assertEquals("3 أشهر من الآن", t.format(new Date(2629743830L * 3L)));
+      assertEquals("بعد 3 أشهر", t.format(new Date(2629743830L * 3L)));
    }
 
    @Test
    public void testYearsFromNow() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(0));
-      assertEquals("3 سنوات من الآن", t.format(new Date(2629743830L * 12L * 3L)));
+      assertEquals("بعد 3 سنوات", t.format(new Date(2629743830L * 12L * 3L)));
    }
 
    @Test
    public void testDecadesFromNow() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(0));
-      assertEquals("3 عقود من الآن", t.format(new Date(315569259747L * 3L)));
+      assertEquals("بعد 3 عقود", t.format(new Date(315569259747L * 3L)));
    }
 
    @Test
    public void testCenturiesFromNow() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(0));
-      assertEquals("3 قرون من الآن", t.format(new Date(3155692597470L * 3L)));
+      assertEquals("بعد 3 قرون",
+              t.format(new Date(3155692597470L * 3L)));
    }
 
    /*
-    * Past
-    */
+   * Past
+   */
    @Test
    public void testMomentsAgo() throws Exception
    {
@@ -142,35 +159,35 @@ public class PrettyTimeI18n_AR_Test
    public void testMinutesAgo() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(1000 * 60 * 12));
-      assertEquals("12 دقائق مضت", t.format(new Date(0)));
+      assertEquals("منذ 12 دقائق", t.format(new Date(0)));
    }
 
    @Test
    public void testHoursAgo() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(1000 * 60 * 60 * 3));
-      assertEquals("3 ساعات مضت", t.format(new Date(0)));
+      assertEquals("منذ 3 ساعات", t.format(new Date(0)));
    }
 
    @Test
    public void testDaysAgo() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(1000 * 60 * 60 * 24 * 3));
-      assertEquals("3 ايام مضت", t.format(new Date(0)));
+      assertEquals("منذ 3 ايام", t.format(new Date(0)));
    }
 
    @Test
    public void testWeeksAgo() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(1000 * 60 * 60 * 24 * 7 * 3));
-      assertEquals("3 أسابيع مضت", t.format(new Date(0)));
+      assertEquals("منذ 3 أسابيع", t.format(new Date(0)));
    }
 
    @Test
    public void testMonthsAgo() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(2629743830L * 3L));
-      assertEquals("3 أشهر مضت", t.format(new Date(0)));
+      assertEquals("منذ 3 أشهر", t.format(new Date(0)));
    }
 
    @Test
@@ -199,11 +216,11 @@ public class PrettyTimeI18n_AR_Test
       };
       t.clearUnits();
       t.registerUnit(unit, new SimpleTimeFormat()
-               .setSingularName("tick").setPluralName("ticks")
-               .setPattern("%n %u").setRoundingTolerance(20)
-               .setFutureSuffix("... RUN!")
-               .setFuturePrefix("self destruct in: ").setPastPrefix("self destruct was: ").setPastSuffix(
-                        " ago..."));
+              .setSingularName("tick").setPluralName("ticks")
+              .setPattern("%n %u").setRoundingTolerance(20)
+              .setFutureSuffix("... RUN!")
+              .setFuturePrefix("self destruct in: ").setPastPrefix("self destruct was: ").setPastSuffix(
+                      " ago..."));
 
       assertEquals("self destruct in: 5 ticks ... RUN!", t.format(new Date(25000)));
       t.setReference(new Date(25000));
@@ -214,28 +231,28 @@ public class PrettyTimeI18n_AR_Test
    public void testYearsAgo() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(2629743830L * 12L * 3L));
-      assertEquals("3 سنوات مضت", t.format(new Date(0)));
+      assertEquals("منذ 3 سنوات", t.format(new Date(0)));
    }
 
    @Test
    public void testDecadesAgo() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(315569259747L * 3L));
-      assertEquals("3 عقود مضت", t.format(new Date(0)));
+      assertEquals("منذ 3 عقود", t.format(new Date(0)));
    }
 
    @Test
    public void testCenturiesAgo() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(3155692597470L * 3L));
-      assertEquals("3 قرون مضت", t.format(new Date(0)));
+      assertEquals("منذ 3 قرون", t.format(new Date(0)));
    }
 
    @Test
    public void testWithinTwoHoursRounding() throws Exception
    {
       PrettyTime t = new PrettyTime();
-      assertEquals("2 ساعات مضت", t.format(new Date(new Date().getTime() - 6543990)));
+      assertEquals("منذ 2 ساعات", t.format(new Date(new Date().getTime() - 6543990)));
    }
 
    @Test
@@ -243,7 +260,7 @@ public class PrettyTimeI18n_AR_Test
    {
       PrettyTime t = new PrettyTime();
       List<Duration> durations = t.calculatePreciseDuration(new Date(new Date().getTime() + 1000
-               * (10 * 60 + 5 * 60 * 60)));
+              * (10 * 60 + 5 * 60 * 60)));
       assertTrue(durations.size() >= 2); // might be more because of milliseconds between date capturing and result
       // calculation
       assertEquals(5, durations.get(0).getQuantity());
@@ -255,7 +272,7 @@ public class PrettyTimeI18n_AR_Test
    {
       PrettyTime t = new PrettyTime();
       List<Duration> durations = t.calculatePreciseDuration(new Date(new Date().getTime() - 1000
-               * (10 * 60 + 5 * 60 * 60)));
+              * (10 * 60 + 5 * 60 * 60)));
       assertTrue(durations.size() >= 2); // might be more because of milliseconds between date capturing and result
       // calculation
       assertEquals(-5, durations.get(0).getQuantity());
@@ -267,7 +284,7 @@ public class PrettyTimeI18n_AR_Test
    {
       PrettyTime t = new PrettyTime(new Date(1000 * 60 * 60 * 24 * 3 + 1000 * 60 * 60 * 15 + 1000 * 60 * 38));
       List<Duration> durations = t.calculatePreciseDuration(new Date(0));
-      assertEquals("3 ايام 15 ساعات 38 دقائق مضت", t.format(durations));
+      assertEquals("منذ 3 ايام 15 ساعات 38 دقائق", t.format(durations));
    }
 
    @Test
@@ -275,18 +292,17 @@ public class PrettyTimeI18n_AR_Test
    {
       PrettyTime t = new PrettyTime(new Date(0));
       List<Duration> durations = t.calculatePreciseDuration(new Date(1000 * 60 * 60 * 24 * 3 + 1000 * 60 * 60 * 15
-               + 1000 * 60 * 38));
-      assertEquals("3 ايام 15 ساعات 38 دقائق من الآن", t.format(durations));
+              + 1000 * 60 * 38));
+      assertEquals("بعد 3 ايام 15 ساعات 38 دقائق", t.format(durations));
    }
 
    @Test
    public void testSetLocale() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(315569259747L * 3L));
-      assertEquals("3 عقود مضت", t.format(new Date(0)));
+      assertEquals("منذ 3 عقود", t.format(new Date(0)));
    }
 
-   // Method tearDown() is called automatically after every test method
    @After
    public void tearDown() throws Exception
    {

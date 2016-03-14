@@ -160,6 +160,8 @@ public class PrettyTime
    {
       if (then == null)
          then = now();
+
+      Date reference = this.reference;
       if (null == reference)
          reference = now();
 

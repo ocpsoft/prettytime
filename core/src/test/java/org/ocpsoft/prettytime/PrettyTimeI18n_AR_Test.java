@@ -42,6 +42,15 @@ public class PrettyTimeI18n_AR_Test
    }
 
    @Test
+   public void testCeilingInterval() throws Exception
+   {
+      Date then = format.parse("5/20/2009");
+      Date ref = format.parse("6/17/2009");
+      PrettyTime t = new PrettyTime(ref);
+      assertEquals("منذ 1 شهر", t.format(then));
+   }
+
+   @Test
    public void testFromNow()
    {
       PrettyTime prettyTime = new PrettyTime(locale);
@@ -54,6 +63,20 @@ public class PrettyTimeI18n_AR_Test
       PrettyTime t = new PrettyTime();
       Date date = null;
       assertEquals("بعد لحظات", t.format(date));
+   }
+
+   @Test
+   public void testRightNow() throws Exception
+   {
+      PrettyTime t = new PrettyTime();
+      assertEquals("بعد لحظات", t.format(new Date()));
+   }
+
+   @Test
+   public void testRightNowVariance() throws Exception
+   {
+      PrettyTime t = new PrettyTime(new Date(0));
+      assertEquals("بعد لحظات", t.format(new Date(600)));
    }
 
    @Test
@@ -91,6 +114,27 @@ public class PrettyTimeI18n_AR_Test
       PrettyTime t = new PrettyTime(new Date(0));
       assertEquals("بعد 3 أسابيع" ,
               t.format(new Date(1000 * 60 * 60 * 24 * 7 * 3)));
+   }
+
+   @Test
+   public void testMonthsFromNow() throws Exception
+   {
+      PrettyTime t = new PrettyTime(new Date(0));
+      assertEquals("بعد 3 أشهر", t.format(new Date(2629743830L * 3L)));
+   }
+
+   @Test
+   public void testYearsFromNow() throws Exception
+   {
+      PrettyTime t = new PrettyTime(new Date(0));
+      assertEquals("بعد 3 سنوات", t.format(new Date(2629743830L * 12L * 3L)));
+   }
+
+   @Test
+   public void testDecadesFromNow() throws Exception
+   {
+      PrettyTime t = new PrettyTime(new Date(0));
+      assertEquals("بعد 3 عقود", t.format(new Date(315569259747L * 3L)));
    }
 
    @Test
@@ -140,7 +184,120 @@ public class PrettyTimeI18n_AR_Test
    }
 
    @Test
+   public void testMonthsAgo() throws Exception
+   {
+      PrettyTime t = new PrettyTime(new Date(2629743830L * 3L));
+      assertEquals("منذ 3 أشهر", t.format(new Date(0)));
+   }
+
+   @Test
+   public void testCustomFormat() throws Exception
+   {
+      PrettyTime t = new PrettyTime(new Date(0));
+      TimeUnit unit = new TimeUnit()
+      {
+         @Override
+         public long getMaxQuantity()
+         {
+            return 0;
+         }
+
+         @Override
+         public long getMillisPerUnit()
+         {
+            return 5000;
+         }
+
+         @Override
+         public boolean isPrecise()
+         {
+            return false;
+         }
+      };
+      t.clearUnits();
+      t.registerUnit(unit, new SimpleTimeFormat()
+              .setSingularName("tick").setPluralName("ticks")
+              .setPattern("%n %u").setRoundingTolerance(20)
+              .setFutureSuffix("... RUN!")
+              .setFuturePrefix("self destruct in: ").setPastPrefix("self destruct was: ").setPastSuffix(
+                      " ago..."));
+
+      assertEquals("self destruct in: 5 ticks ... RUN!", t.format(new Date(25000)));
+      t.setReference(new Date(25000));
+      assertEquals("self destruct was: 5 ticks ago...", t.format(new Date(0)));
+   }
+
+   @Test
+   public void testYearsAgo() throws Exception
+   {
+      PrettyTime t = new PrettyTime(new Date(2629743830L * 12L * 3L));
+      assertEquals("منذ 3 سنوات", t.format(new Date(0)));
+   }
+
+   @Test
    public void testDecadesAgo() throws Exception
+   {
+      PrettyTime t = new PrettyTime(new Date(315569259747L * 3L));
+      assertEquals("منذ 3 عقود", t.format(new Date(0)));
+   }
+
+   @Test
+   public void testCenturiesAgo() throws Exception
+   {
+      PrettyTime t = new PrettyTime(new Date(3155692597470L * 3L));
+      assertEquals("منذ 3 قرون", t.format(new Date(0)));
+   }
+
+   @Test
+   public void testWithinTwoHoursRounding() throws Exception
+   {
+      PrettyTime t = new PrettyTime();
+      assertEquals("منذ 2 ساعات", t.format(new Date(new Date().getTime() - 6543990)));
+   }
+
+   @Test
+   public void testPreciseInTheFuture() throws Exception
+   {
+      PrettyTime t = new PrettyTime();
+      List<Duration> durations = t.calculatePreciseDuration(new Date(new Date().getTime() + 1000
+              * (10 * 60 + 5 * 60 * 60)));
+      assertTrue(durations.size() >= 2); // might be more because of milliseconds between date capturing and result
+      // calculation
+      assertEquals(5, durations.get(0).getQuantity());
+      assertEquals(10, durations.get(1).getQuantity());
+   }
+
+   @Test
+   public void testPreciseInThePast() throws Exception
+   {
+      PrettyTime t = new PrettyTime();
+      List<Duration> durations = t.calculatePreciseDuration(new Date(new Date().getTime() - 1000
+              * (10 * 60 + 5 * 60 * 60)));
+      assertTrue(durations.size() >= 2); // might be more because of milliseconds between date capturing and result
+      // calculation
+      assertEquals(-5, durations.get(0).getQuantity());
+      assertEquals(-10, durations.get(1).getQuantity());
+   }
+
+   @Test
+   public void testFormattingDurationListInThePast() throws Exception
+   {
+      PrettyTime t = new PrettyTime(new Date(1000 * 60 * 60 * 24 * 3 + 1000 * 60 * 60 * 15 + 1000 * 60 * 38));
+      List<Duration> durations = t.calculatePreciseDuration(new Date(0));
+      assertEquals("منذ 3 ايام 15 ساعات 38 دقائق", t.format(durations));
+   }
+
+   @Test
+   public void testFormattingDurationListInTheFuture() throws Exception
+   {
+      PrettyTime t = new PrettyTime(new Date(0));
+      List<Duration> durations = t.calculatePreciseDuration(new Date(1000 * 60 * 60 * 24 * 3 + 1000 * 60 * 60 * 15
+              + 1000 * 60 * 38));
+      assertEquals("بعد 3 ايام 15 ساعات 38 دقائق", t.format(durations));
+   }
+
+   @Test
+   public void testSetLocale() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(315569259747L * 3L));
       assertEquals("منذ 3 عقود", t.format(new Date(0)));

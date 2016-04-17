@@ -11,7 +11,7 @@ import java.util.Locale;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Created by edward_chiang on 13/6/27.
+ * Created with IntelliJ IDEA. User: xirwajim Date: 2016-04-17 Time: 23:00
  */
 public class PrettyTimeI18n_uy_Test
 {

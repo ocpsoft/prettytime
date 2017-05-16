@@ -27,7 +27,7 @@ public class PrettyTimel18n_MM_Test {
     // Method setUp() is called automatically before every test method
     @Before
     public void setUp() throws Exception {
-        locale = new Locale("mm");
+        locale = new Locale("MM");
         Locale.setDefault(locale);
     }
 

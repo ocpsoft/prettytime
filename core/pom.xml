@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.ocpsoft.prettytime</groupId>
 		<artifactId>prettytime-parent</artifactId>
-		<version>4.0.1-SNAPSHOT</version>
+		<version>4.0.1.Final</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -22,8 +22,8 @@
 						<Bundle-Name>Pretty Time Core</Bundle-Name>
 						<Bundle-SymbolicName>org.ocpsoft.prettytime.core</Bundle-SymbolicName>
 
-						<Export-Package></Export-Package>
-						<Import-Package></Import-Package>
+						<Export-Package />
+						<Import-Package />
 						<_exportcontents>org.ocpsoft.prettytime*</_exportcontents>
 					</instructions>
 				</configuration>

@@ -13,7 +13,7 @@ import org.junit.Test;
 /**
  * Created by edward_chiang on 13/6/27.
  */
-public class PrettyTimeI18n_zh_TW_Test
+public class PrettyTimeI18n_MS_Test
 {
    private final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
    private Locale locale;

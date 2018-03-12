@@ -28,7 +28,7 @@ public class Resources_zh extends ListResourceBundle
             { "CenturyPastPrefix", "" },
             { "CenturyPastSuffix", "Sebelum ini" },
             { "CenturySingularName", "Abad" },
-            { "CenturyPluralName", "世纪" },
+            { "CenturyPluralName", "Abad" },
             { "DayPattern", "%n %u" },
             { "DayFuturePrefix", "" },
             { "DayFutureSuffix", "Selepas" },

@@ -29,7 +29,7 @@ public class PrettyTimeI18n_MS_Test
    public void testPrettyTime()
    {
       PrettyTime p = new PrettyTime(locale);
-      assertEquals("hanya sekarang", p.format(new Date()));
+      assertEquals("tadi", p.format(new Date()));
    }
 
    @Test
@@ -56,21 +56,21 @@ public class PrettyTimeI18n_MS_Test
    {
       PrettyTime t = new PrettyTime(locale);
       Date date = null;
-      assertEquals("hanya sekarang", t.format(date));
+      assertEquals("tadi", t.format(date));
    }
 
    @Test
    public void testRightNow() throws Exception
    {
       PrettyTime t = new PrettyTime(locale);
-      assertEquals("hanya sekarang", t.format(new Date()));
+      assertEquals("tadi", t.format(new Date()));
    }
 
    @Test
    public void testRightNowVariance() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(0), locale);
-      assertEquals("hanya sekarang", t.format(new Date(600)));
+      assertEquals("tadi", t.format(new Date(600)));
    }
 
    @Test
@@ -136,7 +136,7 @@ public class PrettyTimeI18n_MS_Test
    public void testMomentsAgo() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(6000), locale);
-      assertEquals("hanya sekarang", t.format(new Date(0)));
+      assertEquals("tadi", t.format(new Date(0)));
    }
 
    @Test

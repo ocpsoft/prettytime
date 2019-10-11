@@ -728,6 +728,7 @@ public class PrettyTime
          if (format instanceof LocaleAware)
             ((LocaleAware<?>) format).setLocale(locale);
       }
+      cachedUnits = null;
       return this;
    }
 

@@ -84,9 +84,9 @@ public class PrettyTimeTest
    {
       PrettyTime t = new PrettyTime(new Date(2014, 8, 15, 0, 0));
       List<Duration> durations = t.calculatePreciseDuration(new Date(0));
-      Assert.assertEquals("1 millennium 9 centuries 4 decades 4 years 8 months 1 week 6 days 20 hours 5 minutes ago",
+      Assert.assertEquals("1 millennium 9 centuries 4 decades 4 years 8 months 1 week 6 days 14 hours 5 minutes ago",
                t.format(durations));
-      Assert.assertEquals("1 millennium 9 centuries 4 decades 4 years 8 months 1 week 6 days 20 hours 5 minutes",
+      Assert.assertEquals("1 millennium 9 centuries 4 decades 4 years 8 months 1 week 6 days 14 hours 5 minutes",
                t.formatDuration(durations));
    }
 

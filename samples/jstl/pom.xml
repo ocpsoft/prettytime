@@ -3,7 +3,7 @@
     <parent>
         <artifactId>prettytime-samples</artifactId>
         <groupId>org.ocpsoft.prettytime</groupId>
-        <version>4.0.3.Final</version>
+        <version>4.0.4-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -37,7 +37,7 @@
         <dependency>
             <groupId>org.ocpsoft.prettytime</groupId>
             <artifactId>prettytime-integration-jstl</artifactId>
-            <version>4.0.3.Final</version>
+            <version>4.0.4-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

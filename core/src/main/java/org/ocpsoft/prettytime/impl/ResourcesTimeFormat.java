@@ -15,7 +15,6 @@ import java.util.ResourceBundle;
  */
 public class ResourcesTimeFormat extends SimpleTimeFormat implements TimeFormat, LocaleAware<ResourcesTimeFormat>
 {
-   private ResourceBundle bundle;
    private final ResourcesTimeUnit unit;
    private TimeFormat override;
    private String overrideResourceBundle; // If used this bundle will override the included bundle
@@ -34,6 +33,7 @@ public class ResourcesTimeFormat extends SimpleTimeFormat implements TimeFormat,
    @Override
    public ResourcesTimeFormat setLocale(Locale locale)
    {
+      ResourceBundle bundle = null;
       if (overrideResourceBundle != null) {
          try {
             // Attempt to load the bundle that the user passed in, maybe it exists, maybe not

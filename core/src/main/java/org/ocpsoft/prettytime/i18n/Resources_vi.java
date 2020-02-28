@@ -100,7 +100,7 @@ public class Resources_vi extends ListResourceBundle
             { "YearPattern", "%n %u" },
             { "YearFuturePrefix", "" },
             { "YearFutureSuffix", " sau" },
-            { "YearPastPrefix", "cách đay " },
+            { "YearPastPrefix", "cách đây " },
             { "YearPastSuffix", "" },
             { "YearSingularName", "năm" },
             { "YearPluralName", "năm" },

@@ -15,11 +15,11 @@
  */
 package org.ocpsoft.prettytime.format;
 
+import java.util.regex.Pattern;
+
 import org.ocpsoft.prettytime.Duration;
 import org.ocpsoft.prettytime.TimeFormat;
 import org.ocpsoft.prettytime.TimeUnit;
-
-import java.util.regex.Pattern;
 
 /**
  * Represents a simple method of formatting a specific {@link Duration} of time
@@ -32,7 +32,7 @@ public class SimpleTimeFormat implements TimeFormat
    public static final String SIGN = "%s";
    public static final String QUANTITY = "%n";
    public static final String UNIT = "%u";
-   
+
    private static final Pattern PATTERN_MULTIPLE_WHITESPACES = Pattern.compile("\\s{2,}");
 
    private String singularName = "";
@@ -65,12 +65,10 @@ public class SimpleTimeFormat implements TimeFormat
    public String decorate(Duration duration, String time)
    {
       StringBuilder result = new StringBuilder();
-      if (duration.isInPast())
-      {
+      if (duration.isInPast()) {
          result.append(pastPrefix).append(" ").append(time).append(" ").append(pastSuffix);
       }
-      else
-      {
+      else {
          result.append(futurePrefix).append(" ").append(time).append(" ").append(futureSuffix);
       }
       return PATTERN_MULTIPLE_WHITESPACES.matcher(result).replaceAll(" ").trim();
@@ -118,17 +116,20 @@ public class SimpleTimeFormat implements TimeFormat
    protected String getGramaticallyCorrectName(final Duration d, boolean round)
    {
       String result = getSingularName(d);
-      if ((Math.abs(getQuantity(d, round)) == 0) || (Math.abs(getQuantity(d, round)) > 1))
-      {
+      if (isPlural(d, round)) {
          result = getPluralName(d);
       }
       return result;
    }
 
+   protected boolean isPlural(final Duration d, boolean round)
+   {
+      return (Math.abs(getQuantity(d, round)) == 0) || (Math.abs(getQuantity(d, round)) > 1);
+   }
+
    private String getSign(final Duration d)
    {
-      if (d.getQuantity() < 0)
-      {
+      if (d.getQuantity() < 0) {
          return NEGATIVE;
       }
       return "";

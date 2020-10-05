@@ -118,11 +118,15 @@ public class SimpleTimeFormat implements TimeFormat
    protected String getGramaticallyCorrectName(final Duration d, boolean round)
    {
       String result = getSingularName(d);
-      if ((Math.abs(getQuantity(d, round)) == 0) || (Math.abs(getQuantity(d, round)) > 1))
+      if (isPlural(d, round))
       {
          result = getPluralName(d);
       }
       return result;
+   }
+
+   protected boolean isPlural(final Duration d, boolean round) {
+      return (Math.abs(getQuantity(d, round)) == 0) || (Math.abs(getQuantity(d, round)) > 1);
    }
 
    private String getSign(final Duration d)

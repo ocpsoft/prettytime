@@ -15,31 +15,12 @@
  */
 package org.ocpsoft.prettytime;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import org.ocpsoft.prettytime.impl.DurationImpl;
 import org.ocpsoft.prettytime.impl.ResourcesTimeFormat;
 import org.ocpsoft.prettytime.impl.ResourcesTimeUnit;
-import org.ocpsoft.prettytime.units.Century;
-import org.ocpsoft.prettytime.units.Day;
-import org.ocpsoft.prettytime.units.Decade;
-import org.ocpsoft.prettytime.units.Hour;
-import org.ocpsoft.prettytime.units.JustNow;
-import org.ocpsoft.prettytime.units.Millennium;
-import org.ocpsoft.prettytime.units.Millisecond;
-import org.ocpsoft.prettytime.units.Minute;
-import org.ocpsoft.prettytime.units.Month;
-import org.ocpsoft.prettytime.units.Second;
-import org.ocpsoft.prettytime.units.TimeUnitComparator;
-import org.ocpsoft.prettytime.units.Week;
-import org.ocpsoft.prettytime.units.Year;
+import org.ocpsoft.prettytime.units.*;
+
+import java.util.*;
 
 /**
  * A utility for creating social-networking style timestamps. (e.g. "just now", "moments ago", "3 days ago",
@@ -618,8 +599,8 @@ public class PrettyTime
    public List<TimeUnit> getUnits()
    {
       if (cachedUnits == null) {
-         List<TimeUnit> result = new ArrayList<TimeUnit>(units.keySet());
-         Collections.sort(result, new TimeUnitComparator());
+         List<TimeUnit> result = new ArrayList<>(units.keySet());
+         Collections.sort(result, Comparator.comparing(TimeUnit::getMillisPerUnit));
          cachedUnits = Collections.unmodifiableList(result);
       }
 

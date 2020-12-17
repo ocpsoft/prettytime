@@ -19,7 +19,10 @@ import org.ocpsoft.prettytime.impl.DurationImpl;
 import org.ocpsoft.prettytime.impl.ResourcesTimeFormat;
 import org.ocpsoft.prettytime.impl.ResourcesTimeUnit;
 import org.ocpsoft.prettytime.units.*;
+import org.ocpsoft.prettytime.units.Month;
+import org.ocpsoft.prettytime.units.Year;
 
+import java.time.*;
 import java.util.*;
 
 /**
@@ -46,7 +49,7 @@ public class PrettyTime
 {
    private volatile Date reference;
    private volatile Locale locale = Locale.getDefault();
-   private volatile Map<TimeUnit, TimeFormat> units = new LinkedHashMap<TimeUnit, TimeFormat>();
+   private volatile Map<TimeUnit, TimeFormat> units = new LinkedHashMap<>();
    private volatile List<TimeUnit> cachedUnits;
    private String overrideResourceBundle;
 
@@ -167,8 +170,8 @@ public class PrettyTime
    /**
     * Calculate the approximate {@link Duration} between the reference {@link Date} and given {@link Date}. If the given
     * {@link Date} is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used instead.
-    * <p>
-    * See {@code PrettyTime#getReference()}.
+    *
+    * @see #getReference()
     */
    public Duration approximateDuration(Date then)
    {
@@ -181,6 +184,18 @@ public class PrettyTime
 
       long difference = then.getTime() - ref.getTime();
       return calculateDuration(difference);
+   }
+
+   /**
+    * Calculate the approximate {@link Duration} between the reference {@link Date} and given {@link Instant}.
+    * If the given {@link Instant} is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be
+    * used instead.
+    *
+    * @see #getReference()
+    */
+   public Duration approximateDuration(Instant then)
+   {
+      return approximateDuration(then != null ? Date.from(then) : null);
    }
 
    /**
@@ -207,14 +222,14 @@ public class PrettyTime
       if (null == reference)
          reference = now();
 
-      List<Duration> result = new ArrayList<Duration>();
+      List<Duration> result = new ArrayList<>();
       long difference = then.getTime() - reference.getTime();
       Duration duration = calculateDuration(difference);
       result.add(duration);
       while (0 != duration.getDelta())
       {
          duration = calculateDuration(duration.getDelta());
-         if (result.size() > 0)
+         if (!result.isEmpty())
          {
             Duration last = result.get(result.size() - 1);
             if (last.getUnit().equals(duration.getUnit()))
@@ -227,6 +242,26 @@ public class PrettyTime
             result.add(duration);
       }
       return result;
+   }
+
+   /**
+    * Calculate to the precision of the smallest provided {@link TimeUnit}, the exact {@link Duration} represented by
+    * the difference between the reference {@link Date} and the given {@link Instant}. If the given {@link Instant} is
+    * <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used instead.
+    * <p>
+    * <b>Note</b>: Precision may be lost if no supplied {@link TimeUnit} is granular enough to represent the remainder
+    * of time (in milliseconds).
+    *
+    * @param then The {@link Instant} to be compared against the reference timestamp, or <i>now</i> if no reference
+    *           timestamp was provided
+    * @return A sorted {@link List} of {@link Duration} objects, from largest to smallest. Each element in the list
+    *         represents the approximate duration (number of times) that {@link TimeUnit} to fit into the previous
+    *         element's delta. The first element is the largest {@link TimeUnit} to fit within the total difference
+    *         between compared dates.
+    */
+   public List<Duration> calculatePreciseDuration(Instant then)
+   {
+      return calculatePreciseDuration(then != null ? Date.from(then) : null);
    }
 
    /**
@@ -312,6 +347,97 @@ public class PrettyTime
    }
 
    /**
+    * Format the given {@link Instant} object. If the given {@link Instant} is <code>null</code>, the current value of
+    * {@link System#currentTimeMillis()} will be used instead.
+    *
+    * @param then the {@link Instant} to be formatted
+    * @return A formatted string representing {@code then}
+    */
+   public String format(final Instant then)
+   {
+      return format(approximateDuration(then));
+   }
+
+   /**
+    * Format the given {@link ZonedDateTime} object. If the given {@link ZonedDateTime} is <code>null</code>, the
+    * current value of {@link System#currentTimeMillis()} will be used instead.
+    *
+    * @param then the {@link ZonedDateTime} to be formatted
+    * @return A formatted string representing {@code then}
+    */
+   public String format(final ZonedDateTime then)
+   {
+      return format(then != null ? then.toInstant() : null);
+   }
+
+   /**
+    * Format the given {@link OffsetDateTime} object. If the given {@link OffsetDateTime} is <code>null</code>, the
+    * current value of {@link System#currentTimeMillis()} will be used instead.
+    *
+    * @param then the {@link OffsetDateTime} to be formatted
+    * @return A formatted string representing {@code then}
+    */
+   public String format(final OffsetDateTime then)
+   {
+      return format(then != null ? then.toInstant() : null);
+   }
+
+   /**
+    * Format the given {@link LocalDateTime} object using the given {@link ZoneId}. If the given {@link LocalDateTime}
+    * is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used instead.
+    *
+    * @param then the {@link LocalDateTime} to be formatted
+    * @param zoneId the {@link ZoneId} to be used, not null
+    * @return A formatted string representing {@code then}
+    */
+   public String format(final LocalDateTime then, final ZoneId zoneId)
+   {
+      return format(then != null ? then.atZone(zoneId) : null);
+   }
+
+   /**
+    * Format the given {@link LocalDateTime} object using the system default {@link ZoneId}. If the given
+    * {@link LocalDateTime} is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used
+    * instead.
+    *
+    * @param then the {@link LocalDateTime} to be formatted
+    * @return A formatted string representing {@code then}
+    */
+   public String format(final LocalDateTime then)
+   {
+      return format(then, ZoneId.systemDefault());
+   }
+
+   /**
+    * Format the given {@link LocalDate} object using the given {@link ZoneId}. If the given {@link LocalDate} is
+    * <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used instead.
+    *
+    * <p>This assumes that the time of the given date is midnight.</p>
+    *
+    * @param then the {@link LocalDate} to be formatted
+    * @param zoneId the {@link ZoneId} to be used, not null
+    * @return A formatted string representing {@code then}
+    */
+   public String format(final LocalDate then, final ZoneId zoneId)
+   {
+      return format(then != null ? then.atStartOfDay(zoneId) : null);
+   }
+
+   /**
+    * Format the given {@link LocalDate} object using the system default {@link ZoneId}. If the given {@link LocalDate}
+    * is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used instead.
+    *
+    * <p>This assumes that the time of the given date is midnight.</p>
+    *
+    * @param then the {@link LocalDate} to be formatted
+    * @return A formatted string representing {@code then}
+    */
+   public String format(final LocalDate then)
+   {
+      return format(then != null ? then.atStartOfDay() : null);
+   }
+
+   /**
     * Format the given {@link Date} object. Rounding rules are ignored. If the given {@link Date} is <code>null</code>,
     * the current value of {@link System#currentTimeMillis()} will be used instead.
     * 
@@ -390,6 +516,100 @@ public class PrettyTime
    }
 
    /**
+    * Format the given {@link Instant} object. Rounding rules are ignored. If the given {@link Instant} is
+    * <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used instead.
+    *
+    * @param then the {@link Instant} to be formatted
+    * @return A formatted string representing {@code then}
+    */
+   public String formatUnrounded(final Instant then)
+   {
+      return formatUnrounded(approximateDuration(then));
+   }
+
+   /**
+    * Format the given {@link ZonedDateTime} object. Rounding rules are ignored. If the given {@link ZonedDateTime} is
+    * <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used instead.
+    *
+    * @param then the {@link ZonedDateTime} to be formatted
+    * @return A formatted string representing {@code then}
+    */
+   public String formatUnrounded(final ZonedDateTime then)
+   {
+      return formatUnrounded(then != null ? then.toInstant() : null);
+   }
+
+   /**
+    * Format the given {@link OffsetDateTime} object. Rounding rules are ignored. If the given {@link OffsetDateTime} is
+    * <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used instead.
+    *
+    * @param then the {@link OffsetDateTime} to be formatted
+    * @return A formatted string representing {@code then}
+    */
+   public String formatUnrounded(final OffsetDateTime then)
+   {
+      return formatUnrounded(then != null ? then.toInstant() : null);
+   }
+
+   /**
+    * Format the given {@link LocalDateTime} object using the given {@link ZoneId}. Rounding rules are ignored. If the
+    * given {@link LocalDateTime} is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be
+    * used instead.
+    *
+    * @param then the {@link LocalDateTime} to be formatted
+    * @param zoneId the {@link ZoneId} to be used, not null
+    * @return A formatted string representing {@code then}
+    */
+   public String formatUnrounded(final LocalDateTime then, final ZoneId zoneId)
+   {
+      return formatUnrounded(then != null ? then.atZone(zoneId) : null);
+   }
+
+   /**
+    * Format the given {@link LocalDateTime} object using the system default {@link ZoneId}. Rounding rules are ignored.
+    * If the given {@link LocalDateTime} is <code>null</code>, the current value of {@link System#currentTimeMillis()}
+    * will be used instead.
+    *
+    * @param then the {@link LocalDateTime} to be formatted
+    * @return A formatted string representing {@code then}
+    */
+   public String formatUnrounded(final LocalDateTime then)
+   {
+      return formatUnrounded(then, ZoneId.systemDefault());
+   }
+
+   /**
+    * Format the given {@link LocalDate} object using the given {@link ZoneId}. Rounding rules are ignored. If the
+    * given {@link LocalDate} is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be
+    * used instead.
+    *
+    * <p>This assumes that the time of the given date is midnight.</p>
+    *
+    * @param then the {@link LocalDate} to be formatted
+    * @param zoneId the {@link ZoneId} to be used, not null
+    * @return A formatted string representing {@code then}
+    */
+   public String formatUnrounded(final LocalDate then, final ZoneId zoneId)
+   {
+      return formatUnrounded(then != null ? then.atStartOfDay(zoneId) : null);
+   }
+
+   /**
+    * Format the given {@link LocalDate} object using the system default {@link ZoneId}. Rounding rules are ignored.
+    * If the given {@link LocalDate} is <code>null</code>, the current value of {@link System#currentTimeMillis()}
+    * will be used instead.
+    *
+    * <p>This assumes that the time of the given date is midnight.</p>
+    *
+    * @param then the {@link LocalDate} to be formatted
+    * @return A formatted string representing {@code then}
+    */
+   public String formatUnrounded(final LocalDate then)
+   {
+      return formatUnrounded(then != null ? then.atStartOfDay() : null);
+   }
+
+   /**
     * Format the given {@link Date} and return a non-relative (not decorated with past or future tense) {@link String}
     * for the approximate duration of its difference between the reference {@link Date}. If the given {@link Date} is
     * <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used instead.
@@ -447,7 +667,7 @@ public class PrettyTime
     * {@link Duration} is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used
     * instead.
     * 
-    * @param duration the duration to be formatted
+    * @param durations the durations to be formatted
     * @return A formatted string of the given {@link Duration}
     */
    public String formatDuration(final List<Duration> durations)
@@ -473,6 +693,112 @@ public class PrettyTime
       }
 
       return result.toString();
+   }
+
+   /**
+    * Format the given {@link Instant} and return a non-relative (not decorated with past or future tense) {@link String}
+    * for the approximate duration of its difference between the reference {@link Date}. If the given {@link Instant} is
+    * <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used instead.
+    * <p>
+    *
+    * @param then the {@link Instant} to be formatted
+    * @return A formatted string of the given {@link Instant}
+    */
+   public String formatDuration(final Instant then)
+   {
+      return formatDuration(approximateDuration(then));
+   }
+
+   /**
+    * Format the given {@link Instant} and return a non-relative (not decorated with past or future tense) {@link String}
+    * for the approximate duration of its difference between the reference {@link Date}. If the given {@link Instant} is
+    * <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used instead.
+    * <p>
+    *
+    * @param then the {@link ZonedDateTime} to be formatted
+    * @return A formatted string of the given {@link Instant}
+    */
+   public String formatDuration(final ZonedDateTime then)
+   {
+      return formatDuration(then != null ? then.toInstant() : null);
+   }
+
+   /**
+    * Format the given {@link Instant} and return a non-relative (not decorated with past or future tense) {@link String}
+    * for the approximate duration of its difference between the reference {@link Date}. If the given {@link Instant} is
+    * <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used instead.
+    * <p>
+    *
+    * @param then the {@link OffsetDateTime} to be formatted
+    * @return A formatted string of the given {@link Instant}
+    */
+   public String formatDuration(final OffsetDateTime then)
+   {
+      return formatDuration(then != null ? then.toInstant() : null);
+   }
+
+   /**
+    * Format the given {@link LocalDateTime} using the given {@link ZoneId} and return a non-relative (not decorated
+    * with past or future tense) {@link String} for the approximate duration of its difference between the reference
+    * {@link Date}. If the given {@link Instant} is <code>null</code>, the current value of
+    * {@link System#currentTimeMillis()} will be used instead.
+    * <p>
+    *
+    * @param then the {@link LocalDateTime} to be formatted
+    * @param zoneId the {@link ZoneId} to be used, not null
+    * @return A formatted string of the given {@link LocalDateTime}
+    */
+   public String formatDuration(final LocalDateTime then, final ZoneId zoneId)
+   {
+      return formatDuration(then != null ? then.atZone(zoneId) : null);
+   }
+
+   /**
+    * Format the given {@link LocalDateTime} using the system default {@link ZoneId} and return a non-relative (not
+    * decorated with past or future tense) {@link String} for the approximate duration of its difference between the
+    * reference {@link Date}. If the given {@link Instant} is <code>null</code>, the current value of
+    * {@link System#currentTimeMillis()} will be used instead.
+    * <p>
+    *
+    * @param then the {@link LocalDateTime} to be formatted
+    * @return A formatted string of the given {@link LocalDateTime}
+    */
+   public String formatDuration(final LocalDateTime then)
+   {
+      return formatDuration(then, ZoneId.systemDefault());
+   }
+
+   /**
+    * Format the given {@link LocalDate} using the given {@link ZoneId} and return a non-relative (not decorated with
+    * past or future tense) {@link String} for the approximate duration of its difference between the reference
+    * {@link Date}. If the given {@link LocalDate} is <code>null</code>, the current value of
+    * {@link System#currentTimeMillis()} will be used instead.
+    *
+    * <p>This assumes that the time of the given date is midnight.</p>
+    *
+    * @param then the {@link LocalDate} to be formatted
+    * @param zoneId the {@link ZoneId} to be used, not null
+    * @return A formatted string of the given {@link LocalDate}
+    */
+   public String formatDuration(final LocalDate then, final ZoneId zoneId)
+   {
+      return formatDuration(then != null ? then.atStartOfDay(zoneId) : null);
+   }
+
+   /**
+    * Format the given {@link LocalDate} using the system default {@link ZoneId} and return a non-relative (not
+    * decorated with past or future tense) {@link String} for the approximate duration of its difference between the
+    * reference {@link Date}. If the given {@link LocalDate} is <code>null</code>, the current value of
+    * {@link System#currentTimeMillis()} will be used instead.
+    *
+    * <p>This assumes that the time of the given date is midnight.</p>
+    *
+    * @param then the {@link LocalDate} to be formatted
+    * @return A formatted string of the given {@link LocalDate}
+    */
+   public String formatDuration(final LocalDate then)
+   {
+      return formatDuration(then != null ? then.atStartOfDay() : null);
    }
 
    /**
@@ -534,7 +860,7 @@ public class PrettyTime
     * are ignored. If the given {@link Duration} is <code>null</code>, the current value of
     * {@link System#currentTimeMillis()} will be used instead.
     * 
-    * @param duration the duration to be formatted
+    * @param durations the durations to be formatted
     * @return A formatted string of the given {@link Duration}
     */
    public String formatDurationUnrounded(final List<Duration> durations)
@@ -555,6 +881,113 @@ public class PrettyTime
       }
 
       return result.toString();
+   }
+
+   /**
+    * Format the given {@link Instant} and return a non-relative (not decorated with past or future tense) {@link String}
+    * for the approximate duration of its difference between the reference {@link Date}. Rounding rules are ignored. If
+    * the given {@link Instant} is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be
+    * used instead.
+    * <p>
+    *
+    * @param then the {@link Instant} to be formatted
+    * @return A formatted string of the given {@link Instant}
+    */
+   public String formatDurationUnrounded(final Instant then)
+   {
+      return formatDurationUnrounded(approximateDuration(then));
+   }
+
+   /**
+    * Format the given {@link ZonedDateTime} and return a non-relative (not decorated with past or future tense)
+    * {@link String} for the approximate duration of its difference between the reference {@link Date}. Rounding rules
+    * are ignored. If the given {@link Date} is <code>null</code>, the current value of
+    * {@link System#currentTimeMillis()} will be used instead.
+    * <p>
+    *
+    * @param then the {@link ZonedDateTime} to be formatted
+    * @return A formatted string of the given {@link ZonedDateTime}
+    */
+   public String formatDurationUnrounded(final ZonedDateTime then)
+   {
+      return formatDurationUnrounded(then != null ? then.toInstant() : null);
+   }
+
+   /**
+    * Format the given {@link OffsetDateTime} and return a non-relative (not decorated with past or future tense)
+    * {@link String} for the approximate duration of its difference between the reference {@link Date}. Rounding rules
+    * are ignored. If the given {@link OffsetDateTime} is <code>null</code>, the current value of
+    * {@link System#currentTimeMillis()} will be used instead.
+    * <p>
+    *
+    * @param then the {@link OffsetDateTime} to be formatted
+    * @return A formatted string of the given {@link OffsetDateTime}
+    */
+   public String formatDurationUnrounded(final OffsetDateTime then)
+   {
+      return formatDurationUnrounded(then != null ? then.toInstant() : null);
+   }
+
+   /**
+    * Format the given {@link LocalDateTime} using the given {@link ZoneId} and return a non-relative (not decorated
+    * with past or future tense) {@link String} for the approximate duration of its difference between the reference
+    * {@link Date}. Rounding rules are ignored. If the given {@link LocalDateTime} is <code>null</code>, the current
+    * value of {@link System#currentTimeMillis()} will be used instead.
+    * <p>
+    *
+    * @param then the {@link LocalDateTime} to be formatted
+    * @return A formatted string of the given {@link LocalDateTime}
+    */
+   public String formatDurationUnrounded(final LocalDateTime then, final ZoneId zoneId)
+   {
+      return formatDurationUnrounded(then != null ? then.atZone(zoneId) : null);
+   }
+
+   /**
+    * Format the given {@link LocalDateTime} using the system default {@link ZoneId} and return a non-relative (not
+    * decorated with past or future tense) {@link String} for the approximate duration of its difference between the
+    * reference {@link Date}. Rounding rules are ignored. If the given {@link LocalDateTime} is <code>null</code>, the
+    * current value of {@link System#currentTimeMillis()} will be used instead.
+    * <p>
+    *
+    * @param then the {@link LocalDateTime} to be formatted
+    * @return A formatted string of the given {@link LocalDateTime}
+    */
+   public String formatDurationUnrounded(final LocalDateTime then)
+   {
+      return formatDurationUnrounded(then, ZoneId.systemDefault());
+   }
+
+   /**
+    * Format the given {@link LocalDate} using the given {@link ZoneId} and return a non-relative (not decorated with
+    * past or future tense) {@link String} for the approximate duration of its difference between the reference
+    * {@link Date}. Rounding rules are ignored. If the given {@link LocalDate} is <code>null</code>, the current value
+    * of {@link System#currentTimeMillis()} will be used instead.
+    *
+    * <p>This assumes that the time of the given date is midnight.</p>
+    *
+    * @param then the {@link LocalDate} to be formatted
+    * @return A formatted string of the given {@link LocalDate}
+    */
+   public String formatDurationUnrounded(final LocalDate then, final ZoneId zoneId)
+   {
+      return formatDurationUnrounded(then != null ? then.atStartOfDay(zoneId) : null);
+   }
+
+   /**
+    * Format the given {@link LocalDate} using the system default {@link ZoneId} and return a non-relative (not decorated
+    * with past or future tense) {@link String} for the approximate duration of its difference between the reference
+    * {@link Date}. Rounding rules are ignored. If the given {@link LocalDate} is <code>null</code>, the current value
+    * of {@link System#currentTimeMillis()} will be used instead.
+    *
+    * <p>This assumes that the time of the given date is midnight.</p>
+    *
+    * @param then the {@link LocalDate} to be formatted
+    * @return A formatted string of the given {@link LocalDate}
+    */
+   public String formatDurationUnrounded(final LocalDate then)
+   {
+      return formatDurationUnrounded(then != null ? then.atStartOfDay() : null);
    }
 
    /**

@@ -16,6 +16,8 @@
 package org.ocpsoft.prettytime;
 
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -76,6 +78,12 @@ public class PrettyTimeTest
       Assert.assertEquals("2 hours 2 minutes ago", t.format(preciseDuration));
       Assert.assertEquals("2 hours 2 minutes", t.formatDuration(preciseDuration));
       Assert.assertEquals("moments from now", t.format(t.calculatePreciseDuration(new Date())));
+
+      preciseDuration = t.calculatePreciseDuration(Instant.now().minus(2, ChronoUnit.HOURS)
+              .minus(2, ChronoUnit.MINUTES));
+      Assert.assertEquals("2 hours 2 minutes ago", t.format(preciseDuration));
+      Assert.assertEquals("2 hours 2 minutes", t.formatDuration(preciseDuration));
+      Assert.assertEquals("moments from now", t.format(t.calculatePreciseDuration(Instant.now())));
    }
 
    @Test
@@ -367,7 +375,11 @@ public class PrettyTimeTest
       Date tenMinAgo = new Date(System.currentTimeMillis() - tenMinMillis);
       PrettyTime t = new PrettyTime();
       String result = t.formatDuration(tenMinAgo);
-      Assert.assertTrue(result.equals("10 minutes"));
+      Assert.assertEquals("10 minutes", result);
+
+      Instant tenMinutesAgo = Instant.now().minus(10, ChronoUnit.MINUTES);
+      result = t.formatDuration(tenMinutesAgo);
+      Assert.assertEquals("10 minutes", result);
    }
 
    @Test
@@ -377,7 +389,11 @@ public class PrettyTimeTest
       Date tenMinAgo = new Date(System.currentTimeMillis() - tenMinMillis);
       PrettyTime t = new PrettyTime();
       String result = t.formatDuration(tenMinAgo);
-      Assert.assertTrue(result.equals("11 minutes"));
+      Assert.assertEquals("11 minutes", result);
+
+      Instant tenMinutesAgo = Instant.now().minus(10, ChronoUnit.MINUTES).minusSeconds(40);
+      result = t.formatDuration(tenMinutesAgo);
+      Assert.assertEquals("11 minutes", result);
    }
 
    @Test
@@ -387,7 +403,11 @@ public class PrettyTimeTest
       Date tenMinAgo = new Date(System.currentTimeMillis() - tenMinMillis);
       PrettyTime t = new PrettyTime();
       String result = t.formatDurationUnrounded(tenMinAgo);
-      Assert.assertTrue(result.equals("10 minutes"));
+      Assert.assertEquals("10 minutes", result);
+
+      Instant tenMinutesAgo = Instant.now().minus(10, ChronoUnit.MINUTES).minusSeconds(40);
+      result = t.formatDurationUnrounded(tenMinutesAgo);
+      Assert.assertEquals("10 minutes", result);
    }
 
    @Test

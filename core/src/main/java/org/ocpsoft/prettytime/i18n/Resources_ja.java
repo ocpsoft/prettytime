@@ -1,16 +1,16 @@
 package org.ocpsoft.prettytime.i18n;
 
-import java.util.ListResourceBundle;
-import java.util.ResourceBundle;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 import org.ocpsoft.prettytime.Duration;
 import org.ocpsoft.prettytime.TimeFormat;
 import org.ocpsoft.prettytime.TimeUnit;
 import org.ocpsoft.prettytime.impl.TimeFormatProvider;
 import org.ocpsoft.prettytime.units.Decade;
 import org.ocpsoft.prettytime.units.Millennium;
+
+import java.util.ListResourceBundle;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Resources_ja extends ListResourceBundle implements TimeFormatProvider
 {
@@ -113,15 +113,12 @@ public class Resources_ja extends ListResourceBundle implements TimeFormatProvid
       return OBJECTS;
    }
 
-   private volatile ConcurrentMap<TimeUnit, TimeFormat> formatMap = new ConcurrentHashMap<TimeUnit, TimeFormat>();
+   private final Map<TimeUnit, TimeFormat> formatMap = new ConcurrentHashMap<>();
 
    @Override
    public TimeFormat getFormatFor(TimeUnit t)
    {
-      if (!formatMap.containsKey(t)) {
-         formatMap.putIfAbsent(t, new JaTimeFormat(this, t));
-      }
-      return formatMap.get(t);
+      return formatMap.computeIfAbsent(t, unit -> new JaTimeFormat(this, unit));
    }
 
    private static class JaTimeFormat implements TimeFormat

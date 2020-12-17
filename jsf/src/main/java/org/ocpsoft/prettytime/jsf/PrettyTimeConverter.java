@@ -57,21 +57,14 @@ public class PrettyTimeConverter implements Converter, Serializable
     {
         if (value instanceof Date)
         {
-            PrettyTime prettyTime;
-
             // Use locale of current viewer.
             Locale locale = context.getViewRoot().getLocale();
 
             synchronized (PRETTY_TIME_LOCALE_MAP)
             {
-                prettyTime = PRETTY_TIME_LOCALE_MAP.get(locale);
-                if (prettyTime == null)
-                {
-                    prettyTime = new PrettyTime(locale);
-                    PRETTY_TIME_LOCALE_MAP.put(locale, prettyTime);
-                }
+                return PRETTY_TIME_LOCALE_MAP.computeIfAbsent(locale, PrettyTime::new)
+                        .format((Date) value);
             }
-            return prettyTime.format((Date) value);
         }
         throw new ConverterException("May only be used to convert java.util.Date objects. Got: " + (value != null ? value.getClass() : "null"));
     }

@@ -1,16 +1,16 @@
 package org.ocpsoft.prettytime.i18n;
 
-import java.util.ListResourceBundle;
-import java.util.ResourceBundle;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 import org.ocpsoft.prettytime.Duration;
 import org.ocpsoft.prettytime.TimeFormat;
 import org.ocpsoft.prettytime.TimeUnit;
 import org.ocpsoft.prettytime.format.SimpleTimeFormat;
 import org.ocpsoft.prettytime.impl.TimeFormatProvider;
 import org.ocpsoft.prettytime.units.Day;
+
+import java.util.ListResourceBundle;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Resources_fi extends ListResourceBundle implements TimeFormatProvider
 {
@@ -103,7 +103,7 @@ public class Resources_fi extends ListResourceBundle implements TimeFormatProvid
             { "MillenniumPastSuffix", "sitten" },
             { "MillenniumFutureSuffix", "päästä" },
    };
-   private volatile ConcurrentMap<TimeUnit, TimeFormat> formatMap = new ConcurrentHashMap<TimeUnit, TimeFormat>();
+   private final Map<TimeUnit, TimeFormat> formatMap = new ConcurrentHashMap<>();
 
    public Resources_fi()
    {}
@@ -111,10 +111,7 @@ public class Resources_fi extends ListResourceBundle implements TimeFormatProvid
    @Override
    public TimeFormat getFormatFor(TimeUnit t)
    {
-      if (!formatMap.containsKey(t)) {
-         formatMap.putIfAbsent(t, new FiTimeFormat(this, t));
-      }
-      return formatMap.get(t);
+      return formatMap.computeIfAbsent(t, unit -> new FiTimeFormat(this, unit));
    }
 
    @Override

@@ -74,8 +74,8 @@ public abstract class ResourcesTimeUnit implements TimeUnit
    {
       final int prime = 31;
       int result = 1;
-      result = prime * result + (int) (maxQuantity ^ (maxQuantity >>> 32));
-      result = prime * result + (int) (millisPerUnit ^ (millisPerUnit >>> 32));
+      result = prime * result + Long.hashCode(maxQuantity);
+      result = prime * result + Long.hashCode(millisPerUnit);
       return result;
    }
 
@@ -91,8 +91,6 @@ public abstract class ResourcesTimeUnit implements TimeUnit
       ResourcesTimeUnit other = (ResourcesTimeUnit) obj;
       if (maxQuantity != other.maxQuantity)
          return false;
-      if (millisPerUnit != other.millisPerUnit)
-         return false;
-      return true;
+      return millisPerUnit == other.millisPerUnit;
    }
 }

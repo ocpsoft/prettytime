@@ -18,6 +18,8 @@ package org.ocpsoft.prettytime.impl;
 import org.ocpsoft.prettytime.Duration;
 import org.ocpsoft.prettytime.TimeUnit;
 
+import java.util.Objects;
+
 public class DurationImpl implements Duration
 {
 
@@ -98,9 +100,9 @@ public class DurationImpl implements Duration
    {
       final int prime = 31;
       int result = 1;
-      result = prime * result + (int) (delta ^ (delta >>> 32));
-      result = prime * result + (int) (quantity ^ (quantity >>> 32));
-      result = prime * result + ((unit == null) ? 0 : unit.hashCode());
+      result = prime * result + Long.hashCode(delta);
+      result = prime * result + Long.hashCode(quantity);
+      result = prime * result + Objects.hashCode(unit);
       return result;
    }
 
@@ -118,12 +120,6 @@ public class DurationImpl implements Duration
          return false;
       if (quantity != other.quantity)
          return false;
-      if (unit == null) {
-         if (other.unit != null)
-            return false;
-      }
-      else if (!unit.equals(other.unit))
-         return false;
-      return true;
+      return Objects.equals(unit, other.unit);
    }
 }

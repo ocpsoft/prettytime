@@ -218,11 +218,17 @@ public class PrettyTimeAPIManipulationTest
    @Test
    public void testApiMisuse12() throws Exception
    {
+      t.getReferenceAsLegacyDate();
+   }
+
+   @Test
+   public void testApiMisuse13() throws Exception
+   {
       t.getUnits();
    }
 
    @Test(expected = IllegalArgumentException.class)
-   public void testApiMisuse13() throws Exception
+   public void testApiMisuse14() throws Exception
    {
       t.registerUnit(null, null);
    }

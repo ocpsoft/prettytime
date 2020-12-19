@@ -297,7 +297,7 @@ public class PrettyTimeTest
    public void testPreciseInTheFuture() throws Exception
    {
       PrettyTime t = new PrettyTime();
-      List<Duration> durations = t.calculatePreciseDuration(now.plusHours(5).plusMinutes(10));
+      List<Duration> durations = t.calculatePreciseDuration(now.plusHours(5).plusMinutes(10).plusSeconds(1));
       Assert.assertTrue(durations.size() >= 2);
       Assert.assertEquals(5, durations.get(0).getQuantity());
       Assert.assertEquals(10, durations.get(1).getQuantity());
@@ -307,7 +307,7 @@ public class PrettyTimeTest
    public void testPreciseInThePast() throws Exception
    {
       PrettyTime t = new PrettyTime();
-      List<Duration> durations = t.calculatePreciseDuration(now.minusHours(5).minusMinutes(10));
+      List<Duration> durations = t.calculatePreciseDuration(now.minusHours(5).minusMinutes(10).minusSeconds(1));
       Assert.assertTrue(durations.size() >= 2);
       Assert.assertEquals(-5, durations.get(0).getQuantity());
       Assert.assertEquals(-10, durations.get(1).getQuantity());

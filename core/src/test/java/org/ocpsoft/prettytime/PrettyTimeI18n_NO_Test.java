@@ -18,6 +18,7 @@ package org.ocpsoft.prettytime;
 import static org.junit.Assert.assertEquals;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Locale;
 
@@ -42,7 +43,7 @@ public class PrettyTimeI18n_NO_Test
    public void testPrettyTime()
    {
       PrettyTime p = new PrettyTime(locale);
-      assertEquals("straks", p.format(new Date()));
+      assertEquals("straks", p.format(LocalDateTime.now().plusSeconds(1)));
    }
 
    @Test

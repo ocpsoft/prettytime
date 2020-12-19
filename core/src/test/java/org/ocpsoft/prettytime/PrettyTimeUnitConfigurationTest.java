@@ -26,6 +26,8 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.ocpsoft.prettytime.impl.ResourcesTimeFormat;
+import org.ocpsoft.prettytime.impl.ResourcesTimeUnit;
 import org.ocpsoft.prettytime.units.Hour;
 import org.ocpsoft.prettytime.units.JustNow;
 import org.ocpsoft.prettytime.units.Minute;
@@ -83,6 +85,26 @@ public class PrettyTimeUnitConfigurationTest
    {
       PrettyTime prettyTime = new PrettyTime();
       prettyTime.getUnit(JustNow.class).setMaxQuantity(1000L * 2L);
+      Assert.assertEquals("moments ago", prettyTime.format(LocalDateTime.now().minusSeconds(1)));
+   }
+
+   @Test
+   public void testRemoveAndReadUnit()
+   {
+      PrettyTime prettyTime = new PrettyTime();
+      prettyTime.removeUnit(JustNow.class);
+      ResourcesTimeUnit justNow = new ResourcesTimeUnit() {
+         {
+            setMaxQuantity(10000);
+         }
+
+         @Override
+         protected String getResourceKeyPrefix()
+         {
+            return "JustNow";
+         }
+      };
+      prettyTime.registerUnit(justNow, new ResourcesTimeFormat(justNow));
       Assert.assertEquals("moments ago", prettyTime.format(LocalDateTime.now().minusSeconds(1)));
    }
 

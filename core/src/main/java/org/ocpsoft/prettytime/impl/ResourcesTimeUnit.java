@@ -22,8 +22,15 @@ import org.ocpsoft.prettytime.TimeUnit;
  */
 public abstract class ResourcesTimeUnit implements TimeUnit
 {
+   private static long ID = 0;
+   private long id = 0;
    private long maxQuantity = 0;
    private long millisPerUnit = 1;
+
+   public ResourcesTimeUnit()
+   {
+      this.id = ID++;
+   }
 
    /**
     * Return the time-unit prefix to specify which value to load from the bundle.
@@ -77,8 +84,7 @@ public abstract class ResourcesTimeUnit implements TimeUnit
    {
       final int prime = 31;
       int result = 1;
-      result = prime * result + Long.hashCode(maxQuantity);
-      result = prime * result + Long.hashCode(millisPerUnit);
+      result = prime * result + Long.hashCode(id);
       return result;
    }
 

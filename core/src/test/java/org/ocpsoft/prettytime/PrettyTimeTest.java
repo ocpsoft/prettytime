@@ -68,6 +68,14 @@ public class PrettyTimeTest
    }
 
    @Test
+   public void testRightNowWithReference() throws Exception
+   {
+      Date now = new Date();
+      PrettyTime t = new PrettyTime();
+      Assert.assertEquals("moments from now", t.format(now));
+   }
+
+   @Test
    public void testCalculatePreciceDuration() throws Exception
    {
       PrettyTime t = new PrettyTime();

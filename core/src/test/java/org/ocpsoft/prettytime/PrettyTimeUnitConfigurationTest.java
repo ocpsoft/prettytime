@@ -18,6 +18,7 @@ package org.ocpsoft.prettytime;
 import static org.junit.Assert.assertEquals;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Locale;
 
@@ -60,7 +61,10 @@ public class PrettyTimeUnitConfigurationTest
    public void testMinutesFromNow() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(0));
+      System.out.println(t.getUnits());
+      Assert.assertEquals(12, t.getUnits().size());
       TimeFormat format = t.removeUnit(Minute.class);
+      Assert.assertEquals(11, t.getUnits().size());
       Assert.assertNotNull(format);
       assertEquals("720 seconds from now", t.format(new Date(1000 * 60 * 12)));
    }
@@ -72,6 +76,14 @@ public class PrettyTimeUnitConfigurationTest
       TimeFormat format = t.removeUnit(Hour.class);
       Assert.assertNotNull(format);
       assertEquals("180 minutes from now", t.format(new Date(1000 * 60 * 60 * 3)));
+   }
+
+   @Test
+   public void testModifyUnitInPlace()
+   {
+      PrettyTime prettyTime = new PrettyTime();
+      prettyTime.getUnit(JustNow.class).setMaxQuantity(1000L * 2L);
+      Assert.assertEquals("moments ago", prettyTime.format(LocalDateTime.now().minusSeconds(1)));
    }
 
    // Method tearDown() is called automatically after every test method

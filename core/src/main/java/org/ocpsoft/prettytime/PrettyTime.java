@@ -26,10 +26,10 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.ocpsoft.prettytime.impl.DurationImpl;
 import org.ocpsoft.prettytime.impl.ResourcesTimeFormat;
@@ -71,9 +71,9 @@ public class PrettyTime
 {
    private volatile Instant reference;
    private volatile Locale locale = Locale.getDefault();
-   private final Map<TimeUnit, TimeFormat> units = new LinkedHashMap<>();
+   private final Map<TimeUnit, TimeFormat> units = new ConcurrentHashMap<>();
    private volatile List<TimeUnit> cachedUnits;
-   private final String overrideResourceBundle;
+   private String overrideResourceBundle;
 
    /**
     * Create a new {@link PrettyTime} instance that will always use the current value of
@@ -83,7 +83,6 @@ public class PrettyTime
    public PrettyTime()
    {
       this((String) null);
-      initTimeUnits();
    }
 
    /**
@@ -95,7 +94,7 @@ public class PrettyTime
    public PrettyTime(final String overrideResourceBundle)
    {
       this.overrideResourceBundle = overrideResourceBundle;
-      initTimeUnits();
+      this.initTimeUnits();
    }
 
    /**
@@ -268,9 +267,8 @@ public class PrettyTime
     */
    public PrettyTime(final Locale locale)
    {
-      this.overrideResourceBundle = null;
+      this();
       setLocale(locale);
-      initTimeUnits();
    }
 
    /**
@@ -282,9 +280,8 @@ public class PrettyTime
     */
    public PrettyTime(final Locale locale, String overrideResourceBundle)
    {
-      this.overrideResourceBundle = overrideResourceBundle;
+      this(overrideResourceBundle);
       setLocale(locale);
-      initTimeUnits();
    }
 
    /**
@@ -333,6 +330,9 @@ public class PrettyTime
 
       final Instant ref = reference != null ? reference : Instant.now();
       long difference = then.getTime() - ref.toEpochMilli();
+      if (difference == 0) {
+         difference = 1;
+      }
       return calculateDuration(difference);
    }
 

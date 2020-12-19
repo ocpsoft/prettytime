@@ -75,12 +75,13 @@ public class PrettyTimeTest
                new Date(System.currentTimeMillis() - (2 * 60 * 60 * 1000) - (2 * 60 * 1000)));
       Assert.assertEquals("2 hours 2 minutes ago", t.format(preciseDuration));
       Assert.assertEquals("2 hours 2 minutes", t.formatDuration(preciseDuration));
-      Assert.assertEquals("moments from now", t.format(t.calculatePreciseDuration(new Date())));
+      Assert.assertEquals("moments ago",
+               t.format(t.calculatePreciseDuration(new Date(new Date().getTime() - 10))));
 
       preciseDuration = t.calculatePreciseDuration(now.minusHours(2).minusMinutes(2));
       Assert.assertEquals("2 hours 2 minutes ago", t.format(preciseDuration));
       Assert.assertEquals("2 hours 2 minutes", t.formatDuration(preciseDuration));
-      Assert.assertEquals("moments from now", t.format(t.calculatePreciseDuration(LocalDateTime.now())));
+      Assert.assertEquals("moments from now", t.format(t.calculatePreciseDuration(LocalDateTime.now().plusSeconds(1))));
    }
 
    @Test
@@ -93,6 +94,27 @@ public class PrettyTimeTest
                t.format(durations));
       Assert.assertEquals("1 millennium 9 centuries 4 decades 4 years 8 months 1 week 6 days 20 hours 5 minutes",
                t.formatDuration(durations));
+   }
+
+   @Test
+   public void testCalculatePreciseDurationSingleUnit()
+   {
+      PrettyTime prettyTime = new PrettyTime();
+      Minute minutes = new Minute();
+      prettyTime.setUnits(minutes);
+      Assert.assertEquals("40 minutes ago", prettyTime.formatUnrounded(prettyTime
+               .calculatePreciseDuration(now.minusSeconds(40).minusMinutes(40))));
+   }
+
+   @Test
+   public void testCalculatePreciseDurationSingleUnitWithFormat()
+   {
+      PrettyTime prettyTime = new PrettyTime();
+      Minute minutes = new Minute();
+      TimeFormat format = new SimpleTimeFormat().setPluralName("woah man").setPattern("%n %u");
+      prettyTime.setUnits(format, minutes);
+      Assert.assertEquals("40 woah man", prettyTime.formatUnrounded(prettyTime
+               .calculatePreciseDuration(now.minusSeconds(40).minusMinutes(40))));
    }
 
    @Test

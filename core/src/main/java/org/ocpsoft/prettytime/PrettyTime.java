@@ -350,6 +350,62 @@ public class PrettyTime
    }
 
    /**
+    * Calculate the approximate {@link Duration} between the reference {@link Instant} and given {@link LocalDateTime}.
+    * If the given {@link LocalDateTime} is <code>null</code>, the current value of {@link System#currentTimeMillis()}
+    * will be used instead.
+    *
+    * @see #getReference()
+    */
+   public Duration approximateDuration(LocalDate then)
+   {
+      return approximateDuration(then != null ? then.atStartOfDay(ZoneId.systemDefault()).toInstant() : null);
+   }
+
+   /**
+    * Calculate the approximate {@link Duration} between the reference {@link Instant} and given {@link LocalDate}. If
+    * the given {@link LocalDate} is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be
+    * used instead.
+    *
+    * @param then   The {@link LocalDate} to be compared against the reference timestamp, or <i>now</i> if no reference
+    *                  timestamp was provided
+    * @param zoneId The {@link ZoneId} to be used, not null
+    * @see #getReference()
+    */
+   public Duration approximateDuration(LocalDate then, final ZoneId zoneId)
+   {
+      return approximateDuration(then != null ? then.atStartOfDay(ZoneId.systemDefault()).toInstant() : null);
+   }
+
+   /**
+    * Calculate the approximate {@link Duration} between the reference {@link Instant} and given {@link LocalDateTime}.
+    * If the given {@link LocalDateTime} is <code>null</code>, the current value of {@link System#currentTimeMillis()}
+    * will be used instead.
+    *
+    * @param then The {@link LocalDate} to be compared against the reference timestamp, or <i>now</i> if no reference
+    *                timestamp was provided
+    * @see #getReference()
+    */
+   public Duration approximateDuration(LocalDateTime then)
+   {
+      return approximateDuration(then != null ? then.atZone(ZoneId.systemDefault()).toInstant() : null);
+   }
+
+   /**
+    * Calculate the approximate {@link Duration} between the reference {@link Instant} and given {@link LocalDateTime}.
+    * If the given {@link LocalDateTime} is <code>null</code>, the current value of {@link System#currentTimeMillis()}
+    * will be used instead.
+    *
+    * @param then   The {@link LocalDate} to be compared against the reference timestamp, or <i>now</i> if no reference
+    *                  timestamp was provided
+    * @param zoneId The {@link ZoneId} to be used, not null
+    * @see #getReference()
+    */
+   public Duration approximateDuration(LocalDateTime then, final ZoneId zoneId)
+   {
+      return approximateDuration(then != null ? then.atZone(zoneId).toInstant() : null);
+   }
+
+   /**
     * Calculate to the precision of the smallest provided {@link TimeUnit}, the exact {@link Duration} represented by
     * the difference between the reference {@link Instant} and the given {@link Date}. If the given {@link Date} is
     * <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used instead.
@@ -1408,9 +1464,9 @@ public class PrettyTime
    public PrettyTime registerUnit(final TimeUnit unit, TimeFormat format)
    {
       if (unit == null)
-         throw new IllegalArgumentException("Unit to register must not be null.");
+         throw new IllegalArgumentException("TimeUnit to register must not be null.");
       if (format == null)
-         throw new IllegalArgumentException("Format to register must not be null.");
+         throw new IllegalArgumentException("TimeFormat to register must not be null.");
 
       cachedUnits = null;
 
@@ -1419,6 +1475,35 @@ public class PrettyTime
          ((LocaleAware<?>) unit).setLocale(locale);
       if (format instanceof LocaleAware)
          ((LocaleAware<?>) format).setLocale(locale);
+      return this;
+   }
+
+   public PrettyTime setUnits(final ResourcesTimeUnit... units)
+   {
+      if (units == null || units.length == 0)
+         throw new IllegalArgumentException("TimeUnit instance(s) to register must be provided.");
+
+      this.clearUnits();
+      for (ResourcesTimeUnit unit : units) {
+         TimeFormat format = new ResourcesTimeFormat((ResourcesTimeUnit) unit);
+         this.registerUnit(unit, format);
+      }
+
+      return this;
+   }
+
+   public PrettyTime setUnits(TimeFormat format, final TimeUnit... units)
+   {
+      if (units == null || units.length == 0)
+         throw new IllegalArgumentException("TimeUnit instance(s) to register must be provided.");
+      if (format == null)
+         throw new IllegalArgumentException("TimeFormat to register must not be null.");
+
+      this.clearUnits();
+      for (TimeUnit unit : units) {
+         this.registerUnit(unit, format);
+      }
+
       return this;
    }
 

@@ -26,11 +26,14 @@ public abstract class ResourcesTimeUnit implements TimeUnit
    private long millisPerUnit = 1;
 
    /**
-    * Return the name of the resource bundle from which this unit's format should be loaded.
+    * Return the time-unit prefix to specify which value to load from the bundle.
     */
    abstract protected String getResourceKeyPrefix();
 
-   protected String getResourceBundleName()
+   /**
+    * Return the name of the resource bundle from which this unit's format should be loaded.
+    */
+   protected final String getResourceBundleName()
    {
       return "org.ocpsoft.prettytime.i18n.Resources";
    }

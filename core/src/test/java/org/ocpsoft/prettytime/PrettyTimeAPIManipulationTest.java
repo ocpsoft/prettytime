@@ -19,8 +19,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
@@ -35,16 +35,24 @@ public class PrettyTimeAPIManipulationTest
 {
    PrettyTime t = new PrettyTime();
 
+   @Test(expected = IllegalArgumentException.class)
+   public void testApiMisuseSetUnits1() throws Exception
+   {
+      t.setUnits();
+   }
+
    @Test
    public void testApiMisuse1() throws Exception
    {
-      Assert.assertEquals(t.approximateDuration(new Date()), t.approximateDuration((Date) null));
+      Assert.assertEquals(t.approximateDuration(LocalDateTime.now()),
+               t.approximateDuration((Date) null));
    }
 
    @Test
    public void testApiMisuse2() throws Exception
    {
-      Assert.assertEquals(t.calculatePreciseDuration(new Date()), t.calculatePreciseDuration((Date) null));
+      Assert.assertEquals(t.calculatePreciseDuration(LocalDateTime.now()),
+               t.calculatePreciseDuration((Date) null));
    }
 
    @Test
@@ -56,49 +64,49 @@ public class PrettyTimeAPIManipulationTest
    @Test
    public void testApiMisuse4() throws Exception
    {
-      Assert.assertEquals(t.format(new Date()), t.format((Date) null));
+      Assert.assertEquals(t.format(LocalDateTime.now().plusSeconds(1)), t.format((Date) null));
    }
 
    @Test
    public void testApiMisuse4_1() throws Exception
    {
-      Assert.assertEquals(t.format(new Date()), t.format((Calendar) null));
+      Assert.assertEquals(t.format(LocalDateTime.now().plusSeconds(1)), t.format((Calendar) null));
    }
 
    @Test
    public void testApiMisuse4_2() throws Exception
    {
-      Assert.assertEquals(t.format(new Date()), t.format((Duration) null));
+      Assert.assertEquals(t.format(LocalDateTime.now().plusSeconds(1)), t.format((Duration) null));
    }
 
    @Test
    public void testApiMisuse4_3() throws Exception
    {
-      Assert.assertEquals(t.format(new Date()), t.format((List<Duration>) null));
+      Assert.assertEquals(t.format(LocalDateTime.now().plusSeconds(1)), t.format((List<Duration>) null));
    }
 
    @Test
    public void testApiMisuse4_4() throws Exception
    {
-      Assert.assertEquals(t.format(new Date()), t.format((Instant) null));
+      Assert.assertEquals(t.format(LocalDateTime.now().plusSeconds(1)), t.format((Instant) null));
    }
 
    @Test
    public void testApiMisuse4_5() throws Exception
    {
-      Assert.assertEquals(t.format(new Date()), t.format((ZonedDateTime) null));
+      Assert.assertEquals(t.format(LocalDateTime.now().plusSeconds(1)), t.format((ZonedDateTime) null));
    }
 
    @Test
    public void testApiMisuse4_6() throws Exception
    {
-      Assert.assertEquals(t.format(new Date()), t.format((OffsetDateTime) null));
+      Assert.assertEquals(t.format(LocalDateTime.now().plusSeconds(1)), t.format((OffsetDateTime) null));
    }
 
    @Test
    public void testApiMisuse4_7_1() throws Exception
    {
-      Assert.assertEquals(t.format(new Date()), t.format((LocalDateTime) null, null));
+      Assert.assertEquals(t.format(LocalDateTime.now().plusSeconds(1)), t.format((LocalDateTime) null, null));
    }
 
    @Test(expected = NullPointerException.class)
@@ -110,13 +118,13 @@ public class PrettyTimeAPIManipulationTest
    @Test
    public void testApiMisuse4_8()
    {
-      Assert.assertEquals(t.format(new Date()), t.format((LocalDateTime) null));
+      Assert.assertEquals(t.format(LocalDateTime.now().plusSeconds(1)), t.format((LocalDateTime) null));
    }
 
    @Test
    public void testApiMisuse4_9_1() throws Exception
    {
-      Assert.assertEquals(t.format(new Date()), t.format((LocalDate) null, null));
+      Assert.assertEquals(t.format(LocalDateTime.now().plusSeconds(1)), t.format((LocalDate) null, null));
    }
 
    @Test(expected = NullPointerException.class)
@@ -128,49 +136,53 @@ public class PrettyTimeAPIManipulationTest
    @Test
    public void testApiMisuse5() throws Exception
    {
-      Assert.assertEquals(t.formatUnrounded(new Date()), t.formatUnrounded((Date) null));
+      Assert.assertEquals(t.formatUnrounded(LocalDateTime.now().plusSeconds(1)), t.formatUnrounded((Date) null));
    }
 
    @Test
    public void testApiMisuse5_1() throws Exception
    {
-      Assert.assertEquals(t.formatUnrounded(new Date()), t.formatUnrounded((Calendar) null));
+      Assert.assertEquals(t.formatUnrounded(LocalDateTime.now().plusSeconds(1)), t.formatUnrounded((Calendar) null));
    }
 
    @Test
    public void testApiMisuse5_2() throws Exception
    {
-      Assert.assertEquals(t.formatUnrounded(new Date()), t.formatUnrounded((Duration) null));
+      Assert.assertEquals(t.formatUnrounded(LocalDateTime.now().plusSeconds(1)), t.formatUnrounded((Duration) null));
    }
 
    @Test
    public void testApiMisuse5_3() throws Exception
    {
-      Assert.assertEquals(t.formatUnrounded(new Date()), t.formatUnrounded((List<Duration>) null));
+      Assert.assertEquals(t.formatUnrounded(LocalDateTime.now().plusSeconds(1)),
+               t.formatUnrounded((List<Duration>) null));
    }
 
    @Test
    public void testApiMisuse5_4() throws Exception
    {
-      Assert.assertEquals(t.formatUnrounded(new Date()), t.formatUnrounded((Instant) null));
+      Assert.assertEquals(t.formatUnrounded(LocalDateTime.now().plusSeconds(1)), t.formatUnrounded((Instant) null));
    }
 
    @Test
    public void testApiMisuse5_5() throws Exception
    {
-      Assert.assertEquals(t.formatUnrounded(new Date()), t.formatUnrounded((ZonedDateTime) null));
+      Assert.assertEquals(t.formatUnrounded(LocalDateTime.now().plusSeconds(1)),
+               t.formatUnrounded((ZonedDateTime) null));
    }
 
    @Test
    public void testApiMisuse5_6() throws Exception
    {
-      Assert.assertEquals(t.formatUnrounded(new Date()), t.formatUnrounded((OffsetDateTime) null));
+      Assert.assertEquals(t.formatUnrounded(LocalDateTime.now().plusSeconds(1)),
+               t.formatUnrounded((OffsetDateTime) null));
    }
 
    @Test
    public void testApiMisuse5_7_1() throws Exception
    {
-      Assert.assertEquals(t.formatUnrounded(new Date()), t.formatUnrounded((LocalDateTime) null, null));
+      Assert.assertEquals(t.formatUnrounded(LocalDateTime.now().plusSeconds(1)),
+               t.formatUnrounded((LocalDateTime) null, null));
    }
 
    @Test(expected = NullPointerException.class)
@@ -182,13 +194,15 @@ public class PrettyTimeAPIManipulationTest
    @Test
    public void testApiMisuse5_8()
    {
-      Assert.assertEquals(t.formatUnrounded(new Date()), t.formatUnrounded((LocalDateTime) null));
+      Assert.assertEquals(t.formatUnrounded(LocalDateTime.now().plusSeconds(1)),
+               t.formatUnrounded((LocalDateTime) null));
    }
 
    @Test
    public void testApiMisuse5_9_1() throws Exception
    {
-      Assert.assertEquals(t.formatUnrounded(new Date()), t.formatUnrounded((LocalDate) null, null));
+      Assert.assertEquals(t.formatUnrounded(LocalDateTime.now().plusSeconds(1)),
+               t.formatUnrounded((LocalDate) null, null));
    }
 
    @Test(expected = NullPointerException.class)

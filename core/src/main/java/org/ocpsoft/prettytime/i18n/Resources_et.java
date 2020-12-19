@@ -15,18 +15,6 @@
  */
 package org.ocpsoft.prettytime.i18n;
 
-import java.util.ListResourceBundle;
-import java.util.ResourceBundle;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
-import org.ocpsoft.prettytime.Duration;
-import org.ocpsoft.prettytime.TimeFormat;
-import org.ocpsoft.prettytime.TimeUnit;
-import org.ocpsoft.prettytime.format.SimpleTimeFormat;
-import org.ocpsoft.prettytime.impl.TimeFormatProvider;
-import org.ocpsoft.prettytime.units.Day;
-
 public class Resources_et extends Resources_fi
 {
    private static final Object[][] OBJECTS = new Object[][] {

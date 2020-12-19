@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.ocpsoft.prettytime;
+
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -23,13 +24,10 @@ import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.ocpsoft.prettytime.Duration;
-import org.ocpsoft.prettytime.PrettyTime;
-import org.ocpsoft.prettytime.TimeFormat;
-import org.ocpsoft.prettytime.TimeUnit;
 import org.ocpsoft.prettytime.units.JustNow;
 
-public class PrettyTimeI18n_FI_Test {
+public class PrettyTimeI18n_FI_Test
+{
 	private Locale locale;
 
 	@Before
@@ -37,21 +35,21 @@ public class PrettyTimeI18n_FI_Test {
 	{
 		locale = new Locale("fi");
 	}
-	
-	private PrettyTime newPrettyTimeWOJustNow(Date ref, Locale locale) 
+
+	private PrettyTime newPrettyTimeWOJustNow(Date ref, Locale locale)
 	{
 		PrettyTime t = new PrettyTime(ref, locale);
 		List<TimeUnit> units = t.getUnits();
 		List<TimeFormat> formats = new ArrayList<TimeFormat>();
 		for (TimeUnit timeUnit : units) {
-			if(!(timeUnit instanceof JustNow)) {
+			if (!(timeUnit instanceof JustNow)) {
 				formats.add(t.getFormat(timeUnit));
 			}
 		}
 		int index = 0;
 		t.clearUnits();
 		for (TimeUnit timeUnit : units) {
-			if(!(timeUnit instanceof JustNow)) {
+			if (!(timeUnit instanceof JustNow)) {
 				t.registerUnit(timeUnit, formats.get(index));
 				index++;
 			}
@@ -72,7 +70,7 @@ public class PrettyTimeI18n_FI_Test {
 		PrettyTime t = new PrettyTime(new Date(6000), locale);
 		assertEquals("hetki sitten", t.format(new Date(0)));
 	}
-	
+
 	@Test
 	public void testMilliSecondsFromNow() throws Exception
 	{
@@ -100,7 +98,7 @@ public class PrettyTimeI18n_FI_Test {
 		PrettyTime t = newPrettyTimeWOJustNow(new Date(1), locale);
 		assertEquals("millisekunti sitten", t.format(new Date(0)));
 	}
-	
+
 	@Test
 	public void testSecondsFromNow() throws Exception
 	{
@@ -119,13 +117,13 @@ public class PrettyTimeI18n_FI_Test {
 	public void testSecondFromNow() throws Exception
 	{
 		PrettyTime t = newPrettyTimeWOJustNow(new Date(0), locale);
-		assertEquals("sekunnin päästä", t.format(new Date(1000  * 1)));
+		assertEquals("sekunnin päästä", t.format(new Date(1000 * 1)));
 	}
 
 	@Test
 	public void testSecondAgo() throws Exception
 	{
-		PrettyTime t = newPrettyTimeWOJustNow(new Date(1000  * 1), locale);
+		PrettyTime t = newPrettyTimeWOJustNow(new Date(1000 * 1), locale);
 		assertEquals("sekunti sitten", t.format(new Date(0)));
 	}
 
@@ -133,7 +131,7 @@ public class PrettyTimeI18n_FI_Test {
 	public void testMinutesFromNow() throws Exception
 	{
 		PrettyTime t = new PrettyTime(new Date(0), locale);
-		assertEquals("13 minuutin päästä", t.format(new Date(1000 * 60  * 13)));
+		assertEquals("13 minuutin päästä", t.format(new Date(1000 * 60 * 13)));
 	}
 
 	@Test
@@ -196,9 +194,9 @@ public class PrettyTimeI18n_FI_Test {
 	public void testNear2DaysAgo() throws Exception
 	{
 		int hour = 1000 * 60 * 60;
-		PrettyTime t = new PrettyTime(new Date(hour * 24 * 2 - 11*hour), locale);
+		PrettyTime t = new PrettyTime(new Date(hour * 24 * 2 - 11 * hour), locale);
 		assertEquals("2 päivää sitten", t.format(new Date(0)));
-		t = new PrettyTime(new Date(hour * 24 * 2 - 13*hour), locale);
+		t = new PrettyTime(new Date(hour * 24 * 2 - 13 * hour), locale);
 		assertEquals("eilen", t.format(new Date(0)));
 	}
 
@@ -404,9 +402,8 @@ public class PrettyTimeI18n_FI_Test {
 	{
 		PrettyTime t = new PrettyTime(new Date(0), locale);
 		List<Duration> durations = t.calculatePreciseDuration(new Date(1000 * 60 * 60 * 24 * 3 + 1000 * 60 * 60 * 15
-				+ 1000 * 60 * 38));
+					+ 1000 * 60 * 38));
 		assertEquals("3 päivän 15 tunnin 38 minuutin päästä", t.format(durations));
 	}
-
 
 }

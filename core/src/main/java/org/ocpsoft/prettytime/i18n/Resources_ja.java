@@ -1,9 +1,9 @@
 package org.ocpsoft.prettytime.i18n;
 
 import java.util.ListResourceBundle;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 import org.ocpsoft.prettytime.Duration;
 import org.ocpsoft.prettytime.TimeFormat;
@@ -113,15 +113,12 @@ public class Resources_ja extends ListResourceBundle implements TimeFormatProvid
       return OBJECTS;
    }
 
-   private volatile ConcurrentMap<TimeUnit, TimeFormat> formatMap = new ConcurrentHashMap<TimeUnit, TimeFormat>();
+   private final Map<TimeUnit, TimeFormat> formatMap = new ConcurrentHashMap<>();
 
    @Override
    public TimeFormat getFormatFor(TimeUnit t)
    {
-      if (!formatMap.containsKey(t)) {
-         formatMap.putIfAbsent(t, new JaTimeFormat(this, t));
-      }
-      return formatMap.get(t);
+      return formatMap.computeIfAbsent(t, unit -> new JaTimeFormat(this, unit));
    }
 
    private static class JaTimeFormat implements TimeFormat
@@ -132,7 +129,6 @@ public class Resources_ja extends ListResourceBundle implements TimeFormatProvid
       public static final String QUANTITY = "%n";
       public static final String UNIT = "%u";
 
-      private final ResourceBundle bundle;
       private String singularName = "";
       private String pluralName = "";
       private String futureSingularName = "";
@@ -150,8 +146,6 @@ public class Resources_ja extends ListResourceBundle implements TimeFormatProvid
       public JaTimeFormat(final ResourceBundle bundle, final TimeUnit unit)
       {
 
-         this.bundle = bundle;
-
          setPattern(bundle.getString(getUnitName(unit) + "Pattern"));
          setFuturePrefix(bundle.getString(getUnitName(unit) + "FuturePrefix"));
          setFutureSuffix(bundle.getString(getUnitName(unit) + "FutureSuffix"));
@@ -164,19 +158,23 @@ public class Resources_ja extends ListResourceBundle implements TimeFormatProvid
          try {
             setFuturePluralName(bundle.getString(getUnitName(unit) + "FuturePluralName"));
          }
-         catch (Exception e) {}
+         catch (Exception e) {
+         }
          try {
             setFutureSingularName((bundle.getString(getUnitName(unit) + "FutureSingularName")));
          }
-         catch (Exception e) {}
+         catch (Exception e) {
+         }
          try {
             setPastPluralName((bundle.getString(getUnitName(unit) + "PastPluralName")));
          }
-         catch (Exception e) {}
+         catch (Exception e) {
+         }
          try {
             setPastSingularName((bundle.getString(getUnitName(unit) + "PastSingularName")));
          }
-         catch (Exception e) {}
+         catch (Exception e) {
+         }
       }
 
       private String getUnitName(TimeUnit unit)
@@ -201,8 +199,10 @@ public class Resources_ja extends ListResourceBundle implements TimeFormatProvid
          String sign = getSign(duration);
          String unit = getGramaticallyCorrectName(duration, round);
          long quantity = getQuantity(duration, round);
-         if (duration.getUnit() instanceof Decade) quantity *= 10;
-         if (duration.getUnit() instanceof Millennium) quantity *= 1000;
+         if (duration.getUnit() instanceof Decade)
+            quantity *= 10;
+         if (duration.getUnit() instanceof Millennium)
+            quantity *= 1000;
 
          return applyPattern(sign, unit, quantity);
       }
@@ -217,11 +217,6 @@ public class Resources_ja extends ListResourceBundle implements TimeFormatProvid
       }
 
       protected String getPattern(final long quantity)
-      {
-         return pattern;
-      }
-
-      public String getPattern()
       {
          return pattern;
       }
@@ -323,19 +318,6 @@ public class Resources_ja extends ListResourceBundle implements TimeFormatProvid
       public JaTimeFormat setPastSuffix(final String pastSuffix)
       {
          this.pastSuffix = pastSuffix.trim();
-         return this;
-      }
-
-      /**
-       * The percentage of the current {@link TimeUnit}.getMillisPerUnit() for which the quantity may be rounded up by
-       * one.
-       *
-       * @param roundingTolerance
-       * @return
-       */
-      public JaTimeFormat setRoundingTolerance(final int roundingTolerance)
-      {
-         this.roundingTolerance = roundingTolerance;
          return this;
       }
 

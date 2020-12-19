@@ -16,6 +16,8 @@ ProGuard rules are automatically configured for you if you use the R8 shrinker (
 
 Be sure to check maven central for the latest version: https://repo1.maven.org/maven2/org/ocpsoft/prettytime/prettytime/
 
+**Note**: To use prettytime in projects with a `minSdkVersion` below 26, [API desugaring](https://developer.android.com/studio/write/java8-support#library-desugaring) is required.
+
 DEVELOPMENT
 ===========
 force-release: mvn release:prepare release:perform -DskipTests=true -DdevelopmentVersion=4.0.2-SNAPSHOT -DreleaseVersion=4.0.1.Final -Dtag=4.0.1.Final -Darguments="-DskipTests=true -Dmaven.test.skip=true"

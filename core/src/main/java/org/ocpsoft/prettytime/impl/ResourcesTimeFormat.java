@@ -1,19 +1,19 @@
 package org.ocpsoft.prettytime.impl;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import org.ocpsoft.prettytime.Duration;
 import org.ocpsoft.prettytime.LocaleAware;
 import org.ocpsoft.prettytime.TimeFormat;
 import org.ocpsoft.prettytime.format.SimpleTimeFormat;
-
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 /**
  * Represents a simple method of formatting a specific {@link Duration} of time
  *
  * @author lb3
  */
-public class ResourcesTimeFormat extends SimpleTimeFormat implements TimeFormat, LocaleAware<ResourcesTimeFormat>
+public class ResourcesTimeFormat extends SimpleTimeFormat implements LocaleAware<ResourcesTimeFormat>
 {
    private final ResourcesTimeUnit unit;
    private TimeFormat override;
@@ -38,7 +38,8 @@ public class ResourcesTimeFormat extends SimpleTimeFormat implements TimeFormat,
          try {
             // Attempt to load the bundle that the user passed in, maybe it exists, maybe not
             bundle = ResourceBundle.getBundle(overrideResourceBundle, locale);
-         } catch (Exception e) {
+         }
+         catch (Exception e) {
             // Throw away if the bundle doesn't contain this local
          }
       }
@@ -48,21 +49,17 @@ public class ResourcesTimeFormat extends SimpleTimeFormat implements TimeFormat,
          bundle = ResourceBundle.getBundle(unit.getResourceBundleName(), locale);
       }
 
-      if (bundle instanceof TimeFormatProvider)
-      {
+      if (bundle instanceof TimeFormatProvider) {
          TimeFormat format = ((TimeFormatProvider) bundle).getFormatFor(unit);
-         if (format != null)
-         {
+         if (format != null) {
             this.override = format;
          }
       }
-      else
-      {
+      else {
          override = null;
       }
 
-      if (override == null)
-      {
+      if (override == null) {
          setPattern(bundle.getString(unit.getResourceKeyPrefix() + "Pattern"));
          setFuturePrefix(bundle.getString(unit.getResourceKeyPrefix() + "FuturePrefix"));
          setFutureSuffix(bundle.getString(unit.getResourceKeyPrefix() + "FutureSuffix"));
@@ -75,19 +72,23 @@ public class ResourcesTimeFormat extends SimpleTimeFormat implements TimeFormat,
          try {
             setFuturePluralName(bundle.getString(unit.getResourceKeyPrefix() + "FuturePluralName"));
          }
-         catch (Exception e) {}
+         catch (Exception e) {
+         }
          try {
             setFutureSingularName((bundle.getString(unit.getResourceKeyPrefix() + "FutureSingularName")));
          }
-         catch (Exception e) {}
+         catch (Exception e) {
+         }
          try {
             setPastPluralName((bundle.getString(unit.getResourceKeyPrefix() + "PastPluralName")));
          }
-         catch (Exception e) {}
+         catch (Exception e) {
+         }
          try {
             setPastSingularName((bundle.getString(unit.getResourceKeyPrefix() + "PastSingularName")));
          }
-         catch (Exception e) {}
+         catch (Exception e) {
+         }
 
       }
 

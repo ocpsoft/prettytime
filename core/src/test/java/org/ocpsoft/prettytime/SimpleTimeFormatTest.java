@@ -17,15 +17,13 @@ package org.ocpsoft.prettytime;
 
 import static org.junit.Assert.assertEquals;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.Locale;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.ocpsoft.prettytime.Duration;
-import org.ocpsoft.prettytime.PrettyTime;
-import org.ocpsoft.prettytime.TimeFormat;
 import org.ocpsoft.prettytime.format.SimpleTimeFormat;
 
 public class SimpleTimeFormatTest
@@ -49,6 +47,11 @@ public class SimpleTimeFormatTest
 
       assertEquals("4 hours ago", t.format(duration));
       assertEquals("3 hours ago", t.formatUnrounded(duration));
+
+      duration = t.approximateDuration(Instant.ofEpochMilli(0));
+
+      assertEquals("4 hours ago", t.format(duration));
+      assertEquals("3 hours ago", t.formatUnrounded(duration));
    }
 
    @Test
@@ -61,6 +64,12 @@ public class SimpleTimeFormatTest
       assertEquals("some time from now", format.decorate(duration, "some time"));
 
       duration = t.approximateDuration(new Date(System.currentTimeMillis() - 10000));
+      assertEquals("some time ago", format.decorate(duration, "some time"));
+
+      duration = t.approximateDuration(Instant.now().plusSeconds(1));
+      assertEquals("some time from now", format.decorate(duration, "some time"));
+
+      duration = t.approximateDuration(Instant.now().minusSeconds(10));
       assertEquals("some time ago", format.decorate(duration, "some time"));
    }
 

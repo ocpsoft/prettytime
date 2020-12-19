@@ -24,7 +24,6 @@ import java.util.Locale;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.ocpsoft.prettytime.PrettyTime;
 
 /**
  * All the tests for PrettyTime.
@@ -79,8 +78,7 @@ public class PrettyTimeI18n_FR_Test
     {
         long t = 1L;
         PrettyTime p = new PrettyTime(new Date(0), Locale.FRENCH);
-        while (1000L * 60L * 60L * 24L * 365L * 1000000L > t)
-        {
+        while (1000L * 60L * 60L * 24L * 365L * 1000000L > t) {
             assertTrue(p.format(new Date(0)).startsWith("dans") || p.format(new Date(0)).startsWith("à l'instant"));
             t *= 2L;
         }

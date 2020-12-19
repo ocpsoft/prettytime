@@ -18,6 +18,11 @@ package org.ocpsoft.prettytime;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -33,13 +38,13 @@ public class PrettyTimeAPIManipulationTest
    @Test
    public void testApiMisuse1() throws Exception
    {
-      Assert.assertEquals(t.approximateDuration(new Date()), t.approximateDuration(null));
+      Assert.assertEquals(t.approximateDuration(new Date()), t.approximateDuration((Date) null));
    }
 
    @Test
    public void testApiMisuse2() throws Exception
    {
-      Assert.assertEquals(t.calculatePreciseDuration(new Date()), t.calculatePreciseDuration(null));
+      Assert.assertEquals(t.calculatePreciseDuration(new Date()), t.calculatePreciseDuration((Date) null));
    }
 
    @Test
@@ -73,6 +78,54 @@ public class PrettyTimeAPIManipulationTest
    }
 
    @Test
+   public void testApiMisuse4_4() throws Exception
+   {
+      Assert.assertEquals(t.format(new Date()), t.format((Instant) null));
+   }
+
+   @Test
+   public void testApiMisuse4_5() throws Exception
+   {
+      Assert.assertEquals(t.format(new Date()), t.format((ZonedDateTime) null));
+   }
+
+   @Test
+   public void testApiMisuse4_6() throws Exception
+   {
+      Assert.assertEquals(t.format(new Date()), t.format((OffsetDateTime) null));
+   }
+
+   @Test
+   public void testApiMisuse4_7_1() throws Exception
+   {
+      Assert.assertEquals(t.format(new Date()), t.format((LocalDateTime) null, null));
+   }
+
+   @Test(expected = NullPointerException.class)
+   public void testApiMisuse4_7_2()
+   {
+      t.format(LocalDateTime.now(), null);
+   }
+
+   @Test
+   public void testApiMisuse4_8()
+   {
+      Assert.assertEquals(t.format(new Date()), t.format((LocalDateTime) null));
+   }
+
+   @Test
+   public void testApiMisuse4_9_1() throws Exception
+   {
+      Assert.assertEquals(t.format(new Date()), t.format((LocalDate) null, null));
+   }
+
+   @Test(expected = NullPointerException.class)
+   public void testApiMisuse4_9_2()
+   {
+      t.format(LocalDate.now(), null);
+   }
+
+   @Test
    public void testApiMisuse5() throws Exception
    {
       Assert.assertEquals(t.formatUnrounded(new Date()), t.formatUnrounded((Date) null));
@@ -97,6 +150,54 @@ public class PrettyTimeAPIManipulationTest
    }
 
    @Test
+   public void testApiMisuse5_4() throws Exception
+   {
+      Assert.assertEquals(t.formatUnrounded(new Date()), t.formatUnrounded((Instant) null));
+   }
+
+   @Test
+   public void testApiMisuse5_5() throws Exception
+   {
+      Assert.assertEquals(t.formatUnrounded(new Date()), t.formatUnrounded((ZonedDateTime) null));
+   }
+
+   @Test
+   public void testApiMisuse5_6() throws Exception
+   {
+      Assert.assertEquals(t.formatUnrounded(new Date()), t.formatUnrounded((OffsetDateTime) null));
+   }
+
+   @Test
+   public void testApiMisuse5_7_1() throws Exception
+   {
+      Assert.assertEquals(t.formatUnrounded(new Date()), t.formatUnrounded((LocalDateTime) null, null));
+   }
+
+   @Test(expected = NullPointerException.class)
+   public void testApiMisuse5_7_2()
+   {
+      t.formatUnrounded(LocalDateTime.now(), null);
+   }
+
+   @Test
+   public void testApiMisuse5_8()
+   {
+      Assert.assertEquals(t.formatUnrounded(new Date()), t.formatUnrounded((LocalDateTime) null));
+   }
+
+   @Test
+   public void testApiMisuse5_9_1() throws Exception
+   {
+      Assert.assertEquals(t.formatUnrounded(new Date()), t.formatUnrounded((LocalDate) null, null));
+   }
+
+   @Test(expected = NullPointerException.class)
+   public void testApiMisuse5_9_2()
+   {
+      t.formatUnrounded(LocalDate.now(), null);
+   }
+
+   @Test
    public void testApiMisuse9() throws Exception
    {
       Assert.assertNull(t.getFormat(null));
@@ -117,11 +218,17 @@ public class PrettyTimeAPIManipulationTest
    @Test
    public void testApiMisuse12() throws Exception
    {
+      t.getReferenceAsLegacyDate();
+   }
+
+   @Test
+   public void testApiMisuse13() throws Exception
+   {
       t.getUnits();
    }
 
    @Test(expected = IllegalArgumentException.class)
-   public void testApiMisuse13() throws Exception
+   public void testApiMisuse14() throws Exception
    {
       t.registerUnit(null, null);
    }

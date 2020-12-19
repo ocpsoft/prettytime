@@ -22,10 +22,12 @@
 		<module>jsf</module>
 		<module>jstl</module>
 		<module>nlp</module>
-        <module>samples</module>
-    </modules>
+		<module>samples</module>
+	</modules>
 
 	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>
 			UTF-8
 		</project.build.sourceEncoding>
@@ -46,8 +48,8 @@
 		<connection>scm:git:git://github.com/ocpsoft/prettytime.git</connection>
 		<developerConnection>scm:git:git@github.com:ocpsoft/prettytime.git</developerConnection>
 		<url>http://github.com/ocpsoft/prettytime</url>
-  	    <tag>HEAD</tag>
-    </scm>
+		<tag>HEAD</tag>
+	</scm>
 
 	<issueManagement>
 		<system>GitHub</system>
@@ -66,62 +68,77 @@
 			<name>Thomas Weitzel</name>
 			<email>tweitzel@synformation.com</email>
 		</developer>
+		<developer>
+			<id>Isira-Seneviratne</id>
+			<name>Isira Seneviratne</name>
+			<url>https://github.com/Isira-Seneviratne</url>
+			<timezone>+5</timezone>
+		</developer>
 	</developers>
 
-   <dependencyManagement>
-	   <dependencies>
-		   <dependency>
-			   <groupId>org.ocpsoft.prettytime</groupId>
-			   <artifactId>prettytime</artifactId>
-			   <version>${project.version}</version>
-		   </dependency>
-		   <dependency>
-			   <groupId>org.ocpsoft.prettytime</groupId>
-			   <artifactId>prettytime-integration-jsf</artifactId>
-			   <version>${project.version}</version>
-		   </dependency>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.ocpsoft.prettytime</groupId>
+				<artifactId>prettytime</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ocpsoft.prettytime</groupId>
+				<artifactId>prettytime-integration-jsf</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
-		   <dependency>
-			   <groupId>javax.faces</groupId>
-			   <artifactId>jsf-api</artifactId>
-			   <version>1.2_02</version>
-			   <scope>provided</scope>
-		   </dependency>
-		   <dependency>
-			   <groupId>junit</groupId>
-			   <artifactId>junit</artifactId>
-			   <version>4.5</version>
-			   <scope>test</scope>
-		   </dependency>
-		   <dependency>
+			<dependency>
+				<groupId>javax.faces</groupId>
+				<artifactId>jsf-api</artifactId>
+				<version>1.2_02</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.5</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
 				<version>2.5.3</version>
 			</dependency>
-	   </dependencies>
-   </dependencyManagement>
+		</dependencies>
+	</dependencyManagement>
 
-   <build>
-      <plugins>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-shade-plugin</artifactId>
-            <version>2.4.2</version>
-         </plugin>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-release-plugin</artifactId>
-            <version>2.5.3</version>
-            <configuration>
-               <localCheckout>true</localCheckout>
-               <autoVersionSubmodules>true</autoVersionSubmodules>
-               <tagNameFormat>@{project.version}</tagNameFormat>
-               <pushChanges>false</pushChanges>
-               <checkModificationExcludes>
-                  <checkModificationExclude>dependency-reduced-pom.xml</checkModificationExclude>
-               </checkModificationExcludes>
-            </configuration>
-         </plugin>
-      </plugins>
-   </build>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.4.2</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5.3</version>
+				<configuration>
+					<localCheckout>true</localCheckout>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<tagNameFormat>@{project.version}</tagNameFormat>
+					<pushChanges>false</pushChanges>
+					<checkModificationExcludes>
+						<checkModificationExclude>dependency-reduced-pom.xml</checkModificationExclude>
+					</checkModificationExcludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

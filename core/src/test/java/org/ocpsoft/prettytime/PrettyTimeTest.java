@@ -15,11 +15,6 @@
  */
 package org.ocpsoft.prettytime;
 
-import org.junit.*;
-import org.ocpsoft.prettytime.format.SimpleTimeFormat;
-import org.ocpsoft.prettytime.impl.ResourcesTimeFormat;
-import org.ocpsoft.prettytime.units.Minute;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -27,6 +22,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.ocpsoft.prettytime.format.SimpleTimeFormat;
+import org.ocpsoft.prettytime.impl.ResourcesTimeFormat;
+import org.ocpsoft.prettytime.units.Minute;
 
 public class PrettyTimeTest
 {
@@ -85,9 +89,9 @@ public class PrettyTimeTest
    {
       PrettyTime t = new PrettyTime(new Date(2014, 8, 15, 0, 0));
       List<Duration> durations = t.calculatePreciseDuration(new Date(0));
-      Assert.assertEquals("1 millennium 9 centuries 4 decades 4 years 8 months 1 week 6 days 14 hours 5 minutes ago",
+      Assert.assertEquals("1 millennium 9 centuries 4 decades 4 years 8 months 1 week 6 days 20 hours 5 minutes ago",
                t.format(durations));
-      Assert.assertEquals("1 millennium 9 centuries 4 decades 4 years 8 months 1 week 6 days 14 hours 5 minutes",
+      Assert.assertEquals("1 millennium 9 centuries 4 decades 4 years 8 months 1 week 6 days 20 hours 5 minutes",
                t.formatDuration(durations));
    }
 
@@ -99,7 +103,7 @@ public class PrettyTimeTest
       Minute minutes = new Minute();
       prettyTime.registerUnit(minutes, new ResourcesTimeFormat(minutes));
       Assert.assertEquals("40 minutes ago", prettyTime.formatUnrounded(prettyTime
-              .calculatePreciseDuration(now.minusSeconds(40).minusMinutes(40))));
+               .calculatePreciseDuration(now.minusSeconds(40).minusMinutes(40))));
    }
 
    @Test
@@ -228,8 +232,7 @@ public class PrettyTimeTest
    public void testCustomFormat() throws Exception
    {
       PrettyTime t = new PrettyTime(now);
-      TimeUnit unit = new TimeUnit()
-      {
+      TimeUnit unit = new TimeUnit() {
          @Override
          public long getMaxQuantity()
          {
@@ -441,7 +444,7 @@ public class PrettyTimeTest
       prettyTime.registerUnit(minutes, new ResourcesTimeFormat(minutes));
       Assert.assertEquals("40 minutes",
                prettyTime.formatDurationUnrounded(prettyTime.calculatePreciseDuration(
-                       now.minusMinutes(40).minusSeconds(40))));
+                        now.minusMinutes(40).minusSeconds(40))));
    }
 
    @Test

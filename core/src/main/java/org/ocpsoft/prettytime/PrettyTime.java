@@ -15,19 +15,41 @@
  */
 package org.ocpsoft.prettytime;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 import org.ocpsoft.prettytime.impl.DurationImpl;
 import org.ocpsoft.prettytime.impl.ResourcesTimeFormat;
 import org.ocpsoft.prettytime.impl.ResourcesTimeUnit;
-import org.ocpsoft.prettytime.units.*;
+import org.ocpsoft.prettytime.units.Century;
+import org.ocpsoft.prettytime.units.Day;
+import org.ocpsoft.prettytime.units.Decade;
+import org.ocpsoft.prettytime.units.Hour;
+import org.ocpsoft.prettytime.units.JustNow;
+import org.ocpsoft.prettytime.units.Millennium;
+import org.ocpsoft.prettytime.units.Millisecond;
+import org.ocpsoft.prettytime.units.Minute;
 import org.ocpsoft.prettytime.units.Month;
+import org.ocpsoft.prettytime.units.Second;
+import org.ocpsoft.prettytime.units.Week;
 import org.ocpsoft.prettytime.units.Year;
 
-import java.time.*;
-import java.util.*;
-
 /**
- * A utility for creating social-networking style timestamps. (e.g. "just now", "moments ago", "3 days ago",
- * "within 2 months")
+ * A utility for creating social-networking style timestamps. (e.g. "just now", "moments ago", "3 days ago", "within 2
+ * months")
  * <p>
  * <b>Usage:</b>
  * <p>
@@ -67,8 +89,8 @@ public class PrettyTime
    /**
     * Create a new {@link PrettyTime} instance that will always use the current value of
     * {@link System#currentTimeMillis()} to represent the reference point for {@link Date} comparison, and will use
-    * {@link Locale#getDefault()} as the selected {@link Locale} for language and dialect formatting.
-    * Will use {@link String} as an optional override to the default resource bundles.
+    * {@link Locale#getDefault()} as the selected {@link Locale} for language and dialect formatting. Will use
+    * {@link String} as an optional override to the default resource bundles.
     */
    public PrettyTime(final String overrideResourceBundle)
    {
@@ -104,10 +126,11 @@ public class PrettyTime
    }
 
    /**
-    * Create a new {@link PrettyTime} instance that will use the given {@link Instant} timestamp to represent the reference
-    * point for {@link Instant} comparison, and will use {@link Locale#getDefault()} as the selected {@link Locale} for
-    * language and dialect formatting. If the given {@link Instant} is <code>null</code>, this instance will always use the
-    * current value of {@link System#currentTimeMillis()} to represent the reference point for {@link Instant} comparison.
+    * Create a new {@link PrettyTime} instance that will use the given {@link Instant} timestamp to represent the
+    * reference point for {@link Instant} comparison, and will use {@link Locale#getDefault()} as the selected
+    * {@link Locale} for language and dialect formatting. If the given {@link Instant} is <code>null</code>, this
+    * instance will always use the current value of {@link System#currentTimeMillis()} to represent the reference point
+    * for {@link Instant} comparison.
     */
    public PrettyTime(final Instant reference)
    {
@@ -116,11 +139,11 @@ public class PrettyTime
    }
 
    /**
-    * Create a new {@link PrettyTime} instance that will use the given {@link Instant} timestamp to represent the reference
-    * point for {@link Instant} comparison, and will use {@link Locale#getDefault()} as the selected {@link Locale} for
-    * language and dialect formatting. If the given {@link Instant} is <code>null</code>, this instance will always use the
-    * current value of {@link System#currentTimeMillis()} to represent the reference point for {@link Instant} comparison.
-    * Will use {@link String} as an optional override to the default resource bundles.
+    * Create a new {@link PrettyTime} instance that will use the given {@link Instant} timestamp to represent the
+    * reference point for {@link Instant} comparison, and will use {@link Locale#getDefault()} as the selected
+    * {@link Locale} for language and dialect formatting. If the given {@link Instant} is <code>null</code>, this
+    * instance will always use the current value of {@link System#currentTimeMillis()} to represent the reference point
+    * for {@link Instant} comparison. Will use {@link String} as an optional override to the default resource bundles.
     *
     * @see #PrettyTime(Instant)
     */
@@ -145,10 +168,10 @@ public class PrettyTime
    /**
     * Create a new {@link PrettyTime} instance that will use the given {@link LocalDateTime} and the system default
     * {@link ZoneId} to represent the reference point for {@link Instant} comparison, and will use
-    * {@link Locale#getDefault()} as the selected {@link Locale} for  language and dialect formatting. If the given
+    * {@link Locale#getDefault()} as the selected {@link Locale} for language and dialect formatting. If the given
     * {@link LocalDateTime} is <code>null</code>, this instance will always use the current value of
-    * {@link System#currentTimeMillis()} to represent the reference point for {@link Instant} comparison.
-    * Will use {@link String} as an optional override to the default resource bundles.
+    * {@link System#currentTimeMillis()} to represent the reference point for {@link Instant} comparison. Will use
+    * {@link String} as an optional override to the default resource bundles.
     *
     * @see #PrettyTime(Instant)
     */
@@ -172,10 +195,10 @@ public class PrettyTime
    /**
     * Create a new {@link PrettyTime} instance that will use the given {@link LocalDateTime} and {@link ZoneId} to
     * represent the reference point for {@link Instant} comparison, and will use {@link Locale#getDefault()} as the
-    * selected {@link Locale} for language and dialect formatting. If the given {@link LocalDateTime} is <code>null</code>,
-    * this instance will always use the current value of {@link System#currentTimeMillis()} to represent the reference
-    * point for {@link Instant} comparison. Will use {@link String} as an optional override to the default resource
-    * bundles.
+    * selected {@link Locale} for language and dialect formatting. If the given {@link LocalDateTime} is
+    * <code>null</code>, this instance will always use the current value of {@link System#currentTimeMillis()} to
+    * represent the reference point for {@link Instant} comparison. Will use {@link String} as an optional override to
+    * the default resource bundles.
     *
     * @see #PrettyTime(Instant)
     */
@@ -201,8 +224,8 @@ public class PrettyTime
     * {@link ZoneId} to represent the reference point for {@link Instant} comparison, and will use
     * {@link Locale#getDefault()} as the selected {@link Locale} for language and dialect formatting. If the given
     * {@link LocalDate} is <code>null</code>, this instance will always use the current value of
-    * {@link System#currentTimeMillis()} to represent the reference point for {@link Instant} comparison.
-    * Will use {@link String} as an optional override to the default resource bundles.
+    * {@link System#currentTimeMillis()} to represent the reference point for {@link Instant} comparison. Will use
+    * {@link String} as an optional override to the default resource bundles.
     *
     * @see #PrettyTime(Instant)
     */
@@ -212,11 +235,11 @@ public class PrettyTime
    }
 
    /**
-    * Create a new {@link PrettyTime} instance that will use the given {@link LocalDate} and {@link ZoneId} to
-    * represent the reference point for {@link Instant} comparison, and will use {@link Locale#getDefault()} as the
-    * selected {@link Locale} for language and dialect formatting. If the given {@link LocalDate} is <code>null</code>,
-    * this instance will always use the current value of {@link System#currentTimeMillis()} to represent the reference
-    * point for {@link Instant} comparison.
+    * Create a new {@link PrettyTime} instance that will use the given {@link LocalDate} and {@link ZoneId} to represent
+    * the reference point for {@link Instant} comparison, and will use {@link Locale#getDefault()} as the selected
+    * {@link Locale} for language and dialect formatting. If the given {@link LocalDate} is <code>null</code>, this
+    * instance will always use the current value of {@link System#currentTimeMillis()} to represent the reference point
+    * for {@link Instant} comparison.
     */
    public PrettyTime(final LocalDate reference, final ZoneId zoneId)
    {
@@ -224,11 +247,11 @@ public class PrettyTime
    }
 
    /**
-    * Create a new {@link PrettyTime} instance that will use the given {@link Instant} timestamp to represent the reference
-    * point for {@link Instant} comparison, and will use {@link Locale#getDefault()} as the selected {@link Locale} for
-    * language and dialect formatting. If the given {@link Instant} is <code>null</code>, this instance will always use the
-    * current value of {@link System#currentTimeMillis()} to represent the reference point for {@link Instant} comparison.
-    * Will use {@link String} as an optional override to the default resource bundles.
+    * Create a new {@link PrettyTime} instance that will use the given {@link Instant} timestamp to represent the
+    * reference point for {@link Instant} comparison, and will use {@link Locale#getDefault()} as the selected
+    * {@link Locale} for language and dialect formatting. If the given {@link Instant} is <code>null</code>, this
+    * instance will always use the current value of {@link System#currentTimeMillis()} to represent the reference point
+    * for {@link Instant} comparison. Will use {@link String} as an optional override to the default resource bundles.
     *
     * @see #PrettyTime(Instant)
     */
@@ -254,8 +277,8 @@ public class PrettyTime
     * Construct a new {@link PrettyTime} instance that will always use the current value of
     * {@link System#currentTimeMillis()} to represent the reference point for {@link Date} comparison. This instance
     * will use the given {@link Locale} instead of the system default. If the provided {@link Locale} is
-    * <code>null</code>, {@link Locale#getDefault()} will be used.
-    * Will use {@link String} as an optional override to the default resource bundles.
+    * <code>null</code>, {@link Locale#getDefault()} will be used. Will use {@link String} as an optional override to
+    * the default resource bundles.
     */
    public PrettyTime(final Locale locale, String overrideResourceBundle)
    {
@@ -286,8 +309,8 @@ public class PrettyTime
     * <p>
     * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
     * If the given {@link Date} is <code>null</code>, this instance will always use current value of
-    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Date} comparison.
-    * Will use {@link String} as an optional override to the default resource bundles.
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Date} comparison. Will
+    * use {@link String} as an optional override to the default resource bundles.
     * <p>
     * See {@code PrettyTime#setReference(Date timestamp)}.
     */
@@ -315,9 +338,9 @@ public class PrettyTime
    }
 
    /**
-    * Calculate the approximate {@link Duration} between the reference {@link Instant} and given {@link Instant}.
-    * If the given {@link Instant} is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be
-    * used instead.
+    * Calculate the approximate {@link Duration} between the reference {@link Instant} and given {@link Instant}. If the
+    * given {@link Instant} is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used
+    * instead.
     *
     * @see #getReference()
     */
@@ -335,7 +358,7 @@ public class PrettyTime
     * of time (in milliseconds).
     * 
     * @param then The {@link Date} to be compared against the reference timestamp, or <i>now</i> if no reference
-    *           timestamp was provided
+    *                timestamp was provided
     * @return A sorted {@link List} of {@link Duration} objects, from largest to smallest. Each element in the list
     *         represents the approximate duration (number of times) that {@link TimeUnit} to fit into the previous
     *         element's delta. The first element is the largest {@link TimeUnit} to fit within the total difference
@@ -352,14 +375,11 @@ public class PrettyTime
       long difference = then.getTime() - reference.toEpochMilli();
       Duration duration = calculateDuration(difference);
       result.add(duration);
-      while (0 != duration.getDelta())
-      {
+      while (0 != duration.getDelta()) {
          duration = calculateDuration(duration.getDelta());
-         if (!result.isEmpty())
-         {
+         if (!result.isEmpty()) {
             Duration last = result.get(result.size() - 1);
-            if (last.getUnit().equals(duration.getUnit()))
-            {
+            if (last.getUnit().equals(duration.getUnit())) {
                break;
             }
          }
@@ -372,14 +392,14 @@ public class PrettyTime
 
    /**
     * Calculate to the precision of the smallest provided {@link TimeUnit}, the exact {@link Duration} represented by
-    * the difference between the reference {@link Instant} and the given {@link Instant}. If the given {@link Instant} is
-    * <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used instead.
+    * the difference between the reference {@link Instant} and the given {@link Instant}. If the given {@link Instant}
+    * is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used instead.
     * <p>
     * <b>Note</b>: Precision may be lost if no supplied {@link TimeUnit} is granular enough to represent the remainder
     * of time (in milliseconds).
     *
     * @param then The {@link Instant} to be compared against the reference timestamp, or <i>now</i> if no reference
-    *           timestamp was provided
+    *                timestamp was provided
     * @return A sorted {@link List} of {@link Duration} objects, from largest to smallest. Each element in the list
     *         represents the approximate duration (number of times) that {@link TimeUnit} to fit into the previous
     *         element's delta. The first element is the largest {@link TimeUnit} to fit within the total difference
@@ -399,8 +419,8 @@ public class PrettyTime
     * <b>Note</b>: Precision may be lost if no supplied {@link TimeUnit} is granular enough to represent the remainder
     * of time (in milliseconds).
     *
-    * @param then The {@link LocalDateTime} to be compared against the reference timestamp, or <i>now</i> if no reference
-    *           timestamp was provided
+    * @param then The {@link LocalDateTime} to be compared against the reference timestamp, or <i>now</i> if no
+    *                reference timestamp was provided
     * @return A sorted {@link List} of {@link Duration} objects, from largest to smallest. Each element in the list
     *         represents the approximate duration (number of times) that {@link TimeUnit} to fit into the previous
     *         element's delta. The first element is the largest {@link TimeUnit} to fit within the total difference
@@ -420,8 +440,8 @@ public class PrettyTime
     * <b>Note</b>: Precision may be lost if no supplied {@link TimeUnit} is granular enough to represent the remainder
     * of time (in milliseconds).
     *
-    * @param then The {@link LocalDateTime} to be compared against the reference timestamp, or <i>now</i> if no reference
-    *           timestamp was provided
+    * @param then   The {@link LocalDateTime} to be compared against the reference timestamp, or <i>now</i> if no
+    *                  reference timestamp was provided
     * @param zoneId The {@link ZoneId} to be used, not null
     * @return A sorted {@link List} of {@link Duration} objects, from largest to smallest. Each element in the list
     *         represents the approximate duration (number of times) that {@link TimeUnit} to fit into the previous
@@ -443,7 +463,7 @@ public class PrettyTime
     * of time (in milliseconds).
     *
     * @param then The {@link LocalDate} to be compared against the reference timestamp, or <i>now</i> if no reference
-    *           timestamp was provided
+    *                timestamp was provided
     * @return A sorted {@link List} of {@link Duration} objects, from largest to smallest. Each element in the list
     *         represents the approximate duration (number of times) that {@link TimeUnit} to fit into the previous
     *         element's delta. The first element is the largest {@link TimeUnit} to fit within the total difference
@@ -456,15 +476,15 @@ public class PrettyTime
 
    /**
     * Calculate to the precision of the smallest provided {@link TimeUnit}, the exact {@link Duration} represented by
-    * the difference between the reference {@link Instant} and the given {@link LocalDate} using the given {@link ZoneId}.
-    * If the given {@link Instant} is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be
-    * used instead.
+    * the difference between the reference {@link Instant} and the given {@link LocalDate} using the given
+    * {@link ZoneId}. If the given {@link Instant} is <code>null</code>, the current value of
+    * {@link System#currentTimeMillis()} will be used instead.
     * <p>
     * <b>Note</b>: Precision may be lost if no supplied {@link TimeUnit} is granular enough to represent the remainder
     * of time (in milliseconds).
     *
-    * @param then The {@link LocalDate} to be compared against the reference timestamp, or <i>now</i> if no reference
-    *           timestamp was provided
+    * @param then   The {@link LocalDate} to be compared against the reference timestamp, or <i>now</i> if no reference
+    *                  timestamp was provided
     * @param zoneId The {@link ZoneId} to be used, not null
     * @return A sorted {@link List} of {@link Duration} objects, from largest to smallest. Each element in the list
     *         represents the approximate duration (number of times) that {@link TimeUnit} to fit into the previous
@@ -598,7 +618,7 @@ public class PrettyTime
     * Format the given {@link LocalDateTime} object using the given {@link ZoneId}. If the given {@link LocalDateTime}
     * is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used instead.
     *
-    * @param then the {@link LocalDateTime} to be formatted
+    * @param then   the {@link LocalDateTime} to be formatted
     * @param zoneId the {@link ZoneId} to be used, not null
     * @return A formatted string representing {@code then}
     */
@@ -624,9 +644,11 @@ public class PrettyTime
     * Format the given {@link LocalDate} object using the given {@link ZoneId}. If the given {@link LocalDate} is
     * <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used instead.
     *
-    * <p>This assumes that the time of the given date is midnight.</p>
+    * <p>
+    * This assumes that the time of the given date is midnight.
+    * </p>
     *
-    * @param then the {@link LocalDate} to be formatted
+    * @param then   the {@link LocalDate} to be formatted
     * @param zoneId the {@link ZoneId} to be used, not null
     * @return A formatted string representing {@code then}
     */
@@ -639,7 +661,9 @@ public class PrettyTime
     * Format the given {@link LocalDate} object using the system default {@link ZoneId}. If the given {@link LocalDate}
     * is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used instead.
     *
-    * <p>This assumes that the time of the given date is midnight.</p>
+    * <p>
+    * This assumes that the time of the given date is midnight.
+    * </p>
     *
     * @param then the {@link LocalDate} to be formatted
     * @return A formatted string representing {@code then}
@@ -768,7 +792,7 @@ public class PrettyTime
     * given {@link LocalDateTime} is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be
     * used instead.
     *
-    * @param then the {@link LocalDateTime} to be formatted
+    * @param then   the {@link LocalDateTime} to be formatted
     * @param zoneId the {@link ZoneId} to be used, not null
     * @return A formatted string representing {@code then}
     */
@@ -791,13 +815,15 @@ public class PrettyTime
    }
 
    /**
-    * Format the given {@link LocalDate} object using the given {@link ZoneId}. Rounding rules are ignored. If the
-    * given {@link LocalDate} is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be
-    * used instead.
+    * Format the given {@link LocalDate} object using the given {@link ZoneId}. Rounding rules are ignored. If the given
+    * {@link LocalDate} is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used
+    * instead.
     *
-    * <p>This assumes that the time of the given date is midnight.</p>
+    * <p>
+    * This assumes that the time of the given date is midnight.
+    * </p>
     *
-    * @param then the {@link LocalDate} to be formatted
+    * @param then   the {@link LocalDate} to be formatted
     * @param zoneId the {@link ZoneId} to be used, not null
     * @return A formatted string representing {@code then}
     */
@@ -807,11 +833,13 @@ public class PrettyTime
    }
 
    /**
-    * Format the given {@link LocalDate} object using the system default {@link ZoneId}. Rounding rules are ignored.
-    * If the given {@link LocalDate} is <code>null</code>, the current value of {@link System#currentTimeMillis()}
-    * will be used instead.
+    * Format the given {@link LocalDate} object using the system default {@link ZoneId}. Rounding rules are ignored. If
+    * the given {@link LocalDate} is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be
+    * used instead.
     *
-    * <p>This assumes that the time of the given date is midnight.</p>
+    * <p>
+    * This assumes that the time of the given date is midnight.
+    * </p>
     *
     * @param then the {@link LocalDate} to be formatted
     * @return A formatted string representing {@code then}
@@ -908,9 +936,10 @@ public class PrettyTime
    }
 
    /**
-    * Format the given {@link Instant} and return a non-relative (not decorated with past or future tense) {@link String}
-    * for the approximate duration of its difference between the reference {@link Instant}. If the given {@link Instant} is
-    * <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used instead.
+    * Format the given {@link Instant} and return a non-relative (not decorated with past or future tense)
+    * {@link String} for the approximate duration of its difference between the reference {@link Instant}. If the given
+    * {@link Instant} is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used
+    * instead.
     * <p>
     *
     * @param then the {@link Instant} to be formatted
@@ -922,9 +951,10 @@ public class PrettyTime
    }
 
    /**
-    * Format the given {@link Instant} and return a non-relative (not decorated with past or future tense) {@link String}
-    * for the approximate duration of its difference between the reference {@link Instant}. If the given {@link Instant} is
-    * <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used instead.
+    * Format the given {@link Instant} and return a non-relative (not decorated with past or future tense)
+    * {@link String} for the approximate duration of its difference between the reference {@link Instant}. If the given
+    * {@link Instant} is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used
+    * instead.
     * <p>
     *
     * @param then the {@link ZonedDateTime} to be formatted
@@ -936,9 +966,10 @@ public class PrettyTime
    }
 
    /**
-    * Format the given {@link Instant} and return a non-relative (not decorated with past or future tense) {@link String}
-    * for the approximate duration of its difference between the reference {@link Instant}. If the given {@link Instant} is
-    * <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used instead.
+    * Format the given {@link Instant} and return a non-relative (not decorated with past or future tense)
+    * {@link String} for the approximate duration of its difference between the reference {@link Instant}. If the given
+    * {@link Instant} is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used
+    * instead.
     * <p>
     *
     * @param then the {@link OffsetDateTime} to be formatted
@@ -956,7 +987,7 @@ public class PrettyTime
     * {@link System#currentTimeMillis()} will be used instead.
     * <p>
     *
-    * @param then the {@link LocalDateTime} to be formatted
+    * @param then   the {@link LocalDateTime} to be formatted
     * @param zoneId the {@link ZoneId} to be used, not null
     * @return A formatted string of the given {@link LocalDateTime}
     */
@@ -986,9 +1017,11 @@ public class PrettyTime
     * {@link Date}. If the given {@link LocalDate} is <code>null</code>, the current value of
     * {@link System#currentTimeMillis()} will be used instead.
     *
-    * <p>This assumes that the time of the given date is midnight.</p>
+    * <p>
+    * This assumes that the time of the given date is midnight.
+    * </p>
     *
-    * @param then the {@link LocalDate} to be formatted
+    * @param then   the {@link LocalDate} to be formatted
     * @param zoneId the {@link ZoneId} to be used, not null
     * @return A formatted string of the given {@link LocalDate}
     */
@@ -1003,7 +1036,9 @@ public class PrettyTime
     * reference {@link Instant}. If the given {@link LocalDate} is <code>null</code>, the current value of
     * {@link System#currentTimeMillis()} will be used instead.
     *
-    * <p>This assumes that the time of the given date is midnight.</p>
+    * <p>
+    * This assumes that the time of the given date is midnight.
+    * </p>
     *
     * @param then the {@link LocalDate} to be formatted
     * @return A formatted string of the given {@link LocalDate}
@@ -1096,10 +1131,10 @@ public class PrettyTime
    }
 
    /**
-    * Format the given {@link Instant} and return a non-relative (not decorated with past or future tense) {@link String}
-    * for the approximate duration of its difference between the reference {@link Instant}. Rounding rules are ignored.
-    * If the given {@link Instant} is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be
-    * used instead.
+    * Format the given {@link Instant} and return a non-relative (not decorated with past or future tense)
+    * {@link String} for the approximate duration of its difference between the reference {@link Instant}. Rounding
+    * rules are ignored. If the given {@link Instant} is <code>null</code>, the current value of
+    * {@link System#currentTimeMillis()} will be used instead.
     * <p>
     *
     * @param then the {@link Instant} to be formatted
@@ -1176,7 +1211,9 @@ public class PrettyTime
     * {@link Date}. Rounding rules are ignored. If the given {@link LocalDate} is <code>null</code>, the current value
     * of {@link System#currentTimeMillis()} will be used instead.
     *
-    * <p>This assumes that the time of the given date is midnight.</p>
+    * <p>
+    * This assumes that the time of the given date is midnight.
+    * </p>
     *
     * @param then the {@link LocalDate} to be formatted
     * @return A formatted string of the given {@link LocalDate}
@@ -1187,12 +1224,14 @@ public class PrettyTime
    }
 
    /**
-    * Format the given {@link LocalDate} using the system default {@link ZoneId} and return a non-relative (not decorated
-    * with past or future tense) {@link String} for the approximate duration of its difference between the reference
-    * {@link Date}. Rounding rules are ignored. If the given {@link LocalDate} is <code>null</code>, the current value
-    * of {@link System#currentTimeMillis()} will be used instead.
+    * Format the given {@link LocalDate} using the system default {@link ZoneId} and return a non-relative (not
+    * decorated with past or future tense) {@link String} for the approximate duration of its difference between the
+    * reference {@link Date}. Rounding rules are ignored. If the given {@link LocalDate} is <code>null</code>, the
+    * current value of {@link System#currentTimeMillis()} will be used instead.
     *
-    * <p>This assumes that the time of the given date is midnight.</p>
+    * <p>
+    * This assumes that the time of the given date is midnight.
+    * </p>
     *
     * @param then the {@link LocalDate} to be formatted
     * @return A formatted string of the given {@link LocalDate}
@@ -1207,8 +1246,7 @@ public class PrettyTime
     */
    public TimeFormat getFormat(TimeUnit unit)
    {
-      if (unit != null && units.get(unit) != null)
-      {
+      if (unit != null && units.get(unit) != null) {
          return units.get(unit);
       }
       return null;
@@ -1218,6 +1256,7 @@ public class PrettyTime
     * Get the current reference {@link Instant}, or <code>null</code> if no reference {@link Instant} is set.
     *
     * See {@code PrettyTime.setReference(Date timestamp)}
+    * 
     * @see #setReference(Instant)
     */
    public Instant getReference()
@@ -1283,9 +1322,9 @@ public class PrettyTime
    }
 
    /**
-    * Converts the given {@link LocalDateTime} to the reference {@link Instant} using the given {@link ZoneId}.
-    * If <code>null</code>, {@link PrettyTime} will always use the current value of {@link System#currentTimeMillis()}
-    * as the reference {@link Instant}.
+    * Converts the given {@link LocalDateTime} to the reference {@link Instant} using the given {@link ZoneId}. If
+    * <code>null</code>, {@link PrettyTime} will always use the current value of {@link System#currentTimeMillis()} as
+    * the reference {@link Instant}.
     * <p>
     * If the {@link Instant} formatted is before the reference {@link Instant}, the format command will produce a
     * {@link String} that is in the past tense. If the {@link Instant} formatted is after the reference {@link Instant},
@@ -1299,9 +1338,9 @@ public class PrettyTime
    }
 
    /**
-    * Converts the given {@link LocalDate} to the reference {@link Instant} using the given {@link ZoneId}.
-    * If <code>null</code>, {@link PrettyTime} will always use the current value of {@link System#currentTimeMillis()}
-    * as the reference {@link Instant}.
+    * Converts the given {@link LocalDate} to the reference {@link Instant} using the given {@link ZoneId}. If
+    * <code>null</code>, {@link PrettyTime} will always use the current value of {@link System#currentTimeMillis()} as
+    * the reference {@link Instant}.
     * <p>
     * If the {@link Instant} formatted is before the reference {@link Instant}, the format command will produce a
     * {@link String} that is in the past tense. If the {@link Instant} formatted is after the reference {@link Instant},
@@ -1315,9 +1354,9 @@ public class PrettyTime
    }
 
    /**
-    * Converts the given {@link LocalDate} to the reference {@link Instant} using the given {@link ZoneId}.
-    * If <code>null</code>, {@link PrettyTime} will always use the current value of {@link System#currentTimeMillis()}
-    * as the reference {@link Instant}.
+    * Converts the given {@link LocalDate} to the reference {@link Instant} using the given {@link ZoneId}. If
+    * <code>null</code>, {@link PrettyTime} will always use the current value of {@link System#currentTimeMillis()} as
+    * the reference {@link Instant}.
     * <p>
     * If the {@link Instant} formatted is before the reference {@link Instant}, the format command will produce a
     * {@link String} that is in the past tense. If the {@link Instant} formatted is after the reference {@link Instant},
@@ -1354,8 +1393,7 @@ public class PrettyTime
          return null;
 
       for (TimeUnit unit : units.keySet()) {
-         if (unitType.isAssignableFrom(unit.getClass()))
-         {
+         if (unitType.isAssignableFrom(unit.getClass())) {
             return (UNIT) unit;
          }
       }
@@ -1395,8 +1433,7 @@ public class PrettyTime
          return null;
 
       for (TimeUnit unit : units.keySet()) {
-         if (unitType.isAssignableFrom(unit.getClass()))
-         {
+         if (unitType.isAssignableFrom(unit.getClass())) {
             cachedUnits = null;
 
             return units.remove(unit);
@@ -1507,32 +1544,27 @@ public class PrettyTime
 
       DurationImpl result = new DurationImpl();
 
-      for (int i = 0; i < localUnits.size(); i++)
-      {
+      for (int i = 0; i < localUnits.size(); i++) {
          TimeUnit unit = localUnits.get(i);
          long millisPerUnit = Math.abs(unit.getMillisPerUnit());
          long quantity = Math.abs(unit.getMaxQuantity());
 
          boolean isLastUnit = (i == localUnits.size() - 1);
 
-         if ((0 == quantity) && !isLastUnit)
-         {
+         if ((0 == quantity) && !isLastUnit) {
             quantity = localUnits.get(i + 1).getMillisPerUnit() / unit.getMillisPerUnit();
          }
 
          /*
           * Does our unit encompass the time duration?
           */
-         if ((millisPerUnit * quantity > absoluteDifference) || isLastUnit)
-         {
+         if ((millisPerUnit * quantity > absoluteDifference) || isLastUnit) {
             result.setUnit(unit);
-            if (millisPerUnit > absoluteDifference)
-            {
+            if (millisPerUnit > absoluteDifference) {
                result.setQuantity(getSign(difference));
                result.setDelta(0);
             }
-            else
-            {
+            else {
                result.setQuantity(difference / millisPerUnit);
                result.setDelta(difference - result.getQuantity() * millisPerUnit);
             }
@@ -1545,12 +1577,10 @@ public class PrettyTime
 
    private long getSign(final long difference)
    {
-      if (0 > difference)
-      {
+      if (0 > difference) {
          return -1;
       }
-      else
-      {
+      else {
          return 1;
       }
    }

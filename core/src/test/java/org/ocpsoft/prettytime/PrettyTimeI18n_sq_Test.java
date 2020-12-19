@@ -41,7 +41,7 @@ public class PrettyTimeI18n_sq_Test
    public void testPrettyTime()
    {
       PrettyTime p = new PrettyTime(locale);
-      assertEquals("tani", p.format(new Date()));
+      assertEquals("momente nga tani", p.format(new Date()));
    }
 
    @Test
@@ -51,7 +51,7 @@ public class PrettyTimeI18n_sq_Test
       assertEquals("3 shekuj më parë", p.format(new Date(0)));
 
       p = new PrettyTime(new Date(0), locale);
-      assertEquals("3 shekuj më vonë", p.format(new Date(3155692597470L * 3L)));
+      assertEquals("3 shekuj nga tani", p.format(new Date(3155692597470L * 3L)));
    }
 
    @Test

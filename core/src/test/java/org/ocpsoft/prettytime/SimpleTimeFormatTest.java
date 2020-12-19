@@ -17,16 +17,13 @@ package org.ocpsoft.prettytime;
 
 import static org.junit.Assert.assertEquals;
 
-import java.time.*;
+import java.time.Instant;
 import java.util.Date;
 import java.util.Locale;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.ocpsoft.prettytime.Duration;
-import org.ocpsoft.prettytime.PrettyTime;
-import org.ocpsoft.prettytime.TimeFormat;
 import org.ocpsoft.prettytime.format.SimpleTimeFormat;
 
 public class SimpleTimeFormatTest

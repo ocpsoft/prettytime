@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.ocpsoft.prettytime;
+
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -23,13 +24,10 @@ import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.ocpsoft.prettytime.Duration;
-import org.ocpsoft.prettytime.PrettyTime;
-import org.ocpsoft.prettytime.TimeFormat;
-import org.ocpsoft.prettytime.TimeUnit;
 import org.ocpsoft.prettytime.units.JustNow;
 
-public class PrettyTimeI18n_IT_Test {
+public class PrettyTimeI18n_IT_Test
+{
 	private Locale locale;
 
 	@Before
@@ -37,28 +35,27 @@ public class PrettyTimeI18n_IT_Test {
 	{
 		locale = new Locale("it");
 	}
-	
-	private PrettyTime newPrettyTimeWOJustNow(Date ref, Locale locale) 
+
+	private PrettyTime newPrettyTimeWOJustNow(Date ref, Locale locale)
 	{
 		PrettyTime t = new PrettyTime(ref, locale);
 		List<TimeUnit> units = t.getUnits();
 		List<TimeFormat> formats = new ArrayList<TimeFormat>();
 		for (TimeUnit timeUnit : units) {
-			if(!(timeUnit instanceof JustNow)) {
+			if (!(timeUnit instanceof JustNow)) {
 				formats.add(t.getFormat(timeUnit));
 			}
 		}
 		int index = 0;
 		t.clearUnits();
 		for (TimeUnit timeUnit : units) {
-			if(!(timeUnit instanceof JustNow)) {
+			if (!(timeUnit instanceof JustNow)) {
 				t.registerUnit(timeUnit, formats.get(index));
 				index++;
 			}
 		}
 		return t;
 	}
-
 
 	@Test
 	public void testRightNow() throws Exception
@@ -73,7 +70,7 @@ public class PrettyTimeI18n_IT_Test {
 		PrettyTime t = new PrettyTime(new Date(6000), locale);
 		assertEquals("poco fa", t.format(new Date(0)));
 	}
-	
+
 	@Test
 	public void testMilliSecondsFromNow() throws Exception
 	{
@@ -101,7 +98,7 @@ public class PrettyTimeI18n_IT_Test {
 		PrettyTime t = newPrettyTimeWOJustNow(new Date(1), locale);
 		assertEquals("1 millisecondo fa", t.format(new Date(0)));
 	}
-	
+
 	@Test
 	public void testSecondsFromNow() throws Exception
 	{
@@ -120,13 +117,13 @@ public class PrettyTimeI18n_IT_Test {
 	public void testSecondFromNow() throws Exception
 	{
 		PrettyTime t = newPrettyTimeWOJustNow(new Date(0), locale);
-		assertEquals("fra 1 secondo", t.format(new Date(1000  * 1)));
+		assertEquals("fra 1 secondo", t.format(new Date(1000 * 1)));
 	}
 
 	@Test
 	public void testSecondAgo() throws Exception
 	{
-		PrettyTime t = newPrettyTimeWOJustNow(new Date(1000  * 1), locale);
+		PrettyTime t = newPrettyTimeWOJustNow(new Date(1000 * 1), locale);
 		assertEquals("1 secondo fa", t.format(new Date(0)));
 	}
 
@@ -134,7 +131,7 @@ public class PrettyTimeI18n_IT_Test {
 	public void testMinutesFromNow() throws Exception
 	{
 		PrettyTime t = new PrettyTime(new Date(0), locale);
-		assertEquals("fra 13 minuti", t.format(new Date(1000 * 60  * 13)));
+		assertEquals("fra 13 minuti", t.format(new Date(1000 * 60 * 13)));
 	}
 
 	@Test
@@ -395,9 +392,8 @@ public class PrettyTimeI18n_IT_Test {
 	{
 		PrettyTime t = new PrettyTime(new Date(0), locale);
 		List<Duration> durations = t.calculatePreciseDuration(new Date(1000 * 60 * 60 * 24 * 3 + 1000 * 60 * 60 * 15
-				+ 1000 * 60 * 38));
+					+ 1000 * 60 * 38));
 		assertEquals("fra 3 giorni 15 ore 38 minuti", t.format(durations));
 	}
-
 
 }

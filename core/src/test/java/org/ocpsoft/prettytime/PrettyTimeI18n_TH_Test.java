@@ -1,15 +1,14 @@
 package org.ocpsoft.prettytime;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public class PrettyTimeI18n_TH_Test
 {
@@ -71,7 +70,7 @@ public class PrettyTimeI18n_TH_Test
     {
         PrettyTime t = new PrettyTime(new Date(0));
         assertEquals("3 วัน ต่อจากนี้ี้",
-                t.format(new Date(1000 * 60 * 60 * 24 * 3)));
+                    t.format(new Date(1000 * 60 * 60 * 24 * 3)));
     }
 
     @Test
@@ -79,7 +78,7 @@ public class PrettyTimeI18n_TH_Test
     {
         PrettyTime t = new PrettyTime(new Date(0));
         assertEquals("3 อาทิตย์ ต่อจากนี้ี้",
-                t.format(new Date(1000 * 60 * 60 * 24 * 7 * 3)));
+                    t.format(new Date(1000 * 60 * 60 * 24 * 7 * 3)));
     }
 
     @Test
@@ -94,7 +93,7 @@ public class PrettyTimeI18n_TH_Test
     {
         PrettyTime t = new PrettyTime(new Date(0));
         assertEquals("3 ศตวรรษ ต่อจากนี้",
-                t.format(new Date(3155692597470L * 3L)));
+                    t.format(new Date(3155692597470L * 3L)));
     }
 
     /*

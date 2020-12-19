@@ -17,13 +17,13 @@ package org.ocpsoft.prettytime;
 
 import static org.junit.Assert.assertEquals;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Locale;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.ocpsoft.prettytime.PrettyTime;
 
 /**
  * All the tests for PrettyTime.
@@ -71,7 +71,7 @@ public class PrettyTimeI18n_Test
    {
       // The Spanish resource bundle should be used
       PrettyTime p = new PrettyTime(new Locale("es"));
-      assertEquals("hace un instante", p.format(new Date()));
+      assertEquals("hace instantes", p.format(LocalDateTime.now().minusSeconds(1)));
    }
 
    @Test
@@ -131,8 +131,7 @@ public class PrettyTimeI18n_Test
    {
       long t = 1L;
       PrettyTime p = new PrettyTime(new Date(0), Locale.ROOT);
-      while (1000L * 60L * 60L * 24L * 365L * 1000000L > t)
-      {
+      while (1000L * 60L * 60L * 24L * 365L * 1000000L > t) {
          assertEquals(p.format(new Date(0)).endsWith("now"), true);
          t *= 2L;
       }
@@ -143,8 +142,7 @@ public class PrettyTimeI18n_Test
    {
       long t = 1L;
       PrettyTime p = new PrettyTime(new Date(0), Locale.GERMAN);
-      while (1000L * 60L * 60L * 24L * 365L * 1000000L > t)
-      {
+      while (1000L * 60L * 60L * 24L * 365L * 1000000L > t) {
          assertEquals(p.format(new Date(0)).startsWith("in") || p.format(new Date(0)).startsWith("Jetzt"), true);
          t *= 2L;
       }

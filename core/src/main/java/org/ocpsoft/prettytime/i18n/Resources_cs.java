@@ -263,7 +263,7 @@ public class Resources_cs extends ListResourceBundle implements TimeFormatProvid
 
    }
 
-   private static class CsTimeFormat extends SimpleTimeFormat implements TimeFormat
+   private static class CsTimeFormat extends SimpleTimeFormat
    {
 
       private final List<CsName> futureNames = new ArrayList<Resources_cs.CsName>();
@@ -283,19 +283,23 @@ public class Resources_cs extends ListResourceBundle implements TimeFormatProvid
          try {
             setFuturePluralName(bundle.getString(resourceKeyPrefix + "FuturePluralName"));
          }
-         catch (Exception e) {}
+         catch (Exception e) {
+         }
          try {
             setFutureSingularName((bundle.getString(resourceKeyPrefix + "FutureSingularName")));
          }
-         catch (Exception e) {}
+         catch (Exception e) {
+         }
          try {
             setPastPluralName((bundle.getString(resourceKeyPrefix + "PastPluralName")));
          }
-         catch (Exception e) {}
+         catch (Exception e) {
+         }
          try {
             setPastSingularName((bundle.getString(resourceKeyPrefix + "PastSingularName")));
          }
-         catch (Exception e) {}
+         catch (Exception e) {
+         }
 
          for (CsName name : names) {
             if (name.isFuture()) {

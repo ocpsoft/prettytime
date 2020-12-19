@@ -6,6 +6,14 @@ Social Style Date and Time Formatting for Java
 
 Learn more at http://ocpsoft.org/prettytime/
 
+Java 1.8 (Support JDK DateTime API)
+=======
+PrettyTime requires Java/JDK >=1.8 as of version `5.0.0.Final` or higher.
+
+Java <=1.7
+=======
+Users requiring versions of Java/JDK less than or equal to 1.7 should use PrettyTime versions in the 4.x branch: `4.0.6.Final` or lower.
+
 Android
 =======
 To use prettytime in android, first add the following dependency to your app level build.gradle

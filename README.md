@@ -2,7 +2,7 @@ prettytime
 ==========
 Social Style Date and Time Formatting for Java
 
-Learn more at http://ocpsoft.org/prettytime/
+Learn more at https://www.ocpsoft.org/prettytime/
 
 Java >=1.8 (Support JDK DateTime API)
 =======

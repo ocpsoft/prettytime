@@ -23,7 +23,7 @@
 		<dependency>
 			<groupId>com.joestelmach</groupId>
 			<artifactId>natty</artifactId>
-			<version>0.10.1</version>
+			<version>0.13</version>
 			<exclusions>
 				<exclusion>
 					<groupId>antlr</groupId>

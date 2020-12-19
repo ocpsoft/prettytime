@@ -57,7 +57,7 @@ public class PrettyTimeParserTest
       String formatted = new PrettyTime(Locale.ENGLISH).format(parse.get(0).getDates().get(0));
       Assert.assertEquals("3 days ago", formatted);
       Assert.assertEquals(1, parse.get(0).getLine());
-      Assert.assertEquals(9, parse.get(0).getPosition());
+      Assert.assertEquals(10, parse.get(0).getPosition());
       Assert.assertEquals(1, parse.get(0).getDates().size());
       Assert.assertNull(parse.get(0).getRecursUntil());
       Assert.assertFalse(parse.get(0).isRecurring());

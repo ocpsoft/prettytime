@@ -4,7 +4,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.ocpsoft.prettytime.Duration;
-import org.ocpsoft.prettytime.LocaleAware;
 import org.ocpsoft.prettytime.TimeFormat;
 import org.ocpsoft.prettytime.format.SimpleTimeFormat;
 
@@ -13,7 +12,7 @@ import org.ocpsoft.prettytime.format.SimpleTimeFormat;
  *
  * @author lb3
  */
-public class ResourcesTimeFormat extends SimpleTimeFormat implements LocaleAware<ResourcesTimeFormat>
+public class ResourcesTimeFormat extends SimpleTimeFormat
 {
    private final ResourcesTimeUnit unit;
    private TimeFormat override;

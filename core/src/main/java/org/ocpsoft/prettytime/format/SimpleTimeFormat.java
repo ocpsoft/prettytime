@@ -15,9 +15,11 @@
  */
 package org.ocpsoft.prettytime.format;
 
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import org.ocpsoft.prettytime.Duration;
+import org.ocpsoft.prettytime.LocaleAware;
 import org.ocpsoft.prettytime.TimeFormat;
 import org.ocpsoft.prettytime.TimeUnit;
 
@@ -26,7 +28,7 @@ import org.ocpsoft.prettytime.TimeUnit;
  *
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
-public class SimpleTimeFormat implements TimeFormat
+public class SimpleTimeFormat implements TimeFormat, LocaleAware<SimpleTimeFormat>
 {
    private static final String NEGATIVE = "-";
    public static final String SIGN = "%s";
@@ -34,6 +36,8 @@ public class SimpleTimeFormat implements TimeFormat
    public static final String UNIT = "%u";
 
    private static final Pattern PATTERN_MULTIPLE_WHITESPACES = Pattern.compile("\\s{2,}");
+
+   private Locale locale;
 
    private String singularName = "";
    private String pluralName = "";
@@ -48,6 +52,13 @@ public class SimpleTimeFormat implements TimeFormat
    private String pastPrefix = "";
    private String pastSuffix = "";
    private int roundingTolerance = 50;
+
+   @Override
+   public SimpleTimeFormat setLocale(Locale locale)
+   {
+      this.locale = locale;
+      return this;
+   }
 
    @Override
    public String format(final Duration duration)
@@ -93,7 +104,11 @@ public class SimpleTimeFormat implements TimeFormat
    private String applyPattern(final String sign, final String unit, final long quantity)
    {
       String result = getPattern(quantity).replace(SIGN, sign);
-      result = result.replace(QUANTITY, String.valueOf(quantity));
+      String formatted = (this.locale != null)
+               ? String.format(this.locale, "%d", quantity)
+               : String.format("%d", quantity);
+
+      result = result.replace(QUANTITY, formatted);
       result = result.replace(UNIT, unit);
       return result;
    }
@@ -158,6 +173,7 @@ public class SimpleTimeFormat implements TimeFormat
    /*
     * Builder Setters
     */
+
    public SimpleTimeFormat setPattern(final String pattern)
    {
       this.pattern = pattern;

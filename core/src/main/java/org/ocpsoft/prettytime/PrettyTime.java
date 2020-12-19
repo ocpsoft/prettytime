@@ -332,7 +332,6 @@ public class PrettyTime
          then = now();
 
       final Instant ref = reference != null ? reference : Instant.now();
-
       long difference = then.getTime() - ref.toEpochMilli();
       return calculateDuration(difference);
    }

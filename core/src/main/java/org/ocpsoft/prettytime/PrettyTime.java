@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -64,7 +65,7 @@ import org.ocpsoft.prettytime.units.Year;
  * //result: 10 minutes from now
  * </code>
  * <p>
- * 
+ *
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
 public class PrettyTime
@@ -581,17 +582,9 @@ public class PrettyTime
     *
     * @see #getReference()
     */
-   public Duration approximateDuration(Date then)
+   public Duration approximateDuration(final Date then)
    {
-      if (then == null)
-         then = now();
-
-      final Instant ref = reference != null ? reference : Instant.now();
-      long difference = then.getTime() - ref.toEpochMilli();
-      if (difference == 0) {
-         difference = 1;
-      }
-      return calculateDuration(difference);
+      return approximateDuration(then != null ? then.toInstant() : null);
    }
 
    /**
@@ -601,9 +594,11 @@ public class PrettyTime
     *
     * @see #getReference()
     */
-   public Duration approximateDuration(Instant then)
+   public Duration approximateDuration(final Instant then)
    {
-      return approximateDuration(then != null ? Date.from(then) : null);
+      long difference = ChronoUnit.MILLIS.between(then != null ? then : Instant.now(),
+              reference != null ? reference : Instant.now());
+      return calculateDuration(difference != 0 ? difference : 1);
    }
 
    /**
@@ -613,9 +608,9 @@ public class PrettyTime
     *
     * @see #getReference()
     */
-   public Duration approximateDuration(LocalDate then)
+   public Duration approximateDuration(final LocalDate then)
    {
-      return approximateDuration(then != null ? then.atStartOfDay(ZoneId.systemDefault()).toInstant() : null);
+      return approximateDuration(then, ZoneId.systemDefault());
    }
 
    /**
@@ -628,9 +623,9 @@ public class PrettyTime
     * @param zoneId The {@link ZoneId} to be used, not null
     * @see #getReference()
     */
-   public Duration approximateDuration(LocalDate then, final ZoneId zoneId)
+   public Duration approximateDuration(final LocalDate then, final ZoneId zoneId)
    {
-      return approximateDuration(then != null ? then.atStartOfDay(ZoneId.systemDefault()).toInstant() : null);
+      return approximateDuration(then != null ? then.atStartOfDay(zoneId).toInstant() : null);
    }
 
    /**
@@ -642,9 +637,9 @@ public class PrettyTime
     *                timestamp was provided
     * @see #getReference()
     */
-   public Duration approximateDuration(LocalDateTime then)
+   public Duration approximateDuration(final LocalDateTime then)
    {
-      return approximateDuration(then != null ? then.atZone(ZoneId.systemDefault()).toInstant() : null);
+      return approximateDuration(then, ZoneId.systemDefault());
    }
 
    /**
@@ -657,7 +652,7 @@ public class PrettyTime
     * @param zoneId The {@link ZoneId} to be used, not null
     * @see #getReference()
     */
-   public Duration approximateDuration(LocalDateTime then, final ZoneId zoneId)
+   public Duration approximateDuration(final LocalDateTime then, final ZoneId zoneId)
    {
       return approximateDuration(then != null ? then.atZone(zoneId).toInstant() : null);
    }
@@ -669,7 +664,7 @@ public class PrettyTime
     * <p>
     * <b>Note</b>: Precision may be lost if no supplied {@link TimeUnit} is granular enough to represent the remainder
     * of time (in milliseconds).
-    * 
+    *
     * @param then The {@link Date} to be compared against the reference timestamp, or <i>now</i> if no reference
     *                timestamp was provided
     * @return A sorted {@link List} of {@link Duration} objects, from largest to smallest. Each element in the list
@@ -679,28 +674,7 @@ public class PrettyTime
     */
    public List<Duration> calculatePreciseDuration(Date then)
    {
-      if (then == null)
-         then = now();
-
-      final Instant reference = this.reference != null ? this.reference : Instant.now();
-
-      List<Duration> result = new ArrayList<>();
-      long difference = then.getTime() - reference.toEpochMilli();
-      Duration duration = calculateDuration(difference);
-      result.add(duration);
-      while (0 != duration.getDelta()) {
-         duration = calculateDuration(duration.getDelta());
-         if (!result.isEmpty()) {
-            Duration last = result.get(result.size() - 1);
-            if (last.getUnit().equals(duration.getUnit())) {
-               break;
-            }
-         }
-
-         if (duration.getUnit().isPrecise())
-            result.add(duration);
-      }
-      return result;
+      return calculatePreciseDuration(then != null ? then.toInstant() : null);
    }
 
    /**
@@ -720,7 +694,23 @@ public class PrettyTime
     */
    public List<Duration> calculatePreciseDuration(final Instant then)
    {
-      return calculatePreciseDuration(then != null ? Date.from(then) : null);
+      List<Duration> result = new ArrayList<>();
+      Duration duration = calculateDuration(ChronoUnit.MILLIS.between(then != null ? then : Instant.now(),
+              reference != null ? reference : Instant.now()));
+      result.add(duration);
+      while (0 != duration.getDelta()) {
+         duration = calculateDuration(duration.getDelta());
+         if (!result.isEmpty()) {
+            Duration last = result.get(result.size() - 1);
+            if (last.getUnit().equals(duration.getUnit())) {
+               break;
+            }
+         }
+
+         if (duration.getUnit().isPrecise())
+            result.add(duration);
+      }
+      return result;
    }
 
    /**

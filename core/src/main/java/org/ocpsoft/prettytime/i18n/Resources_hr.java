@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListResourceBundle;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import org.ocpsoft.prettytime.Duration;
@@ -302,10 +303,7 @@ public class Resources_hr extends ListResourceBundle implements TimeFormatProvid
 
         private HrTimeFormatBuilder addName(final boolean isFuture, final String name, final long limit)
         {
-            if (name == null) {
-                throw new IllegalArgumentException();
-            }
-            names.add(new HrName(isFuture, name, limit));
+            names.add(new HrName(isFuture, Objects.requireNonNull(name), limit));
             return this;
         }
 

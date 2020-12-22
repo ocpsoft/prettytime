@@ -73,7 +73,7 @@ public class PrettyTime
    private volatile Locale locale = Locale.getDefault();
    private final Map<TimeUnit, TimeFormat> units = new ConcurrentHashMap<>();
    private volatile List<TimeUnit> cachedUnits;
-   private String overrideResourceBundle;
+   private final String overrideResourceBundle;
 
    /**
     * Create a new {@link PrettyTime} instance that will always use the current value of
@@ -87,7 +87,7 @@ public class PrettyTime
 
    /**
     * Create a new {@link PrettyTime} instance that will always use the current value of
-    * {@link System#currentTimeMillis()} to represent the reference point for {@link Date} comparison, and will use
+    * {@link System#currentTimeMillis()} to represent the reference point for {@link Instant} comparison, and will use
     * {@link Locale#getDefault()} as the selected {@link Locale} for language and dialect formatting. Will use
     * {@link String} as an optional override to the default resource bundles.
     */
@@ -99,21 +99,20 @@ public class PrettyTime
 
    /**
     * Create a new {@link PrettyTime} instance that will use the given {@link Date} timestamp to represent the reference
-    * point for {@link Date} comparison, and will use {@link Locale#getDefault()} as the selected {@link Locale} for
+    * point for {@link Instant} comparison, and will use {@link Locale#getDefault()} as the selected {@link Locale} for
     * language and dialect formatting. If the given {@link Date} is <code>null</code>, this instance will always use the
-    * current value of {@link System#currentTimeMillis()} to represent the reference point for {@link Date} comparison.
+    * current value of {@link System#currentTimeMillis()} to represent the reference point for {@link Instant} comparison.
     */
    public PrettyTime(final Date reference)
    {
-      this();
-      setReference(reference);
+      this(reference, (String) null);
    }
 
    /**
     * Create a new {@link PrettyTime} instance that will use the given {@link Date} timestamp to represent the reference
-    * point for {@link Date} comparison, and will use {@link Locale#getDefault()} as the selected {@link Locale} for
+    * point for {@link Instant} comparison, and will use {@link Locale#getDefault()} as the selected {@link Locale} for
     * language and dialect formatting. If the given {@link Date} is <code>null</code>, this instance will always use the
-    * current value of {@link System#currentTimeMillis()} to represent the reference point for {@link Date} comparison.
+    * current value of {@link System#currentTimeMillis()} to represent the reference point for {@link Instant} comparison.
     * Will use {@link String} as an optional override to the default resource bundles.
     *
     * @see #PrettyTime(Date).
@@ -133,8 +132,7 @@ public class PrettyTime
     */
    public PrettyTime(final Instant reference)
    {
-      this();
-      setReference(reference);
+      this(reference, (String) null);
    }
 
    /**
@@ -188,7 +186,7 @@ public class PrettyTime
     */
    public PrettyTime(final LocalDateTime reference, final ZoneId zoneId)
    {
-      this(reference, zoneId, null);
+      this(reference, zoneId, (String) null);
    }
 
    /**
@@ -203,7 +201,7 @@ public class PrettyTime
     */
    public PrettyTime(final LocalDateTime reference, final ZoneId zoneId, final String overrideResourceBundle)
    {
-      this(reference != null ? reference.atZone(zoneId).toInstant() : null, overrideResourceBundle);
+      this(reference != null ? reference.atZone(zoneId) : null, overrideResourceBundle);
    }
 
    /**
@@ -215,7 +213,7 @@ public class PrettyTime
     */
    public PrettyTime(final LocalDate reference)
    {
-      this(reference, ZoneId.systemDefault(), null);
+      this(reference, (String) null);
    }
 
    /**
@@ -242,13 +240,13 @@ public class PrettyTime
     */
    public PrettyTime(final LocalDate reference, final ZoneId zoneId)
    {
-      this(reference, zoneId, null);
+      this(reference, zoneId, (String) null);
    }
 
    /**
-    * Create a new {@link PrettyTime} instance that will use the given {@link Instant} timestamp to represent the
+    * Create a new {@link PrettyTime} instance that will use the given {@link LocalDate} to represent the
     * reference point for {@link Instant} comparison, and will use {@link Locale#getDefault()} as the selected
-    * {@link Locale} for language and dialect formatting. If the given {@link Instant} is <code>null</code>, this
+    * {@link Locale} for language and dialect formatting. If the given {@link LocalDate} is <code>null</code>, this
     * instance will always use the current value of {@link System#currentTimeMillis()} to represent the reference point
     * for {@link Instant} comparison. Will use {@link String} as an optional override to the default resource bundles.
     *
@@ -256,29 +254,86 @@ public class PrettyTime
     */
    public PrettyTime(final LocalDate reference, final ZoneId zoneId, final String overrideResourceBundle)
    {
-      this(reference != null ? reference.atStartOfDay(zoneId).toInstant() : null, overrideResourceBundle);
+      this(reference != null ? reference.atStartOfDay(zoneId) : null, overrideResourceBundle);
+   }
+
+   /**
+    * Create a new {@link PrettyTime} instance that will use the given {@link OffsetDateTime} to represent the
+    * reference point for {@link Instant} comparison, and will use {@link Locale#getDefault()} as the selected
+    * {@link Locale} for language and dialect formatting. If the given {@link OffsetDateTime} is <code>null</code>, this
+    * instance will always use the current value of {@link System#currentTimeMillis()} to represent the reference point
+    * for {@link Instant} comparison.
+    *
+    * @see #PrettyTime(Instant)
+    */
+   public PrettyTime(final OffsetDateTime reference)
+   {
+      this(reference, null);
+   }
+
+   /**
+    * Create a new {@link PrettyTime} instance that will use the given {@link OffsetDateTime} to represent the
+    * reference point for {@link Instant} comparison, and will use {@link Locale#getDefault()} as the selected
+    * {@link Locale} for language and dialect formatting. If the given {@link OffsetDateTime} is <code>null</code>, this
+    * instance will always use the current value of {@link System#currentTimeMillis()} to represent the reference point
+    * for {@link Instant} comparison. Will use {@link String} as an optional override to the default resource bundles.
+    *
+    * @see #PrettyTime(Instant)
+    */
+   public PrettyTime(final OffsetDateTime reference, final String overrideResourceBundle)
+   {
+      this(overrideResourceBundle);
+      setReference(reference);
+   }
+
+   /**
+    * Create a new {@link PrettyTime} instance that will use the given {@link ZonedDateTime} to represent the
+    * reference point for {@link Instant} comparison, and will use {@link Locale#getDefault()} as the selected
+    * {@link Locale} for language and dialect formatting. If the given {@link ZonedDateTime} is <code>null</code>, this
+    * instance will always use the current value of {@link System#currentTimeMillis()} to represent the reference point
+    * for {@link Instant} comparison. Will use {@link String} as an optional override to the default resource bundles.
+    *
+    * @see #PrettyTime(Instant)
+    */
+   public PrettyTime(final ZonedDateTime reference)
+   {
+      this(reference, null);
+   }
+
+   /**
+    * Create a new {@link PrettyTime} instance that will use the given {@link ZonedDateTime} to represent the
+    * reference point for {@link Instant} comparison, and will use {@link Locale#getDefault()} as the selected
+    * {@link Locale} for language and dialect formatting. If the given {@link ZonedDateTime} is <code>null</code>, this
+    * instance will always use the current value of {@link System#currentTimeMillis()} to represent the reference point
+    * for {@link Instant} comparison. Will use {@link String} as an optional override to the default resource bundles.
+    *
+    * @see #PrettyTime(Instant)
+    */
+   public PrettyTime(final ZonedDateTime reference, final String overrideResourceBundle)
+   {
+      this(overrideResourceBundle);
+      setReference(reference);
    }
 
    /**
     * Construct a new {@link PrettyTime} instance that will always use the current value of
-    * {@link System#currentTimeMillis()} to represent the reference point for {@link Date} comparison. This instance
+    * {@link System#currentTimeMillis()} to represent the reference point for {@link Instant} comparison. This instance
     * will use the given {@link Locale} instead of the system default. If the provided {@link Locale} is
     * <code>null</code>, {@link Locale#getDefault()} will be used.
     */
    public PrettyTime(final Locale locale)
    {
-      this();
-      setLocale(locale);
+      this(locale, null);
    }
 
    /**
     * Construct a new {@link PrettyTime} instance that will always use the current value of
-    * {@link System#currentTimeMillis()} to represent the reference point for {@link Date} comparison. This instance
+    * {@link System#currentTimeMillis()} to represent the reference point for {@link Instant} comparison. This instance
     * will use the given {@link Locale} instead of the system default. If the provided {@link Locale} is
     * <code>null</code>, {@link Locale#getDefault()} will be used. Will use {@link String} as an optional override to
     * the default resource bundles.
     */
-   public PrettyTime(final Locale locale, String overrideResourceBundle)
+   public PrettyTime(final Locale locale, final String overrideResourceBundle)
    {
       this(overrideResourceBundle);
       setLocale(locale);
@@ -286,32 +341,235 @@ public class PrettyTime
 
    /**
     * Construct a new {@link PrettyTime} instance that will use the given {@link Date} timestamp to represent the
-    * reference point for {@link Date} comparison, and will use the given {@link Locale} instead of the system default.
+    * reference point for {@link Instant} comparison, and will use the given {@link Locale} instead of the system default.
     * <p>
     * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
     * If the given {@link Date} is <code>null</code>, this instance will always use current value of
-    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Date} comparison.
-    * <p>
-    * See {@code PrettyTime#setReference(Date timestamp)}.
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    *
+    * @see #setReference(Date)
     */
    public PrettyTime(final Date reference, final Locale locale)
    {
-      this(locale);
-      setReference(reference);
+      this(reference, locale, null);
    }
 
    /**
     * Construct a new {@link PrettyTime} instance that will use the given {@link Date} timestamp to represent the
-    * reference point for {@link Date} comparison, and will use the given {@link Locale} instead of the system default.
+    * reference point for {@link Instant} comparison, and will use the given {@link Locale} instead of the system default.
     * <p>
     * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
     * If the given {@link Date} is <code>null</code>, this instance will always use current value of
-    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Date} comparison. Will
-    * use {@link String} as an optional override to the default resource bundles.
-    * <p>
-    * See {@code PrettyTime#setReference(Date timestamp)}.
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    * Will use {@link String} as an optional override to the default resource bundles.
+    *
+    * @see #setReference(Date)
     */
-   public PrettyTime(final Date reference, final Locale locale, String overrideResourceBundle)
+   public PrettyTime(final Date reference, final Locale locale, final String overrideResourceBundle)
+   {
+      this(locale, overrideResourceBundle);
+      setReference(reference);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link Instant} timestamp to represent the
+    * reference point for {@link Instant} comparison, and will use the given {@link Locale} instead of the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link LocalDate} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    *
+    * @see #setReference(LocalDate)
+    */
+   public PrettyTime(final Instant reference, final Locale locale)
+   {
+      this(reference, locale, null);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link Instant} timestamp to represent the
+    * reference point for {@link Instant} comparison, and will use the given {@link Locale} instead of the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link Instant} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    * Will use {@link String} as an optional override to the default resource bundles.
+    *
+    * @see #setReference(Instant)
+    */
+   public PrettyTime(final Instant reference, final Locale locale, final String overrideResourceBundle)
+   {
+      this(locale, overrideResourceBundle);
+      setReference(reference);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link LocalDate} with the system default
+    * {@link ZoneId} to represent the reference point for {@link Instant} comparison, and will use the given
+    * {@link Locale} instead of the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link LocalDate} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    *
+    * @see #setReference(LocalDate)
+    */
+   public PrettyTime(final LocalDate reference, final Locale locale)
+   {
+      this(reference, ZoneId.systemDefault(), locale);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link LocalDate} with the given {@link ZoneId}
+    * to represent the reference point for {@link Instant} comparison, and will use the given {@link Locale} instead of
+    * the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link LocalDate} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    *
+    * @see #setReference(LocalDate)
+    */
+   public PrettyTime(final LocalDate reference, final ZoneId zoneId, final Locale locale)
+   {
+      this(locale);
+      setReference(reference, zoneId);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link LocalDate} with the system default
+    * {@link ZoneId} to represent the reference point for {@link Instant} comparison, and will use the given
+    * {@link Locale} instead of the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link LocalDate} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    * Will use {@link String} as an optional override to the default resource bundles.
+    *
+    * @see #setReference(LocalDate)
+    */
+   public PrettyTime(final LocalDate reference, final Locale locale, final String overrideResourceBundle)
+   {
+      this(reference, ZoneId.systemDefault(), locale, overrideResourceBundle);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link LocalDate} with the given {@link ZoneId}
+    * to represent the reference point for {@link Instant} comparison, and will use the given {@link Locale} instead of
+    * the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link LocalDate} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    * Will use {@link String} as an optional override to the default resource bundles.
+    *
+    * @see #setReference(LocalDate)
+    */
+   public PrettyTime(final LocalDate reference, final ZoneId zoneId, final Locale locale,
+                     final String overrideResourceBundle)
+   {
+      this(locale, overrideResourceBundle);
+      setReference(reference, zoneId);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link LocalDateTime} with the system default
+    * {@link ZoneId} to represent the reference point for {@link Instant} comparison, and will use the given
+    * {@link Locale} instead of the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link LocalDateTime} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    *
+    * @see #setReference(LocalDateTime)
+    */
+   public PrettyTime(final LocalDateTime reference, final Locale locale)
+   {
+      this(reference, ZoneId.systemDefault(), locale);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link LocalDateTime} with the given
+    * {@link ZoneId} to represent the reference point for {@link Instant} comparison, and will use the given
+    * {@link Locale} instead of the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link LocalDateTime} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    *
+    * @see #setReference(LocalDateTime)
+    */
+   public PrettyTime(final LocalDateTime reference, final ZoneId zoneId, final Locale locale)
+   {
+      this(locale);
+      setReference(reference, zoneId);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link LocalDateTime} with the system default
+    * {@link ZoneId} to represent the reference point for {@link Instant} comparison, and will use the given
+    * {@link Locale} instead of the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link LocalDateTime} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    * Will use {@link String} as an optional override to the default resource bundles.
+    *
+    * @see #setReference(LocalDateTime)
+    */
+   public PrettyTime(final LocalDateTime reference, final Locale locale, final String overrideResourceBundle)
+   {
+      this(reference, ZoneId.systemDefault(), locale, overrideResourceBundle);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link LocalDateTime} with the system default
+    * {@link ZoneId} to represent the reference point for {@link Instant} comparison, and will use the given
+    * {@link Locale} instead of the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link LocalDateTime} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    * Will use {@link String} as an optional override to the default resource bundles.
+    *
+    * @see #setReference(LocalDateTime)
+    */
+   public PrettyTime(final LocalDateTime reference, final ZoneId zoneId, final Locale locale,
+                     final String overrideResourceBundle)
+   {
+      this(locale, overrideResourceBundle);
+      setReference(reference, zoneId);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link OffsetDateTime} to represent the reference
+    * point for {@link Instant} comparison, and will use the given {@link Locale} instead of the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link OffsetDateTime} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    * Will use {@link String} as an optional override to the default resource bundles.
+    *
+    * @see #setReference(OffsetDateTime)
+    */
+   public PrettyTime(final OffsetDateTime reference, final Locale locale, final String overrideResourceBundle)
+   {
+      this(locale, overrideResourceBundle);
+      setReference(reference);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link ZonedDateTime} to represent the reference
+    * point for {@link Instant} comparison, and will use the given {@link Locale} instead of the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link ZonedDateTime} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    * Will use {@link String} as an optional override to the default resource bundles.
+    *
+    * @see #setReference(ZonedDateTime)
+    */
+   public PrettyTime(final ZonedDateTime reference, final Locale locale, final String overrideResourceBundle)
    {
       this(locale, overrideResourceBundle);
       setReference(reference);
@@ -1389,7 +1647,7 @@ public class PrettyTime
     */
    public PrettyTime setReference(final LocalDateTime localDateTime, final ZoneId zoneId)
    {
-      return setReference(localDateTime != null ? localDateTime.atZone(zoneId).toInstant() : null);
+      return setReference(localDateTime != null ? localDateTime.atZone(zoneId) : null);
    }
 
    /**
@@ -1405,7 +1663,7 @@ public class PrettyTime
     */
    public PrettyTime setReference(final LocalDate localDate)
    {
-      return setReference(localDate != null ? localDate.atStartOfDay() : null);
+      return setReference(localDate, ZoneId.systemDefault());
    }
 
    /**
@@ -1421,7 +1679,37 @@ public class PrettyTime
     */
    public PrettyTime setReference(final LocalDate localDate, final ZoneId zoneId)
    {
-      return setReference(localDate != null ? localDate.atStartOfDay(zoneId).toInstant() : null);
+      return setReference(localDate != null ? localDate.atStartOfDay(zoneId) : null);
+   }
+
+   /**
+    * Converts the given {@link OffsetDateTime} to the reference {@link Instant}. If <code>null</code>, {@link PrettyTime}
+    * will always use the current value of {@link System#currentTimeMillis()} as the reference {@link Instant}.
+    * <p>
+    * If the {@link Instant} formatted is before the reference {@link Instant}, the format command will produce a
+    * {@link String} that is in the past tense. If the {@link Instant} formatted is after the reference {@link Instant},
+    * the format command will produce a {@link String} that is in the future tense.
+    *
+    * @see #setReference(Instant)
+    */
+   public PrettyTime setReference(final OffsetDateTime offsetDateTime)
+   {
+      return setReference(offsetDateTime != null ? offsetDateTime.toInstant() : null);
+   }
+
+   /**
+    * Converts the given {@link ZonedDateTime} to the reference {@link Instant}. If <code>null</code>, {@link PrettyTime}
+    * will always use the current value of {@link System#currentTimeMillis()} as the reference {@link Instant}.
+    * <p>
+    * If the {@link Instant} formatted is before the reference {@link Instant}, the format command will produce a
+    * {@link String} that is in the past tense. If the {@link Instant} formatted is after the reference {@link Instant},
+    * the format command will produce a {@link String} that is in the future tense.
+    *
+    * @see #setReference(Instant)
+    */
+   public PrettyTime setReference(final ZonedDateTime zonedDateTime)
+   {
+      return setReference(zonedDateTime != null ? zonedDateTime.toInstant() : null);
    }
 
    /**

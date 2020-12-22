@@ -808,11 +808,7 @@ public class PrettyTime
     */
    public String format(Date then)
    {
-      if (then == null)
-         then = now();
-
-      Duration d = approximateDuration(then);
-      return format(d);
+      return format(approximateDuration(then != null ? then.toInstant() : Instant.now()));
    }
 
    /**
@@ -824,9 +820,7 @@ public class PrettyTime
     */
    public String format(Calendar then)
    {
-      if (then == null)
-         return format(now());
-      return format(then.getTime());
+      return format(then != null ? then.toInstant() : Instant.now());
    }
 
    /**
@@ -840,7 +834,7 @@ public class PrettyTime
    public String format(final Duration duration)
    {
       if (duration == null)
-         return format(now());
+         return format(Instant.now());
 
       TimeFormat format = getFormat(duration.getUnit());
       String time = format.format(duration);
@@ -859,7 +853,7 @@ public class PrettyTime
    public String format(final List<Duration> durations)
    {
       if (durations == null || durations.isEmpty())
-         return format(now());
+         return format(Instant.now());
 
       StringBuilder result = new StringBuilder();
 
@@ -983,13 +977,9 @@ public class PrettyTime
     * @param then the {@link Date} to be formatted
     * @return A formatted string representing {@code then}
     */
-   public String formatUnrounded(Date then)
+   public String formatUnrounded(final Date then)
    {
-      if (then == null)
-         then = now();
-
-      Duration d = approximateDuration(then);
-      return formatUnrounded(d);
+      return formatUnrounded(then != null ? then.toInstant() : Instant.now());
    }
 
    /**
@@ -1002,9 +992,7 @@ public class PrettyTime
     */
    public String formatUnrounded(Calendar then)
    {
-      if (then == null)
-         return formatUnrounded(now());
-      return formatUnrounded(then.getTime());
+      return formatUnrounded(then != null ? then.toInstant() : Instant.now());
    }
 
    /**
@@ -1018,7 +1006,7 @@ public class PrettyTime
    public String formatUnrounded(Duration duration)
    {
       if (duration == null)
-         return formatUnrounded(now());
+         return formatUnrounded(Instant.now());
 
       TimeFormat format = getFormat(duration.getUnit());
       String time = format.formatUnrounded(duration);
@@ -1036,7 +1024,7 @@ public class PrettyTime
    public String formatUnrounded(List<Duration> durations)
    {
       if (durations == null || durations.isEmpty())
-         return format(now());
+         return format(Instant.now());
 
       StringBuilder result = new StringBuilder();
 
@@ -1161,10 +1149,9 @@ public class PrettyTime
     * @param then the date to be formatted
     * @return A formatted string of the given {@link Date}
     */
-   public String formatDuration(Date then)
+   public String formatDuration(final Date then)
    {
-      Duration duration = approximateDuration(then);
-      return formatDuration(duration);
+      return formatDuration(approximateDuration(then));
    }
 
    /**
@@ -1177,13 +1164,10 @@ public class PrettyTime
     * @param then the date to be formatted
     * @return A formatted string of the given {@link Date}
     */
-   public String formatDuration(Calendar then)
+   public String formatDuration(final Calendar then)
    {
-      if (then == null)
-         return formatDuration(now());
-
-      Duration duration = approximateDuration(then.getTime());
-      return formatDuration(duration);
+      return then == null ? formatDuration(Instant.now()) :
+              formatDuration(approximateDuration(then.toInstant()));
    }
 
    /**
@@ -1198,7 +1182,7 @@ public class PrettyTime
    public String formatDuration(Duration duration)
    {
       if (duration == null)
-         return format(now());
+         return format(Instant.now());
 
       TimeFormat timeFormat = getFormat(duration.getUnit());
       return timeFormat.format(duration);
@@ -1216,12 +1200,12 @@ public class PrettyTime
    public String formatDuration(final List<Duration> durations)
    {
       if (durations == null || durations.isEmpty())
-         return format(now());
+         return format(Instant.now());
 
       StringBuilder result = new StringBuilder();
 
-      Duration duration = null;
-      TimeFormat format = null;
+      Duration duration;
+      TimeFormat format;
       for (int i = 0; i < durations.size(); i++) {
          duration = durations.get(i);
          format = getFormat(duration.getUnit());
@@ -1363,8 +1347,7 @@ public class PrettyTime
     */
    public String formatDurationUnrounded(Date then)
    {
-      Duration duration = approximateDuration(then);
-      return formatDurationUnrounded(duration);
+      return formatDurationUnrounded(approximateDuration(then));
    }
 
    /**
@@ -1377,13 +1360,10 @@ public class PrettyTime
     * @param then the date to be formatted
     * @return A formatted string of the given {@link Date}
     */
-   public String formatDurationUnrounded(Calendar then)
+   public String formatDurationUnrounded(final Calendar then)
    {
-      if (then == null)
-         return formatDuration(now());
-
-      Duration duration = approximateDuration(then.getTime());
-      return formatDurationUnrounded(duration);
+      return then == null ? formatDuration(Instant.now()) :
+              formatDurationUnrounded(approximateDuration(then.toInstant()));
    }
 
    /**
@@ -1397,11 +1377,7 @@ public class PrettyTime
     */
    public String formatDurationUnrounded(Duration duration)
    {
-      if (duration == null)
-         return format(now());
-
-      TimeFormat timeFormat = getFormat(duration.getUnit());
-      return timeFormat.formatUnrounded(duration);
+      return duration == null ? format(Instant.now()) : getFormat(duration.getUnit()).formatUnrounded(duration);
    }
 
    /**
@@ -1416,11 +1392,11 @@ public class PrettyTime
    public String formatDurationUnrounded(final List<Duration> durations)
    {
       if (durations == null || durations.isEmpty())
-         return format(now());
+         return format(Instant.now());
 
       StringBuilder result = new StringBuilder();
-      Duration duration = null;
-      TimeFormat format = null;
+      Duration duration;
+      TimeFormat format;
       for (int i = 0; i < durations.size(); i++) {
          duration = durations.get(i);
          format = getFormat(duration.getUnit());
@@ -1869,11 +1845,6 @@ public class PrettyTime
    /*
     * Internal methods.
     */
-   private Date now()
-   {
-      return new Date();
-   }
-
    private void initTimeUnits()
    {
       addUnit(new JustNow());

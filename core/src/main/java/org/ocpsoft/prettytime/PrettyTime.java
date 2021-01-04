@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -64,7 +65,7 @@ import org.ocpsoft.prettytime.units.Year;
  * //result: 10 minutes from now
  * </code>
  * <p>
- * 
+ *
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
 public class PrettyTime
@@ -73,7 +74,7 @@ public class PrettyTime
    private volatile Locale locale = Locale.getDefault();
    private final Map<TimeUnit, TimeFormat> units = new ConcurrentHashMap<>();
    private volatile List<TimeUnit> cachedUnits;
-   private String overrideResourceBundle;
+   private final String overrideResourceBundle;
 
    /**
     * Create a new {@link PrettyTime} instance that will always use the current value of
@@ -87,7 +88,7 @@ public class PrettyTime
 
    /**
     * Create a new {@link PrettyTime} instance that will always use the current value of
-    * {@link System#currentTimeMillis()} to represent the reference point for {@link Date} comparison, and will use
+    * {@link System#currentTimeMillis()} to represent the reference point for {@link Instant} comparison, and will use
     * {@link Locale#getDefault()} as the selected {@link Locale} for language and dialect formatting. Will use
     * {@link String} as an optional override to the default resource bundles.
     */
@@ -99,21 +100,20 @@ public class PrettyTime
 
    /**
     * Create a new {@link PrettyTime} instance that will use the given {@link Date} timestamp to represent the reference
-    * point for {@link Date} comparison, and will use {@link Locale#getDefault()} as the selected {@link Locale} for
+    * point for {@link Instant} comparison, and will use {@link Locale#getDefault()} as the selected {@link Locale} for
     * language and dialect formatting. If the given {@link Date} is <code>null</code>, this instance will always use the
-    * current value of {@link System#currentTimeMillis()} to represent the reference point for {@link Date} comparison.
+    * current value of {@link System#currentTimeMillis()} to represent the reference point for {@link Instant} comparison.
     */
    public PrettyTime(final Date reference)
    {
-      this();
-      setReference(reference);
+      this(reference, (String) null);
    }
 
    /**
     * Create a new {@link PrettyTime} instance that will use the given {@link Date} timestamp to represent the reference
-    * point for {@link Date} comparison, and will use {@link Locale#getDefault()} as the selected {@link Locale} for
+    * point for {@link Instant} comparison, and will use {@link Locale#getDefault()} as the selected {@link Locale} for
     * language and dialect formatting. If the given {@link Date} is <code>null</code>, this instance will always use the
-    * current value of {@link System#currentTimeMillis()} to represent the reference point for {@link Date} comparison.
+    * current value of {@link System#currentTimeMillis()} to represent the reference point for {@link Instant} comparison.
     * Will use {@link String} as an optional override to the default resource bundles.
     *
     * @see #PrettyTime(Date).
@@ -133,8 +133,7 @@ public class PrettyTime
     */
    public PrettyTime(final Instant reference)
    {
-      this();
-      setReference(reference);
+      this(reference, (String) null);
    }
 
    /**
@@ -188,7 +187,7 @@ public class PrettyTime
     */
    public PrettyTime(final LocalDateTime reference, final ZoneId zoneId)
    {
-      this(reference, zoneId, null);
+      this(reference, zoneId, (String) null);
    }
 
    /**
@@ -203,7 +202,7 @@ public class PrettyTime
     */
    public PrettyTime(final LocalDateTime reference, final ZoneId zoneId, final String overrideResourceBundle)
    {
-      this(reference != null ? reference.atZone(zoneId).toInstant() : null, overrideResourceBundle);
+      this(reference != null ? reference.atZone(zoneId) : null, overrideResourceBundle);
    }
 
    /**
@@ -215,7 +214,7 @@ public class PrettyTime
     */
    public PrettyTime(final LocalDate reference)
    {
-      this(reference, ZoneId.systemDefault(), null);
+      this(reference, (String) null);
    }
 
    /**
@@ -242,13 +241,13 @@ public class PrettyTime
     */
    public PrettyTime(final LocalDate reference, final ZoneId zoneId)
    {
-      this(reference, zoneId, null);
+      this(reference, zoneId, (String) null);
    }
 
    /**
-    * Create a new {@link PrettyTime} instance that will use the given {@link Instant} timestamp to represent the
+    * Create a new {@link PrettyTime} instance that will use the given {@link LocalDate} to represent the
     * reference point for {@link Instant} comparison, and will use {@link Locale#getDefault()} as the selected
-    * {@link Locale} for language and dialect formatting. If the given {@link Instant} is <code>null</code>, this
+    * {@link Locale} for language and dialect formatting. If the given {@link LocalDate} is <code>null</code>, this
     * instance will always use the current value of {@link System#currentTimeMillis()} to represent the reference point
     * for {@link Instant} comparison. Will use {@link String} as an optional override to the default resource bundles.
     *
@@ -256,29 +255,86 @@ public class PrettyTime
     */
    public PrettyTime(final LocalDate reference, final ZoneId zoneId, final String overrideResourceBundle)
    {
-      this(reference != null ? reference.atStartOfDay(zoneId).toInstant() : null, overrideResourceBundle);
+      this(reference != null ? reference.atStartOfDay(zoneId) : null, overrideResourceBundle);
+   }
+
+   /**
+    * Create a new {@link PrettyTime} instance that will use the given {@link OffsetDateTime} to represent the
+    * reference point for {@link Instant} comparison, and will use {@link Locale#getDefault()} as the selected
+    * {@link Locale} for language and dialect formatting. If the given {@link OffsetDateTime} is <code>null</code>, this
+    * instance will always use the current value of {@link System#currentTimeMillis()} to represent the reference point
+    * for {@link Instant} comparison.
+    *
+    * @see #PrettyTime(Instant)
+    */
+   public PrettyTime(final OffsetDateTime reference)
+   {
+      this(reference, null);
+   }
+
+   /**
+    * Create a new {@link PrettyTime} instance that will use the given {@link OffsetDateTime} to represent the
+    * reference point for {@link Instant} comparison, and will use {@link Locale#getDefault()} as the selected
+    * {@link Locale} for language and dialect formatting. If the given {@link OffsetDateTime} is <code>null</code>, this
+    * instance will always use the current value of {@link System#currentTimeMillis()} to represent the reference point
+    * for {@link Instant} comparison. Will use {@link String} as an optional override to the default resource bundles.
+    *
+    * @see #PrettyTime(Instant)
+    */
+   public PrettyTime(final OffsetDateTime reference, final String overrideResourceBundle)
+   {
+      this(overrideResourceBundle);
+      setReference(reference);
+   }
+
+   /**
+    * Create a new {@link PrettyTime} instance that will use the given {@link ZonedDateTime} to represent the
+    * reference point for {@link Instant} comparison, and will use {@link Locale#getDefault()} as the selected
+    * {@link Locale} for language and dialect formatting. If the given {@link ZonedDateTime} is <code>null</code>, this
+    * instance will always use the current value of {@link System#currentTimeMillis()} to represent the reference point
+    * for {@link Instant} comparison. Will use {@link String} as an optional override to the default resource bundles.
+    *
+    * @see #PrettyTime(Instant)
+    */
+   public PrettyTime(final ZonedDateTime reference)
+   {
+      this(reference, null);
+   }
+
+   /**
+    * Create a new {@link PrettyTime} instance that will use the given {@link ZonedDateTime} to represent the
+    * reference point for {@link Instant} comparison, and will use {@link Locale#getDefault()} as the selected
+    * {@link Locale} for language and dialect formatting. If the given {@link ZonedDateTime} is <code>null</code>, this
+    * instance will always use the current value of {@link System#currentTimeMillis()} to represent the reference point
+    * for {@link Instant} comparison. Will use {@link String} as an optional override to the default resource bundles.
+    *
+    * @see #PrettyTime(Instant)
+    */
+   public PrettyTime(final ZonedDateTime reference, final String overrideResourceBundle)
+   {
+      this(overrideResourceBundle);
+      setReference(reference);
    }
 
    /**
     * Construct a new {@link PrettyTime} instance that will always use the current value of
-    * {@link System#currentTimeMillis()} to represent the reference point for {@link Date} comparison. This instance
+    * {@link System#currentTimeMillis()} to represent the reference point for {@link Instant} comparison. This instance
     * will use the given {@link Locale} instead of the system default. If the provided {@link Locale} is
     * <code>null</code>, {@link Locale#getDefault()} will be used.
     */
    public PrettyTime(final Locale locale)
    {
-      this();
-      setLocale(locale);
+      this(locale, null);
    }
 
    /**
     * Construct a new {@link PrettyTime} instance that will always use the current value of
-    * {@link System#currentTimeMillis()} to represent the reference point for {@link Date} comparison. This instance
+    * {@link System#currentTimeMillis()} to represent the reference point for {@link Instant} comparison. This instance
     * will use the given {@link Locale} instead of the system default. If the provided {@link Locale} is
     * <code>null</code>, {@link Locale#getDefault()} will be used. Will use {@link String} as an optional override to
     * the default resource bundles.
     */
-   public PrettyTime(final Locale locale, String overrideResourceBundle)
+   public PrettyTime(final Locale locale, final String overrideResourceBundle)
    {
       this(overrideResourceBundle);
       setLocale(locale);
@@ -286,32 +342,235 @@ public class PrettyTime
 
    /**
     * Construct a new {@link PrettyTime} instance that will use the given {@link Date} timestamp to represent the
-    * reference point for {@link Date} comparison, and will use the given {@link Locale} instead of the system default.
+    * reference point for {@link Instant} comparison, and will use the given {@link Locale} instead of the system default.
     * <p>
     * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
     * If the given {@link Date} is <code>null</code>, this instance will always use current value of
-    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Date} comparison.
-    * <p>
-    * See {@code PrettyTime#setReference(Date timestamp)}.
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    *
+    * @see #setReference(Date)
     */
    public PrettyTime(final Date reference, final Locale locale)
    {
-      this(locale);
-      setReference(reference);
+      this(reference, locale, null);
    }
 
    /**
     * Construct a new {@link PrettyTime} instance that will use the given {@link Date} timestamp to represent the
-    * reference point for {@link Date} comparison, and will use the given {@link Locale} instead of the system default.
+    * reference point for {@link Instant} comparison, and will use the given {@link Locale} instead of the system default.
     * <p>
     * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
     * If the given {@link Date} is <code>null</code>, this instance will always use current value of
-    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Date} comparison. Will
-    * use {@link String} as an optional override to the default resource bundles.
-    * <p>
-    * See {@code PrettyTime#setReference(Date timestamp)}.
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    * Will use {@link String} as an optional override to the default resource bundles.
+    *
+    * @see #setReference(Date)
     */
-   public PrettyTime(final Date reference, final Locale locale, String overrideResourceBundle)
+   public PrettyTime(final Date reference, final Locale locale, final String overrideResourceBundle)
+   {
+      this(locale, overrideResourceBundle);
+      setReference(reference);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link Instant} timestamp to represent the
+    * reference point for {@link Instant} comparison, and will use the given {@link Locale} instead of the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link LocalDate} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    *
+    * @see #setReference(LocalDate)
+    */
+   public PrettyTime(final Instant reference, final Locale locale)
+   {
+      this(reference, locale, null);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link Instant} timestamp to represent the
+    * reference point for {@link Instant} comparison, and will use the given {@link Locale} instead of the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link Instant} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    * Will use {@link String} as an optional override to the default resource bundles.
+    *
+    * @see #setReference(Instant)
+    */
+   public PrettyTime(final Instant reference, final Locale locale, final String overrideResourceBundle)
+   {
+      this(locale, overrideResourceBundle);
+      setReference(reference);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link LocalDate} with the system default
+    * {@link ZoneId} to represent the reference point for {@link Instant} comparison, and will use the given
+    * {@link Locale} instead of the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link LocalDate} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    *
+    * @see #setReference(LocalDate)
+    */
+   public PrettyTime(final LocalDate reference, final Locale locale)
+   {
+      this(reference, ZoneId.systemDefault(), locale);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link LocalDate} with the given {@link ZoneId}
+    * to represent the reference point for {@link Instant} comparison, and will use the given {@link Locale} instead of
+    * the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link LocalDate} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    *
+    * @see #setReference(LocalDate)
+    */
+   public PrettyTime(final LocalDate reference, final ZoneId zoneId, final Locale locale)
+   {
+      this(locale);
+      setReference(reference, zoneId);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link LocalDate} with the system default
+    * {@link ZoneId} to represent the reference point for {@link Instant} comparison, and will use the given
+    * {@link Locale} instead of the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link LocalDate} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    * Will use {@link String} as an optional override to the default resource bundles.
+    *
+    * @see #setReference(LocalDate)
+    */
+   public PrettyTime(final LocalDate reference, final Locale locale, final String overrideResourceBundle)
+   {
+      this(reference, ZoneId.systemDefault(), locale, overrideResourceBundle);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link LocalDate} with the given {@link ZoneId}
+    * to represent the reference point for {@link Instant} comparison, and will use the given {@link Locale} instead of
+    * the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link LocalDate} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    * Will use {@link String} as an optional override to the default resource bundles.
+    *
+    * @see #setReference(LocalDate)
+    */
+   public PrettyTime(final LocalDate reference, final ZoneId zoneId, final Locale locale,
+                     final String overrideResourceBundle)
+   {
+      this(locale, overrideResourceBundle);
+      setReference(reference, zoneId);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link LocalDateTime} with the system default
+    * {@link ZoneId} to represent the reference point for {@link Instant} comparison, and will use the given
+    * {@link Locale} instead of the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link LocalDateTime} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    *
+    * @see #setReference(LocalDateTime)
+    */
+   public PrettyTime(final LocalDateTime reference, final Locale locale)
+   {
+      this(reference, ZoneId.systemDefault(), locale);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link LocalDateTime} with the given
+    * {@link ZoneId} to represent the reference point for {@link Instant} comparison, and will use the given
+    * {@link Locale} instead of the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link LocalDateTime} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    *
+    * @see #setReference(LocalDateTime)
+    */
+   public PrettyTime(final LocalDateTime reference, final ZoneId zoneId, final Locale locale)
+   {
+      this(locale);
+      setReference(reference, zoneId);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link LocalDateTime} with the system default
+    * {@link ZoneId} to represent the reference point for {@link Instant} comparison, and will use the given
+    * {@link Locale} instead of the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link LocalDateTime} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    * Will use {@link String} as an optional override to the default resource bundles.
+    *
+    * @see #setReference(LocalDateTime)
+    */
+   public PrettyTime(final LocalDateTime reference, final Locale locale, final String overrideResourceBundle)
+   {
+      this(reference, ZoneId.systemDefault(), locale, overrideResourceBundle);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link LocalDateTime} with the system default
+    * {@link ZoneId} to represent the reference point for {@link Instant} comparison, and will use the given
+    * {@link Locale} instead of the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link LocalDateTime} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    * Will use {@link String} as an optional override to the default resource bundles.
+    *
+    * @see #setReference(LocalDateTime)
+    */
+   public PrettyTime(final LocalDateTime reference, final ZoneId zoneId, final Locale locale,
+                     final String overrideResourceBundle)
+   {
+      this(locale, overrideResourceBundle);
+      setReference(reference, zoneId);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link OffsetDateTime} to represent the reference
+    * point for {@link Instant} comparison, and will use the given {@link Locale} instead of the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link OffsetDateTime} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    * Will use {@link String} as an optional override to the default resource bundles.
+    *
+    * @see #setReference(OffsetDateTime)
+    */
+   public PrettyTime(final OffsetDateTime reference, final Locale locale, final String overrideResourceBundle)
+   {
+      this(locale, overrideResourceBundle);
+      setReference(reference);
+   }
+
+   /**
+    * Construct a new {@link PrettyTime} instance that will use the given {@link ZonedDateTime} to represent the reference
+    * point for {@link Instant} comparison, and will use the given {@link Locale} instead of the system default.
+    * <p>
+    * If the provided {@link Locale} is <code>null</code>, {@link Locale#getDefault()} will be used instead.<br>
+    * If the given {@link ZonedDateTime} is <code>null</code>, this instance will always use current value of
+    * {@link System#currentTimeMillis()} will be used to represent the reference point for {@link Instant} comparison.
+    * Will use {@link String} as an optional override to the default resource bundles.
+    *
+    * @see #setReference(ZonedDateTime)
+    */
+   public PrettyTime(final ZonedDateTime reference, final Locale locale, final String overrideResourceBundle)
    {
       this(locale, overrideResourceBundle);
       setReference(reference);
@@ -323,17 +582,9 @@ public class PrettyTime
     *
     * @see #getReference()
     */
-   public Duration approximateDuration(Date then)
+   public Duration approximateDuration(final Date then)
    {
-      if (then == null)
-         then = now();
-
-      final Instant ref = reference != null ? reference : Instant.now();
-      long difference = then.getTime() - ref.toEpochMilli();
-      if (difference == 0) {
-         difference = 1;
-      }
-      return calculateDuration(difference);
+      return approximateDuration(then != null ? then.toInstant() : null);
    }
 
    /**
@@ -343,9 +594,11 @@ public class PrettyTime
     *
     * @see #getReference()
     */
-   public Duration approximateDuration(Instant then)
+   public Duration approximateDuration(final Instant then)
    {
-      return approximateDuration(then != null ? Date.from(then) : null);
+      long difference = ChronoUnit.MILLIS.between(then != null ? then : Instant.now(),
+              reference != null ? reference : Instant.now());
+      return calculateDuration(difference != 0 ? difference : 1);
    }
 
    /**
@@ -355,9 +608,9 @@ public class PrettyTime
     *
     * @see #getReference()
     */
-   public Duration approximateDuration(LocalDate then)
+   public Duration approximateDuration(final LocalDate then)
    {
-      return approximateDuration(then != null ? then.atStartOfDay(ZoneId.systemDefault()).toInstant() : null);
+      return approximateDuration(then, ZoneId.systemDefault());
    }
 
    /**
@@ -370,9 +623,9 @@ public class PrettyTime
     * @param zoneId The {@link ZoneId} to be used, not null
     * @see #getReference()
     */
-   public Duration approximateDuration(LocalDate then, final ZoneId zoneId)
+   public Duration approximateDuration(final LocalDate then, final ZoneId zoneId)
    {
-      return approximateDuration(then != null ? then.atStartOfDay(ZoneId.systemDefault()).toInstant() : null);
+      return approximateDuration(then != null ? then.atStartOfDay(zoneId).toInstant() : null);
    }
 
    /**
@@ -384,9 +637,9 @@ public class PrettyTime
     *                timestamp was provided
     * @see #getReference()
     */
-   public Duration approximateDuration(LocalDateTime then)
+   public Duration approximateDuration(final LocalDateTime then)
    {
-      return approximateDuration(then != null ? then.atZone(ZoneId.systemDefault()).toInstant() : null);
+      return approximateDuration(then, ZoneId.systemDefault());
    }
 
    /**
@@ -399,7 +652,7 @@ public class PrettyTime
     * @param zoneId The {@link ZoneId} to be used, not null
     * @see #getReference()
     */
-   public Duration approximateDuration(LocalDateTime then, final ZoneId zoneId)
+   public Duration approximateDuration(final LocalDateTime then, final ZoneId zoneId)
    {
       return approximateDuration(then != null ? then.atZone(zoneId).toInstant() : null);
    }
@@ -411,7 +664,7 @@ public class PrettyTime
     * <p>
     * <b>Note</b>: Precision may be lost if no supplied {@link TimeUnit} is granular enough to represent the remainder
     * of time (in milliseconds).
-    * 
+    *
     * @param then The {@link Date} to be compared against the reference timestamp, or <i>now</i> if no reference
     *                timestamp was provided
     * @return A sorted {@link List} of {@link Duration} objects, from largest to smallest. Each element in the list
@@ -421,28 +674,7 @@ public class PrettyTime
     */
    public List<Duration> calculatePreciseDuration(Date then)
    {
-      if (then == null)
-         then = now();
-
-      final Instant reference = this.reference != null ? this.reference : Instant.now();
-
-      List<Duration> result = new ArrayList<>();
-      long difference = then.getTime() - reference.toEpochMilli();
-      Duration duration = calculateDuration(difference);
-      result.add(duration);
-      while (0 != duration.getDelta()) {
-         duration = calculateDuration(duration.getDelta());
-         if (!result.isEmpty()) {
-            Duration last = result.get(result.size() - 1);
-            if (last.getUnit().equals(duration.getUnit())) {
-               break;
-            }
-         }
-
-         if (duration.getUnit().isPrecise())
-            result.add(duration);
-      }
-      return result;
+      return calculatePreciseDuration(then != null ? then.toInstant() : null);
    }
 
    /**
@@ -462,7 +694,23 @@ public class PrettyTime
     */
    public List<Duration> calculatePreciseDuration(final Instant then)
    {
-      return calculatePreciseDuration(then != null ? Date.from(then) : null);
+      List<Duration> result = new ArrayList<>();
+      Duration duration = calculateDuration(ChronoUnit.MILLIS.between(then != null ? then : Instant.now(),
+              reference != null ? reference : Instant.now()));
+      result.add(duration);
+      while (0 != duration.getDelta()) {
+         duration = calculateDuration(duration.getDelta());
+         if (!result.isEmpty()) {
+            Duration last = result.get(result.size() - 1);
+            if (last.getUnit().equals(duration.getUnit())) {
+               break;
+            }
+         }
+
+         if (duration.getUnit().isPrecise())
+            result.add(duration);
+      }
+      return result;
    }
 
    /**
@@ -560,11 +808,7 @@ public class PrettyTime
     */
    public String format(Date then)
    {
-      if (then == null)
-         then = now();
-
-      Duration d = approximateDuration(then);
-      return format(d);
+      return format(approximateDuration(then != null ? then.toInstant() : Instant.now()));
    }
 
    /**
@@ -576,9 +820,7 @@ public class PrettyTime
     */
    public String format(Calendar then)
    {
-      if (then == null)
-         return format(now());
-      return format(then.getTime());
+      return format(then != null ? then.toInstant() : Instant.now());
    }
 
    /**
@@ -592,7 +834,7 @@ public class PrettyTime
    public String format(final Duration duration)
    {
       if (duration == null)
-         return format(now());
+         return format(Instant.now());
 
       TimeFormat format = getFormat(duration.getUnit());
       String time = format.format(duration);
@@ -611,7 +853,7 @@ public class PrettyTime
    public String format(final List<Duration> durations)
    {
       if (durations == null || durations.isEmpty())
-         return format(now());
+         return format(Instant.now());
 
       StringBuilder result = new StringBuilder();
 
@@ -735,13 +977,9 @@ public class PrettyTime
     * @param then the {@link Date} to be formatted
     * @return A formatted string representing {@code then}
     */
-   public String formatUnrounded(Date then)
+   public String formatUnrounded(final Date then)
    {
-      if (then == null)
-         then = now();
-
-      Duration d = approximateDuration(then);
-      return formatUnrounded(d);
+      return formatUnrounded(then != null ? then.toInstant() : Instant.now());
    }
 
    /**
@@ -754,9 +992,7 @@ public class PrettyTime
     */
    public String formatUnrounded(Calendar then)
    {
-      if (then == null)
-         return formatUnrounded(now());
-      return formatUnrounded(then.getTime());
+      return formatUnrounded(then != null ? then.toInstant() : Instant.now());
    }
 
    /**
@@ -770,7 +1006,7 @@ public class PrettyTime
    public String formatUnrounded(Duration duration)
    {
       if (duration == null)
-         return formatUnrounded(now());
+         return formatUnrounded(Instant.now());
 
       TimeFormat format = getFormat(duration.getUnit());
       String time = format.formatUnrounded(duration);
@@ -788,7 +1024,7 @@ public class PrettyTime
    public String formatUnrounded(List<Duration> durations)
    {
       if (durations == null || durations.isEmpty())
-         return format(now());
+         return format(Instant.now());
 
       StringBuilder result = new StringBuilder();
 
@@ -913,10 +1149,9 @@ public class PrettyTime
     * @param then the date to be formatted
     * @return A formatted string of the given {@link Date}
     */
-   public String formatDuration(Date then)
+   public String formatDuration(final Date then)
    {
-      Duration duration = approximateDuration(then);
-      return formatDuration(duration);
+      return formatDuration(approximateDuration(then));
    }
 
    /**
@@ -929,13 +1164,10 @@ public class PrettyTime
     * @param then the date to be formatted
     * @return A formatted string of the given {@link Date}
     */
-   public String formatDuration(Calendar then)
+   public String formatDuration(final Calendar then)
    {
-      if (then == null)
-         return formatDuration(now());
-
-      Duration duration = approximateDuration(then.getTime());
-      return formatDuration(duration);
+      return then == null ? formatDuration(Instant.now()) :
+              formatDuration(approximateDuration(then.toInstant()));
    }
 
    /**
@@ -950,7 +1182,7 @@ public class PrettyTime
    public String formatDuration(Duration duration)
    {
       if (duration == null)
-         return format(now());
+         return format(Instant.now());
 
       TimeFormat timeFormat = getFormat(duration.getUnit());
       return timeFormat.format(duration);
@@ -968,12 +1200,12 @@ public class PrettyTime
    public String formatDuration(final List<Duration> durations)
    {
       if (durations == null || durations.isEmpty())
-         return format(now());
+         return format(Instant.now());
 
       StringBuilder result = new StringBuilder();
 
-      Duration duration = null;
-      TimeFormat format = null;
+      Duration duration;
+      TimeFormat format;
       for (int i = 0; i < durations.size(); i++) {
          duration = durations.get(i);
          format = getFormat(duration.getUnit());
@@ -1115,8 +1347,7 @@ public class PrettyTime
     */
    public String formatDurationUnrounded(Date then)
    {
-      Duration duration = approximateDuration(then);
-      return formatDurationUnrounded(duration);
+      return formatDurationUnrounded(approximateDuration(then));
    }
 
    /**
@@ -1129,13 +1360,10 @@ public class PrettyTime
     * @param then the date to be formatted
     * @return A formatted string of the given {@link Date}
     */
-   public String formatDurationUnrounded(Calendar then)
+   public String formatDurationUnrounded(final Calendar then)
    {
-      if (then == null)
-         return formatDuration(now());
-
-      Duration duration = approximateDuration(then.getTime());
-      return formatDurationUnrounded(duration);
+      return then == null ? formatDuration(Instant.now()) :
+              formatDurationUnrounded(approximateDuration(then.toInstant()));
    }
 
    /**
@@ -1149,11 +1377,7 @@ public class PrettyTime
     */
    public String formatDurationUnrounded(Duration duration)
    {
-      if (duration == null)
-         return format(now());
-
-      TimeFormat timeFormat = getFormat(duration.getUnit());
-      return timeFormat.formatUnrounded(duration);
+      return duration == null ? format(Instant.now()) : getFormat(duration.getUnit()).formatUnrounded(duration);
    }
 
    /**
@@ -1168,11 +1392,11 @@ public class PrettyTime
    public String formatDurationUnrounded(final List<Duration> durations)
    {
       if (durations == null || durations.isEmpty())
-         return format(now());
+         return format(Instant.now());
 
       StringBuilder result = new StringBuilder();
-      Duration duration = null;
-      TimeFormat format = null;
+      Duration duration;
+      TimeFormat format;
       for (int i = 0; i < durations.size(); i++) {
          duration = durations.get(i);
          format = getFormat(duration.getUnit());
@@ -1389,7 +1613,7 @@ public class PrettyTime
     */
    public PrettyTime setReference(final LocalDateTime localDateTime, final ZoneId zoneId)
    {
-      return setReference(localDateTime != null ? localDateTime.atZone(zoneId).toInstant() : null);
+      return setReference(localDateTime != null ? localDateTime.atZone(zoneId) : null);
    }
 
    /**
@@ -1405,7 +1629,7 @@ public class PrettyTime
     */
    public PrettyTime setReference(final LocalDate localDate)
    {
-      return setReference(localDate != null ? localDate.atStartOfDay() : null);
+      return setReference(localDate, ZoneId.systemDefault());
    }
 
    /**
@@ -1421,7 +1645,37 @@ public class PrettyTime
     */
    public PrettyTime setReference(final LocalDate localDate, final ZoneId zoneId)
    {
-      return setReference(localDate != null ? localDate.atStartOfDay(zoneId).toInstant() : null);
+      return setReference(localDate != null ? localDate.atStartOfDay(zoneId) : null);
+   }
+
+   /**
+    * Converts the given {@link OffsetDateTime} to the reference {@link Instant}. If <code>null</code>, {@link PrettyTime}
+    * will always use the current value of {@link System#currentTimeMillis()} as the reference {@link Instant}.
+    * <p>
+    * If the {@link Instant} formatted is before the reference {@link Instant}, the format command will produce a
+    * {@link String} that is in the past tense. If the {@link Instant} formatted is after the reference {@link Instant},
+    * the format command will produce a {@link String} that is in the future tense.
+    *
+    * @see #setReference(Instant)
+    */
+   public PrettyTime setReference(final OffsetDateTime offsetDateTime)
+   {
+      return setReference(offsetDateTime != null ? offsetDateTime.toInstant() : null);
+   }
+
+   /**
+    * Converts the given {@link ZonedDateTime} to the reference {@link Instant}. If <code>null</code>, {@link PrettyTime}
+    * will always use the current value of {@link System#currentTimeMillis()} as the reference {@link Instant}.
+    * <p>
+    * If the {@link Instant} formatted is before the reference {@link Instant}, the format command will produce a
+    * {@link String} that is in the past tense. If the {@link Instant} formatted is after the reference {@link Instant},
+    * the format command will produce a {@link String} that is in the future tense.
+    *
+    * @see #setReference(Instant)
+    */
+   public PrettyTime setReference(final ZonedDateTime zonedDateTime)
+   {
+      return setReference(zonedDateTime != null ? zonedDateTime.toInstant() : null);
    }
 
    /**
@@ -1591,11 +1845,6 @@ public class PrettyTime
    /*
     * Internal methods.
     */
-   private Date now()
-   {
-      return new Date();
-   }
-
    private void initTimeUnits()
    {
       addUnit(new JustNow());

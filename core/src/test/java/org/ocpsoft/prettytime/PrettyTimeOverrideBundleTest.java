@@ -20,7 +20,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Locale;
 
 public class PrettyTimeOverrideBundleTest
@@ -37,10 +37,9 @@ public class PrettyTimeOverrideBundleTest
    @Test
    public void testHoursAgo() throws Exception
    {
-      final LocalDateTime now = LocalDateTime.now();
-      PrettyTime t = new PrettyTime(now, Locale.ENGLISH,
+      PrettyTime t = new PrettyTime(new Date(1000 * 60 * 60 * 3), Locale.ENGLISH,
               "org.ocpsoft.prettytime.i18n.override.Resources");
-      Assert.assertEquals("3 hours ago override", t.format(now.minusHours(3)));
+      Assert.assertEquals("3 hours ago override", t.format(new Date(0)));
    }
 
    @After
@@ -48,4 +47,5 @@ public class PrettyTimeOverrideBundleTest
    {
       Locale.setDefault(locale);
    }
+
 }

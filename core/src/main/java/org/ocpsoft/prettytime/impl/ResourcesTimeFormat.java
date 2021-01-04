@@ -16,11 +16,11 @@ public class ResourcesTimeFormat extends SimpleTimeFormat
 {
    private final ResourcesTimeUnit unit;
    private TimeFormat override;
-   private final String overrideResourceBundle; // If used this bundle will override the included bundle
+   private String overrideResourceBundle; // If used this bundle will override the included bundle
 
    public ResourcesTimeFormat(ResourcesTimeUnit unit)
    {
-      this(unit, null);
+      this.unit = unit;
    }
 
    public ResourcesTimeFormat(ResourcesTimeUnit unit, String overrideResourceBundle)

@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.ocpsoft.prettytime.impl.DurationImpl;
@@ -1716,14 +1717,10 @@ public class PrettyTime
     */
    public PrettyTime registerUnit(final TimeUnit unit, TimeFormat format)
    {
-      if (unit == null)
-         throw new IllegalArgumentException("TimeUnit to register must not be null.");
-      if (format == null)
-         throw new IllegalArgumentException("TimeFormat to register must not be null.");
-
       cachedUnits = null;
 
-      units.put(unit, format);
+      units.put(Objects.requireNonNull(unit, "TimeUnit to register must not be null."),
+              Objects.requireNonNull(format, "TimeFormat to register must not be null."));
       if (unit instanceof LocaleAware)
          ((LocaleAware<?>) unit).setLocale(locale);
       if (format instanceof LocaleAware)
@@ -1738,7 +1735,7 @@ public class PrettyTime
 
       this.clearUnits();
       for (ResourcesTimeUnit unit : units) {
-         TimeFormat format = new ResourcesTimeFormat((ResourcesTimeUnit) unit);
+         TimeFormat format = new ResourcesTimeFormat(unit);
          this.registerUnit(unit, format);
       }
 
@@ -1749,8 +1746,7 @@ public class PrettyTime
    {
       if (units == null || units.length == 0)
          throw new IllegalArgumentException("TimeUnit instance(s) to register must be provided.");
-      if (format == null)
-         throw new IllegalArgumentException("TimeFormat to register must not be null.");
+      Objects.requireNonNull(format, "TimeFormat to register must not be null.");
 
       this.clearUnits();
       for (TimeUnit unit : units) {

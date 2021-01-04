@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListResourceBundle;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import org.ocpsoft.prettytime.Duration;
@@ -227,10 +228,8 @@ public class Resources_cs extends ListResourceBundle implements TimeFormatProvid
 
    private static class CsTimeFormatBuilder
    {
-
-      private List<CsName> names = new ArrayList<Resources_cs.CsName>();
-
-      private String resourceKeyPrefix;
+      private final List<CsName> names = new ArrayList<>();
+      private final String resourceKeyPrefix;
 
       CsTimeFormatBuilder(String resourceKeyPrefix)
       {
@@ -249,10 +248,7 @@ public class Resources_cs extends ListResourceBundle implements TimeFormatProvid
 
       private CsTimeFormatBuilder addName(boolean isFuture, String name, long limit)
       {
-         if (name == null) {
-            throw new IllegalArgumentException();
-         }
-         names.add(new CsName(isFuture, name, limit));
+         names.add(new CsName(isFuture, Objects.requireNonNull(name), limit));
          return this;
       }
 

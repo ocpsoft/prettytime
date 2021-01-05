@@ -16,6 +16,7 @@
 package org.ocpsoft.prettytime;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -79,16 +80,12 @@ public class PrettyTimeI18n_EO_Test
     }
 
     @Test
-    @SuppressWarnings("deprecation")
     public void testCalculatePreciceDurationMillenia() throws Exception
     {
-        PrettyTime t = new PrettyTime(new Date(2014, 8, 15, 0, 0));
-        List<Duration> durations = t.calculatePreciseDuration(new Date(0));
-        Assert.assertEquals(
-                    "antaŭ 1 jarmilo 9 jarcentoj 4 jardekoj 4 jaroj 8 monatoj 1 semajno 6 tagoj 20 horoj 5 minutoj",
-                    t.format(durations));
-        Assert.assertEquals("1 jarmilo 9 jarcentoj 4 jardekoj 4 jaroj 8 monatoj 1 semajno 6 tagoj 20 horoj 5 minutoj",
-                    t.formatDuration(durations));
+        PrettyTime t = new PrettyTime(LocalDate.of(2000, 2, 2));
+        List<Duration> durations = t.calculatePreciseDuration(LocalDate.of(100, 1, 1));
+        Assert.assertEquals("antaŭ 1 jarmilo 9 jarcentoj 1 monato 1 tago 8 horoj 34 minutoj", t.format(durations));
+        Assert.assertEquals("1 jarmilo 9 jarcentoj 1 monato 1 tago 8 horoj 34 minutoj", t.formatDuration(durations));
     }
 
     @Test

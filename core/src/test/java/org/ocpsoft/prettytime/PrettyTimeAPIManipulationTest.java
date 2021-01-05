@@ -45,14 +45,14 @@ public class PrettyTimeAPIManipulationTest
    public void testApiMisuse1() throws Exception
    {
       Assert.assertEquals(t.approximateDuration(LocalDateTime.now()),
-               t.approximateDuration((Date) null));
+               t.approximateDuration((LocalDateTime) null));
    }
 
    @Test
    public void testApiMisuse2() throws Exception
    {
       Assert.assertEquals(t.calculatePreciseDuration(LocalDateTime.now()),
-               t.calculatePreciseDuration((Date) null));
+               t.calculatePreciseDuration((LocalDateTime) null));
    }
 
    @Test
@@ -241,7 +241,7 @@ public class PrettyTimeAPIManipulationTest
       t.getUnits();
    }
 
-   @Test(expected = IllegalArgumentException.class)
+   @Test(expected = NullPointerException.class)
    public void testApiMisuse14() throws Exception
    {
       t.registerUnit(null, null);

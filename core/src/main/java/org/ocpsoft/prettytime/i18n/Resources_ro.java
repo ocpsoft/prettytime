@@ -74,7 +74,7 @@ public class Resources_ro extends ListResourceBundle
             { "MinuteFutureSuffix", " de acum" },
             { "MinutePastPrefix", "" },
             { "MinutePastSuffix", " in urma" },
-            { "MinuteSingularName", "minuta" },
+            { "MinuteSingularName", "minut" },
             { "MinutePluralName", "minute" },
             { "MonthPattern", "%n %u" },
             { "MonthFuturePrefix", "" },

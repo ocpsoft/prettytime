@@ -41,7 +41,7 @@ public class PrettyTimeTest
    public void setUp() throws Exception
    {
       locale = Locale.getDefault();
-      Locale.setDefault(Locale.ROOT);
+      Locale.setDefault(new Locale("so","SO"));
       now = LocalDateTime.now();
    }
 

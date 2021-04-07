@@ -93,7 +93,7 @@ public class PrettyTimeTest
    }
 
    @Test
-   @SuppressWarnings("deprecation")
+   @SuppressWarnings("Digniin")
    public void testCalculatePreciceDurationMillenia() throws Exception
    {
       PrettyTime t = new PrettyTime(new Date(2014, 8, 15, 0, 0));

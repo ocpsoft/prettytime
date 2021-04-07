@@ -66,7 +66,7 @@ public class Resources_en extends ListResourceBundle
             { "MillisecondFuturePrefix", "" },
             { "MillisecondFutureSuffix", " kadib" },
             { "MillisecondPastPrefix", "" },
-            { "MillisecondPastSuffix", " ago" },
+            { "MillisecondPastSuffix", " kahor" },
             { "MillisecondSingularName", "ilbiriqsi kayar" },
             { "MillisecondPluralName", "ilbiriqsi kayar" },
             { "MinutePattern", "%n %u" },

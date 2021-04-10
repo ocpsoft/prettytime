@@ -365,8 +365,6 @@ public class PrettyTimeTest
       PrettyTime t = new PrettyTime(now);
       final LocalDateTime threeDecadesAgo = now.minus(3, ChronoUnit.DECADES);
       Assert.assertEquals("3 toban sanooyin kadib", t.format(threeDecadesAgo));
-      t.setLocale(Locale.GERMAN);
-      Assert.assertEquals("vor 3 Jahrzehnten", t.format(threeDecadesAgo));
    }
 
    /**

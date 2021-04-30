@@ -34,8 +34,8 @@ public class PrettyTimeI18n_EL_Test {
     @Test
     public void testNullDate() throws Exception {
         PrettyTime t = new PrettyTime();
-        Date date = null;
-        Assert.assertEquals("στιγμές από τώρα", t.format(date));
+        final String format = t.format((Date) null);
+        Assert.assertTrue("πριν από στιγμές".equals(format) || "στιγμές από τώρα".equals(format));
     }
 
     @Test

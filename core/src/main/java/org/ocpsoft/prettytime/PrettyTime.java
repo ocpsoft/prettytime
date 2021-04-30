@@ -420,30 +420,9 @@ public class PrettyTime
     *         element's delta. The first element is the largest {@link TimeUnit} to fit within the total difference
     *         between compared dates.
     */
-   public List<Duration> calculatePreciseDuration(Date then)
+   public List<Duration> calculatePreciseDuration(final Date then)
    {
-      if (then == null)
-         then = now();
-
-      final Instant reference = this.reference != null ? this.reference : Instant.now();
-
-      List<Duration> result = new ArrayList<>();
-      long difference = then.getTime() - reference.toEpochMilli();
-      Duration duration = calculateDuration(difference);
-      result.add(duration);
-      while (0 != duration.getDelta()) {
-         duration = calculateDuration(duration.getDelta());
-         if (!result.isEmpty()) {
-            Duration last = result.get(result.size() - 1);
-            if (last.getUnit().equals(duration.getUnit())) {
-               break;
-            }
-         }
-
-         if (duration.getUnit().isPrecise())
-            result.add(duration);
-      }
-      return result;
+      return calculatePreciseDuration(then != null ? then.toInstant() : null);
    }
 
    /**
@@ -461,9 +440,30 @@ public class PrettyTime
     *         element's delta. The first element is the largest {@link TimeUnit} to fit within the total difference
     *         between compared dates.
     */
-   public List<Duration> calculatePreciseDuration(final Instant then)
+   public List<Duration> calculatePreciseDuration(Instant then)
    {
-      return calculatePreciseDuration(then != null ? Date.from(then) : null);
+      if (then == null)
+         then = Instant.now();
+
+      final Instant reference = this.reference != null ? this.reference : Instant.now();
+
+      List<Duration> result = new ArrayList<>();
+      long difference = then.toEpochMilli() - reference.toEpochMilli();
+      Duration duration = calculateDuration(difference);
+      result.add(duration);
+      while (0 != duration.getDelta()) {
+         duration = calculateDuration(duration.getDelta());
+         if (!result.isEmpty()) {
+            Duration last = result.get(result.size() - 1);
+            if (last.getUnit().equals(duration.getUnit())) {
+               break;
+            }
+         }
+
+         if (duration.getUnit().isPrecise())
+            result.add(duration);
+      }
+      return result;
    }
 
    /**

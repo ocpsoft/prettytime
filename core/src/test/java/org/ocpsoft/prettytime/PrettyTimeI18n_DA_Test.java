@@ -69,8 +69,7 @@ public class PrettyTimeI18n_DA_Test
    public void testNullDate() throws Exception
    {
       PrettyTime t = new PrettyTime(locale);
-      Date date = null;
-      assertEquals("straks", t.format(date));
+      assertEquals("straks", t.format((Date) null));
    }
 
    @Test

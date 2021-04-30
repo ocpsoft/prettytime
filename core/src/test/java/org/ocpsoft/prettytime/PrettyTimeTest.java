@@ -93,15 +93,12 @@ public class PrettyTimeTest
    }
 
    @Test
-   @SuppressWarnings("deprecation")
    public void testCalculatePreciceDurationMillenia() throws Exception
    {
-      PrettyTime t = new PrettyTime(new Date(2014, 8, 15, 0, 0));
-      List<Duration> durations = t.calculatePreciseDuration(new Date(0));
-      Assert.assertEquals("1 millennium 9 centuries 4 decades 4 years 8 months 1 week 6 days 20 hours 5 minutes ago",
-               t.format(durations));
-      Assert.assertEquals("1 millennium 9 centuries 4 decades 4 years 8 months 1 week 6 days 20 hours 5 minutes",
-               t.formatDuration(durations));
+      PrettyTime t = new PrettyTime(LocalDate.of(2000, 2, 2));
+      List<Duration> durations = t.calculatePreciseDuration(LocalDate.of(100, 1, 1));
+      Assert.assertEquals("1 millennium 9 centuries 1 month 1 day 8 hours 34 minutes ago", t.format(durations));
+      Assert.assertEquals("1 millennium 9 centuries 1 month 1 day 8 hours 34 minutes", t.formatDuration(durations));
    }
 
    @Test

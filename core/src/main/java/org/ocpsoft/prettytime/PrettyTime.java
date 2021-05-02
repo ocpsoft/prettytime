@@ -74,7 +74,7 @@ public class PrettyTime
    private volatile Locale locale = Locale.getDefault();
    private final Map<TimeUnit, TimeFormat> units = new ConcurrentHashMap<>();
    private volatile List<TimeUnit> cachedUnits;
-   private String overrideResourceBundle;
+   private final String overrideResourceBundle;
 
    /**
     * Create a new {@link PrettyTime} instance that will always use the current value of
@@ -1333,106 +1333,13 @@ public class PrettyTime
    }
 
    /**
-    * Converts the given {@link Date} to the reference {@link Instant}. If <code>null</code>, {@link PrettyTime} will
-    * always use the current value of {@link System#currentTimeMillis()} as the reference {@link Instant}.
-    * <p>
-    * If the {@link Date} formatted is before the reference {@link Instant}, the format command will produce a
-    * {@link String} that is in the past tense. If the {@link Instant} formatted is after the reference {@link Instant},
-    * the format command will produce a {@link String} that is in the future tense.
-    *
-    * @see #setReference(Instant)
-    */
-   public PrettyTime setReference(final Date timestamp)
-   {
-      return setReference(timestamp != null ? timestamp.toInstant() : null);
-   }
-
-   /**
-    * Set the reference {@link Instant}. If <code>null</code>, {@link PrettyTime} will always use the current value of
-    * {@link System#currentTimeMillis()} as the reference {@link Instant}.
-    * <p>
-    * If the {@link Instant} formatted is before the reference {@link Instant}, the format command will produce a
-    * {@link String} that is in the past tense. If the {@link Instant} formatted is after the reference {@link Instant},
-    * the format command will produce a {@link String} that is in the future tense.
-    */
-   public PrettyTime setReference(final Instant timestamp)
-   {
-      reference = timestamp;
-      return this;
-   }
-
-   /**
-    * Converts the given {@link LocalDateTime} to the reference {@link Instant} using the system default {@link ZoneId}.
-    * If <code>null</code>, {@link PrettyTime} will always use the current value of {@link System#currentTimeMillis()}
-    * as the reference {@link Instant}.
-    * <p>
-    * If the {@link Instant} formatted is before the reference {@link Instant}, the format command will produce a
-    * {@link String} that is in the past tense. If the {@link Instant} formatted is after the reference {@link Instant},
-    * the format command will produce a {@link String} that is in the future tense.
-    *
-    * @see #setReference(Instant)
-    */
-   public PrettyTime setReference(final LocalDateTime localDateTime)
-   {
-      return setReference(localDateTime, ZoneId.systemDefault());
-   }
-
-   /**
-    * Converts the given {@link LocalDateTime} to the reference {@link Instant} using the given {@link ZoneId}. If
-    * <code>null</code>, {@link PrettyTime} will always use the current value of {@link System#currentTimeMillis()} as
-    * the reference {@link Instant}.
-    * <p>
-    * If the {@link Instant} formatted is before the reference {@link Instant}, the format command will produce a
-    * {@link String} that is in the past tense. If the {@link Instant} formatted is after the reference {@link Instant},
-    * the format command will produce a {@link String} that is in the future tense.
-    *
-    * @see #setReference(Instant)
-    */
-   public PrettyTime setReference(final LocalDateTime localDateTime, final ZoneId zoneId)
-   {
-      return setReference(localDateTime != null ? localDateTime.atZone(zoneId).toInstant() : null);
-   }
-
-   /**
-    * Converts the given {@link LocalDate} to the reference {@link Instant} using the given {@link ZoneId}. If
-    * <code>null</code>, {@link PrettyTime} will always use the current value of {@link System#currentTimeMillis()} as
-    * the reference {@link Instant}.
-    * <p>
-    * If the {@link Instant} formatted is before the reference {@link Instant}, the format command will produce a
-    * {@link String} that is in the past tense. If the {@link Instant} formatted is after the reference {@link Instant},
-    * the format command will produce a {@link String} that is in the future tense.
-    *
-    * @see #setReference(Instant)
-    */
-   public PrettyTime setReference(final LocalDate localDate)
-   {
-      return setReference(localDate != null ? localDate.atStartOfDay() : null);
-   }
-
-   /**
-    * Converts the given {@link LocalDate} to the reference {@link Instant} using the given {@link ZoneId}. If
-    * <code>null</code>, {@link PrettyTime} will always use the current value of {@link System#currentTimeMillis()} as
-    * the reference {@link Instant}.
-    * <p>
-    * If the {@link Instant} formatted is before the reference {@link Instant}, the format command will produce a
-    * {@link String} that is in the past tense. If the {@link Instant} formatted is after the reference {@link Instant},
-    * the format command will produce a {@link String} that is in the future tense.
-    *
-    * @see #setReference(Instant)
-    */
-   public PrettyTime setReference(final LocalDate localDate, final ZoneId zoneId)
-   {
-      return setReference(localDate != null ? localDate.atStartOfDay(zoneId).toInstant() : null);
-   }
-
-   /**
     * Get the unmodifiable {@link List} of the current configured {@link TimeUnit} instances in calculations.
     */
    public List<TimeUnit> getUnits()
    {
       if (cachedUnits == null) {
          List<TimeUnit> result = new ArrayList<>(units.keySet());
-         Collections.sort(result, Comparator.comparing(TimeUnit::getMillisPerUnit));
+         result.sort(Comparator.comparing(TimeUnit::getMillisPerUnit));
          cachedUnits = Collections.unmodifiableList(result);
       }
 
@@ -1457,87 +1364,6 @@ public class PrettyTime
    }
 
    /**
-    * Register the given {@link TimeUnit} and corresponding {@link TimeFormat} instance to be used in calculations. If
-    * an entry already exists for the given {@link TimeUnit}, its {@link TimeFormat} will be overwritten with the given
-    * {@link TimeFormat}. ({@link TimeUnit} and {@link TimeFormat} must not be <code>null</code>.)
-    */
-   public PrettyTime registerUnit(final TimeUnit unit, TimeFormat format)
-   {
-      cachedUnits = null;
-
-      units.put(Objects.requireNonNull(unit, "TimeUnit to register must not be null."),
-              Objects.requireNonNull(format, "TimeFormat to register must not be null."));
-      if (unit instanceof LocaleAware)
-         ((LocaleAware<?>) unit).setLocale(locale);
-      if (format instanceof LocaleAware)
-         ((LocaleAware<?>) format).setLocale(locale);
-      return this;
-   }
-
-   public PrettyTime setUnits(final ResourcesTimeUnit... units)
-   {
-      if (units == null || units.length == 0)
-         throw new IllegalArgumentException("TimeUnit instance(s) to register must be provided.");
-
-      this.clearUnits();
-      for (ResourcesTimeUnit unit : units) {
-         TimeFormat format = new ResourcesTimeFormat(unit);
-         this.registerUnit(unit, format);
-      }
-
-      return this;
-   }
-
-   public PrettyTime setUnits(TimeFormat format, final TimeUnit... units)
-   {
-      if (units == null || units.length == 0)
-         throw new IllegalArgumentException("TimeUnit instance(s) to register must be provided.");
-      Objects.requireNonNull(format, "TimeFormat to register must not be null.");
-
-      this.clearUnits();
-      for (TimeUnit unit : units) {
-         this.registerUnit(unit, format);
-      }
-
-      return this;
-   }
-
-   /**
-    * Removes the mapping for the given {@link TimeUnit} type. This effectively de-registers the {@link TimeUnit} so it
-    * will not be used in formatting. Returns the {@link TimeFormat} that was removed, or <code>null</code> if no unit
-    * of the given type was registered.
-    */
-   public <UNIT extends TimeUnit> TimeFormat removeUnit(final Class<UNIT> unitType)
-   {
-      if (unitType == null)
-         return null;
-
-      for (TimeUnit unit : units.keySet()) {
-         if (unitType.isAssignableFrom(unit.getClass())) {
-            cachedUnits = null;
-
-            return units.remove(unit);
-         }
-      }
-      return null;
-   }
-
-   /**
-    * Removes the mapping for the given {@link TimeUnit}. This effectively de-registers the {@link TimeUnit} so it will
-    * not be used in formatting. Returns the {@link TimeFormat} that was removed, or null if no such unit was
-    * registered.
-    */
-   public TimeFormat removeUnit(final TimeUnit unit)
-   {
-      if (unit == null)
-         return null;
-
-      cachedUnits = null;
-
-      return units.remove(unit);
-   }
-
-   /**
     * Get the currently configured {@link Locale} for this {@link PrettyTime} object.
     */
    public Locale getLocale()
@@ -1545,43 +1371,10 @@ public class PrettyTime
       return locale;
    }
 
-   /**
-    * Set the the {@link Locale} for this {@link PrettyTime} object. This may be an expensive operation, since this
-    * operation calls {@link LocaleAware#setLocale(Locale)} for each {@link TimeUnit} in {@link #getUnits()}.
-    */
-   public PrettyTime setLocale(Locale locale)
-   {
-      if (locale == null)
-         locale = Locale.getDefault();
-
-      this.locale = locale;
-      for (TimeUnit unit : units.keySet()) {
-         if (unit instanceof LocaleAware)
-            ((LocaleAware<?>) unit).setLocale(locale);
-      }
-      for (TimeFormat format : units.values()) {
-         if (format instanceof LocaleAware)
-            ((LocaleAware<?>) format).setLocale(locale);
-      }
-      cachedUnits = null;
-      return this;
-   }
-
    @Override
    public String toString()
    {
       return "PrettyTime [reference=" + reference + ", locale=" + locale + "]";
-   }
-
-   /**
-    * Remove all registered {@link TimeUnit} instances. Returns all {@link TimeUnit} instances that were removed.
-    */
-   public List<TimeUnit> clearUnits()
-   {
-      List<TimeUnit> result = getUnits();
-      cachedUnits = null;
-      units.clear();
-      return result;
    }
 
    /*
@@ -1657,11 +1450,216 @@ public class PrettyTime
 
    private long getSign(final long difference)
    {
-      if (0 > difference) {
-         return -1;
+      return (0 > difference) ? -1 : 1;
+   }
+
+   /*
+    * These methods are package-private because they change the internal object state.
+    */
+   /**
+    * Set the the {@link Locale} for this {@link PrettyTime} object. This may be an expensive operation, since this
+    * operation calls {@link LocaleAware#setLocale(Locale)} for each {@link TimeUnit} in {@link #getUnits()}.
+    */
+   protected PrettyTime setLocale(Locale locale)
+   {
+      if (locale == null)
+         locale = Locale.getDefault();
+
+      this.locale = locale;
+      for (TimeUnit unit : units.keySet()) {
+         if (unit instanceof LocaleAware)
+            ((LocaleAware<?>) unit).setLocale(locale);
       }
-      else {
-         return 1;
+      for (TimeFormat format : units.values()) {
+         if (format instanceof LocaleAware)
+            ((LocaleAware<?>) format).setLocale(locale);
       }
+      cachedUnits = null;
+      return this;
+   }
+
+   /**
+    * Remove all registered {@link TimeUnit} instances. Returns all {@link TimeUnit} instances that were removed.
+    */
+   protected List<TimeUnit> clearUnits()
+   {
+      List<TimeUnit> result = getUnits();
+      cachedUnits = null;
+      units.clear();
+      return result;
+   }
+
+   /**
+    * Register the given {@link TimeUnit} and corresponding {@link TimeFormat} instance to be used in calculations. If
+    * an entry already exists for the given {@link TimeUnit}, its {@link TimeFormat} will be overwritten with the given
+    * {@link TimeFormat}. ({@link TimeUnit} and {@link TimeFormat} must not be <code>null</code>.)
+    */
+   protected PrettyTime registerUnit(final TimeUnit unit, TimeFormat format)
+   {
+      cachedUnits = null;
+
+      units.put(Objects.requireNonNull(unit, "TimeUnit to register must not be null."),
+                Objects.requireNonNull(format, "TimeFormat to register must not be null."));
+      if (unit instanceof LocaleAware)
+         ((LocaleAware<?>) unit).setLocale(locale);
+      if (format instanceof LocaleAware)
+         ((LocaleAware<?>) format).setLocale(locale);
+      return this;
+   }
+
+   protected PrettyTime setUnits(final ResourcesTimeUnit... units)
+   {
+      if (units == null || units.length == 0)
+         throw new IllegalArgumentException("TimeUnit instance(s) to register must be provided.");
+
+      this.clearUnits();
+      for (ResourcesTimeUnit unit : units) {
+         TimeFormat format = new ResourcesTimeFormat(unit);
+         this.registerUnit(unit, format);
+      }
+
+      return this;
+   }
+
+   protected PrettyTime setUnits(TimeFormat format, final TimeUnit... units)
+   {
+      if (units == null || units.length == 0)
+         throw new IllegalArgumentException("TimeUnit instance(s) to register must be provided.");
+      Objects.requireNonNull(format, "TimeFormat to register must not be null.");
+
+      this.clearUnits();
+      for (TimeUnit unit : units) {
+         this.registerUnit(unit, format);
+      }
+
+      return this;
+   }
+
+   /**
+    * Removes the mapping for the given {@link TimeUnit} type. This effectively de-registers the {@link TimeUnit} so it
+    * will not be used in formatting. Returns the {@link TimeFormat} that was removed, or <code>null</code> if no unit
+    * of the given type was registered.
+    */
+   protected <UNIT extends TimeUnit> TimeFormat removeUnit(final Class<UNIT> unitType)
+   {
+      if (unitType == null)
+         return null;
+
+      for (TimeUnit unit : units.keySet()) {
+         if (unitType.isAssignableFrom(unit.getClass())) {
+            cachedUnits = null;
+
+            return units.remove(unit);
+         }
+      }
+      return null;
+   }
+
+   /**
+    * Removes the mapping for the given {@link TimeUnit}. This effectively de-registers the {@link TimeUnit} so it will
+    * not be used in formatting. Returns the {@link TimeFormat} that was removed, or null if no such unit was
+    * registered.
+    */
+   protected TimeFormat removeUnit(final TimeUnit unit)
+   {
+      if (unit == null)
+         return null;
+
+      cachedUnits = null;
+
+      return units.remove(unit);
+   }
+
+   /**
+    * Converts the given {@link Date} to the reference {@link Instant}. If <code>null</code>, {@link PrettyTime} will
+    * always use the current value of {@link System#currentTimeMillis()} as the reference {@link Instant}.
+    * <p>
+    * If the {@link Date} formatted is before the reference {@link Instant}, the format command will produce a
+    * {@link String} that is in the past tense. If the {@link Instant} formatted is after the reference {@link Instant},
+    * the format command will produce a {@link String} that is in the future tense.
+    *
+    * @see #setReference(Instant)
+    */
+   protected PrettyTime setReference(final Date timestamp)
+   {
+      return setReference(timestamp != null ? timestamp.toInstant() : null);
+   }
+
+   /**
+    * Set the reference {@link Instant}. If <code>null</code>, {@link PrettyTime} will always use the current value of
+    * {@link System#currentTimeMillis()} as the reference {@link Instant}.
+    * <p>
+    * If the {@link Instant} formatted is before the reference {@link Instant}, the format command will produce a
+    * {@link String} that is in the past tense. If the {@link Instant} formatted is after the reference {@link Instant},
+    * the format command will produce a {@link String} that is in the future tense.
+    */
+   protected PrettyTime setReference(final Instant timestamp)
+   {
+      reference = timestamp;
+      return this;
+   }
+
+   /**
+    * Converts the given {@link LocalDateTime} to the reference {@link Instant} using the system default {@link ZoneId}.
+    * If <code>null</code>, {@link PrettyTime} will always use the current value of {@link System#currentTimeMillis()}
+    * as the reference {@link Instant}.
+    * <p>
+    * If the {@link Instant} formatted is before the reference {@link Instant}, the format command will produce a
+    * {@link String} that is in the past tense. If the {@link Instant} formatted is after the reference {@link Instant},
+    * the format command will produce a {@link String} that is in the future tense.
+    *
+    * @see #setReference(Instant)
+    */
+   protected PrettyTime setReference(final LocalDateTime localDateTime)
+   {
+      return setReference(localDateTime, ZoneId.systemDefault());
+   }
+
+   /**
+    * Converts the given {@link LocalDateTime} to the reference {@link Instant} using the given {@link ZoneId}. If
+    * <code>null</code>, {@link PrettyTime} will always use the current value of {@link System#currentTimeMillis()} as
+    * the reference {@link Instant}.
+    * <p>
+    * If the {@link Instant} formatted is before the reference {@link Instant}, the format command will produce a
+    * {@link String} that is in the past tense. If the {@link Instant} formatted is after the reference {@link Instant},
+    * the format command will produce a {@link String} that is in the future tense.
+    *
+    * @see #setReference(Instant)
+    */
+   protected PrettyTime setReference(final LocalDateTime localDateTime, final ZoneId zoneId)
+   {
+      return setReference(localDateTime != null ? localDateTime.atZone(zoneId).toInstant() : null);
+   }
+
+   /**
+    * Converts the given {@link LocalDate} to the reference {@link Instant} using the given {@link ZoneId}. If
+    * <code>null</code>, {@link PrettyTime} will always use the current value of {@link System#currentTimeMillis()} as
+    * the reference {@link Instant}.
+    * <p>
+    * If the {@link Instant} formatted is before the reference {@link Instant}, the format command will produce a
+    * {@link String} that is in the past tense. If the {@link Instant} formatted is after the reference {@link Instant},
+    * the format command will produce a {@link String} that is in the future tense.
+    *
+    * @see #setReference(Instant)
+    */
+   protected PrettyTime setReference(final LocalDate localDate)
+   {
+      return setReference(localDate != null ? localDate.atStartOfDay() : null);
+   }
+
+   /**
+    * Converts the given {@link LocalDate} to the reference {@link Instant} using the given {@link ZoneId}. If
+    * <code>null</code>, {@link PrettyTime} will always use the current value of {@link System#currentTimeMillis()} as
+    * the reference {@link Instant}.
+    * <p>
+    * If the {@link Instant} formatted is before the reference {@link Instant}, the format command will produce a
+    * {@link String} that is in the past tense. If the {@link Instant} formatted is after the reference {@link Instant},
+    * the format command will produce a {@link String} that is in the future tense.
+    *
+    * @see #setReference(Instant)
+    */
+   protected PrettyTime setReference(final LocalDate localDate, final ZoneId zoneId)
+   {
+      return setReference(localDate != null ? localDate.atStartOfDay(zoneId).toInstant() : null);
    }
 }

@@ -1,169 +1,161 @@
-/**
+/*
  * @author hertg
  */
 package org.ocpsoft.prettytime;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Locale;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class PrettyTimeI18n_DE_Test
 {
 
-    private Locale locale;
-    private Date base;
+    private LocalDateTime base;
     private PrettyTime prettyTime;
 
     @Before
     public void setUp() throws Exception
     {
-        locale = new Locale("de");
-        base = new Date();
-        prettyTime = new PrettyTime(base, locale);
+        base = LocalDateTime.parse("2020-09-20T12:00:00");
+        prettyTime = new PrettyTime(base);
+        prettyTime.setLocale(Locale.GERMAN);
     }
 
     @Test
     public void testGrammaticalCaseMilliseconds()
     {
-        assertEquals("gerade eben", prettyTime.format(addTime(-5, Calendar.MILLISECOND)));
-        assertEquals("gerade eben", prettyTime.format(addTime(-1, Calendar.MILLISECOND)));
-        assertEquals("Jetzt", prettyTime.format(addTime(5, Calendar.MILLISECOND)));
-        assertEquals("Jetzt", prettyTime.format(addTime(1, Calendar.MILLISECOND)));
+        assertEquals("gerade eben", prettyTime.format(base.minus(5, ChronoUnit.MILLIS)));
+        assertEquals("gerade eben", prettyTime.format(base.minus(1, ChronoUnit.MILLIS)));
+        assertEquals("Jetzt", prettyTime.format(base.plus(5, ChronoUnit.MILLIS)));
+        assertEquals("Jetzt", prettyTime.format(base.plus(1, ChronoUnit.MILLIS)));
 
         // the following tests are commented out, because the formatDuration() method
         // only returns an empty string for durations in the milliseconds
-        // assertEquals("5 Millisekunden", prettyTime.formatDuration(addTime(-5, Calendar.MILLISECOND)));
-        // assertEquals("1 Millisekunde", prettyTime.formatDuration(addTime(-1, Calendar.MILLISECOND)));
+        // assertEquals("5 Millisekunden", prettyTime.formatDuration(base.minus(5, Calendar.MILLISECOND)));
+        // assertEquals("1 Millisekunde", prettyTime.formatDuration(base.minus(1, Calendar.MILLISECOND)));
     }
 
     @Test
     public void testGrammaticalCaseSeconds()
     {
-        assertEquals("gerade eben", prettyTime.format(addTime(-5, Calendar.SECOND)));
-        assertEquals("gerade eben", prettyTime.format(addTime(-1, Calendar.SECOND)));
-        assertEquals("Jetzt", prettyTime.format(addTime(5, Calendar.SECOND)));
-        assertEquals("Jetzt", prettyTime.format(addTime(1, Calendar.SECOND)));
+        assertEquals("gerade eben", prettyTime.format(base.minus(5, ChronoUnit.SECONDS)));
+        assertEquals("gerade eben", prettyTime.format(base.minus(1, ChronoUnit.SECONDS)));
+        assertEquals("Jetzt", prettyTime.format(base.plus(5, ChronoUnit.SECONDS)));
+        assertEquals("Jetzt", prettyTime.format(base.plus(1, ChronoUnit.SECONDS)));
 
         // the following tests are commented out, because the formatDuration() method
         // only returns an empty string for durations in the seconds
-        // assertEquals("5 Sekunden", prettyTime.formatDuration(addTime(-5, Calendar.SECOND)));
-        // assertEquals("1 Sekunde", prettyTime.formatDuration(addTime(-1, Calendar.SECOND)));
+        // assertEquals("5 Sekunden", prettyTime.formatDuration(base.minus(5, ChronoUnit.SECONDS)));
+        // assertEquals("1 Sekunde", prettyTime.formatDuration(base.minus(1, ChronoUnit.SECONDS)));
     }
 
     @Test
     public void testGrammaticalCaseMinutes()
     {
-        assertEquals("vor 5 Minuten", prettyTime.format(addTime(-5, Calendar.MINUTE)));
-        assertEquals("vor 1 Minute", prettyTime.format(addTime(-1, Calendar.MINUTE)));
-        assertEquals("in 5 Minuten", prettyTime.format(addTime(5, Calendar.MINUTE)));
-        assertEquals("in 1 Minute", prettyTime.format(addTime(1, Calendar.MINUTE)));
-        assertEquals("5 Minuten", prettyTime.formatDuration(addTime(-5, Calendar.MINUTE)));
-        assertEquals("1 Minute", prettyTime.formatDuration(addTime(-1, Calendar.MINUTE)));
+        assertEquals("vor 5 Minuten", prettyTime.format(base.minus(5, ChronoUnit.MINUTES)));
+        assertEquals("vor 1 Minute", prettyTime.format(base.minus(1, ChronoUnit.MINUTES)));
+        assertEquals("in 5 Minuten", prettyTime.format(base.plus(5, ChronoUnit.MINUTES)));
+        assertEquals("in 1 Minute", prettyTime.format(base.plus(1, ChronoUnit.MINUTES)));
+        assertEquals("5 Minuten", prettyTime.formatDuration(base.minus(5, ChronoUnit.MINUTES)));
+        assertEquals("1 Minute", prettyTime.formatDuration(base.minus(1, ChronoUnit.MINUTES)));
     }
 
     @Test
     public void testGrammaticalCaseHours()
     {
-        assertEquals("vor 5 Stunden", prettyTime.format(addTime(-5, Calendar.HOUR)));
-        assertEquals("vor 1 Stunde", prettyTime.format(addTime(-1, Calendar.HOUR)));
-        assertEquals("in 5 Stunden", prettyTime.format(addTime(5, Calendar.HOUR)));
-        assertEquals("in 1 Stunde", prettyTime.format(addTime(1, Calendar.HOUR)));
-        assertEquals("5 Stunden", prettyTime.formatDuration(addTime(-5, Calendar.HOUR)));
-        assertEquals("1 Stunde", prettyTime.formatDuration(addTime(-1, Calendar.HOUR)));
+        assertEquals("vor 5 Stunden", prettyTime.format(base.minus(5, ChronoUnit.HOURS)));
+        assertEquals("vor 1 Stunde", prettyTime.format(base.minus(1, ChronoUnit.HOURS)));
+        assertEquals("in 5 Stunden", prettyTime.format(base.plus(5, ChronoUnit.HOURS)));
+        assertEquals("in 1 Stunde", prettyTime.format(base.plus(1, ChronoUnit.HOURS)));
+        assertEquals("5 Stunden", prettyTime.formatDuration(base.minus(5, ChronoUnit.HOURS)));
+        assertEquals("1 Stunde", prettyTime.formatDuration(base.minus(1, ChronoUnit.HOURS)));
     }
 
     @Test
     public void testGrammaticalCaseDays()
     {
-        assertEquals("vor 5 Tagen", prettyTime.format(addTime(-5, Calendar.DAY_OF_MONTH)));
-        assertEquals("vor 1 Tag", prettyTime.format(addTime(-1, Calendar.DAY_OF_MONTH)));
-        assertEquals("in 5 Tagen", prettyTime.format(addTime(5, Calendar.DAY_OF_MONTH)));
-        assertEquals("in 1 Tag", prettyTime.format(addTime(1, Calendar.DAY_OF_MONTH)));
-        assertEquals("5 Tage", prettyTime.formatDuration(addTime(-5, Calendar.DAY_OF_MONTH)));
-        assertEquals("1 Tag", prettyTime.formatDuration(addTime(-1, Calendar.DAY_OF_MONTH)));
+        assertEquals("vor 5 Tagen", prettyTime.format(base.minus(5, ChronoUnit.DAYS)));
+        assertEquals("vor 1 Tag", prettyTime.format(base.minus(1, ChronoUnit.DAYS)));
+        assertEquals("in 5 Tagen", prettyTime.format(base.plus(5, ChronoUnit.DAYS)));
+        assertEquals("in 1 Tag", prettyTime.format(base.plus(1, ChronoUnit.DAYS)));
+        assertEquals("5 Tage", prettyTime.formatDuration(base.minus(5, ChronoUnit.DAYS)));
+        assertEquals("1 Tag", prettyTime.formatDuration(base.minus(1, ChronoUnit.DAYS)));
     }
 
     @Test
     public void testGrammaticalCaseMonths()
     {
-        assertEquals("vor 5 Monaten", prettyTime.format(addTime(-5, Calendar.MONTH)));
-        assertEquals("vor 1 Monat", prettyTime.format(addTime(-1, Calendar.MONTH)));
-        assertEquals("in 5 Monaten", prettyTime.format(addTime(5, Calendar.MONTH)));
-        assertEquals("in 1 Monat", prettyTime.format(addTime(1, Calendar.MONTH)));
-        assertEquals("5 Monate", prettyTime.formatDuration(addTime(-5, Calendar.MONTH)));
-        assertEquals("1 Monat", prettyTime.formatDuration(addTime(-1, Calendar.MONTH)));
+        assertEquals("vor 5 Monaten", prettyTime.format(base.minus(5, ChronoUnit.MONTHS)));
+        assertEquals("vor 1 Monat", prettyTime.format(base.minus(1, ChronoUnit.MONTHS)));
+        assertEquals("in 5 Monaten", prettyTime.format(base.plus(5, ChronoUnit.MONTHS)));
+        assertEquals("in 1 Monat", prettyTime.format(base.plus(1, ChronoUnit.MONTHS)));
+        assertEquals("5 Monate", prettyTime.formatDuration(base.minus(5, ChronoUnit.MONTHS)));
+        assertEquals("1 Monat", prettyTime.formatDuration(base.minus(1, ChronoUnit.MONTHS)));
     }
 
     @Test
     public void testGrammaticalCaseYears()
     {
-        assertEquals("vor 5 Jahren", prettyTime.format(addTime(-5, Calendar.YEAR)));
-        assertEquals("vor 1 Jahr", prettyTime.format(addTime(-1, Calendar.YEAR)));
-        assertEquals("in 5 Jahren", prettyTime.format(addTime(5, Calendar.YEAR)));
-        assertEquals("in 1 Jahr", prettyTime.format(addTime(13, Calendar.MONTH)));
-        assertEquals("5 Jahre", prettyTime.formatDuration(addTime(-5, Calendar.YEAR)));
-        assertEquals("1 Jahr", prettyTime.formatDuration(addTime(-1, Calendar.YEAR)));
+        assertEquals("vor 5 Jahren", prettyTime.format(base.minus(5, ChronoUnit.YEARS)));
+        assertEquals("vor 1 Jahr", prettyTime.format(base.minus(1, ChronoUnit.YEARS)));
+        assertEquals("in 5 Jahren", prettyTime.format(base.plus(5, ChronoUnit.YEARS)));
+        assertEquals("in 1 Jahr", prettyTime.format(base.plus(13, ChronoUnit.MONTHS)));
+        assertEquals("5 Jahre", prettyTime.formatDuration(base.minus(5, ChronoUnit.YEARS)));
+        assertEquals("1 Jahr", prettyTime.formatDuration(base.plus(13, ChronoUnit.MONTHS)));
     }
 
     @Test
     public void testGrammaticalCaseDecades()
     {
-        assertEquals("vor 5 Jahrzehnten", prettyTime.format(addTime(-50, Calendar.YEAR)));
-        assertEquals("vor 1 Jahrzehnt", prettyTime.format(addTime(-10, Calendar.YEAR)));
-        assertEquals("in 5 Jahrzehnten", prettyTime.format(addTime(50, Calendar.YEAR)));
-        assertEquals("in 1 Jahrzehnt", prettyTime.format(addTime(11, Calendar.YEAR)));
-        assertEquals("5 Jahrzehnte", prettyTime.formatDuration(addTime(-50, Calendar.YEAR)));
-        assertEquals("1 Jahrzehnt", prettyTime.formatDuration(addTime(-10, Calendar.YEAR)));
+        assertEquals("vor 5 Jahrzehnten", prettyTime.format(base.minus(50, ChronoUnit.YEARS)));
+        assertEquals("vor 1 Jahrzehnt", prettyTime.format(base.minus(10, ChronoUnit.YEARS)));
+        assertEquals("in 5 Jahrzehnten", prettyTime.format(base.plus(50, ChronoUnit.YEARS)));
+        assertEquals("in 1 Jahrzehnt", prettyTime.format(base.plus(11, ChronoUnit.YEARS)));
+        assertEquals("5 Jahrzehnte", prettyTime.formatDuration(base.minus(50, ChronoUnit.YEARS)));
+        assertEquals("1 Jahrzehnt", prettyTime.formatDuration(base.minus(10, ChronoUnit.YEARS)));
     }
 
     @Test
     public void testGrammaticalCaseCenturies()
     {
-        assertEquals("vor 5 Jahrhunderten", prettyTime.format(addTime(-500, Calendar.YEAR)));
-        assertEquals("vor 1 Jahrhundert", prettyTime.format(addTime(-100, Calendar.YEAR)));
-        assertEquals("in 5 Jahrhunderten", prettyTime.format(addTime(500, Calendar.YEAR)));
-        assertEquals("in 1 Jahrhundert", prettyTime.format(addTime(101, Calendar.YEAR)));
-        assertEquals("5 Jahrhunderte", prettyTime.formatDuration(addTime(-500, Calendar.YEAR)));
-        assertEquals("1 Jahrhundert", prettyTime.formatDuration(addTime(-100, Calendar.YEAR)));
+        assertEquals("vor 5 Jahrhunderten", prettyTime.format(base.minus(500, ChronoUnit.YEARS)));
+        assertEquals("vor 1 Jahrhundert", prettyTime.format(base.minus(100, ChronoUnit.YEARS)));
+        assertEquals("in 5 Jahrhunderten", prettyTime.format(base.plus(500, ChronoUnit.YEARS)));
+        assertEquals("in 1 Jahrhundert", prettyTime.format(base.plus(101, ChronoUnit.YEARS)));
+        assertEquals("5 Jahrhunderte", prettyTime.formatDuration(base.minus(500, ChronoUnit.YEARS)));
+        assertEquals("1 Jahrhundert", prettyTime.formatDuration(base.minus(100, ChronoUnit.YEARS)));
     }
 
     @Test
     public void testGrammaticalCaseMillenia()
     {
-        assertEquals("vor 5 Jahrtausenden", prettyTime.format(addTime(-5000, Calendar.YEAR)));
-        assertEquals("vor 1 Jahrtausend", prettyTime.format(addTime(-1001, Calendar.YEAR)));
-        assertEquals("in 5 Jahrtausenden", prettyTime.format(addTime(5000, Calendar.YEAR)));
-        assertEquals("in 1 Jahrtausend", prettyTime.format(addTime(1001, Calendar.YEAR)));
-        assertEquals("5 Jahrtausende", prettyTime.formatDuration(addTime(-5000, Calendar.YEAR)));
-        assertEquals("1 Jahrtausend", prettyTime.formatDuration(addTime(-1001, Calendar.YEAR)));
+        assertEquals("vor 5 Jahrtausenden", prettyTime.format(base.minus(5000, ChronoUnit.YEARS)));
+        assertEquals("vor 1 Jahrtausend", prettyTime.format(base.minus(1000, ChronoUnit.YEARS)));
+        assertEquals("in 5 Jahrtausenden", prettyTime.format(base.plus(5000, ChronoUnit.YEARS)));
+        assertEquals("in 1 Jahrtausend", prettyTime.format(base.plus(1001, ChronoUnit.YEARS)));
+        assertEquals("5 Jahrtausende", prettyTime.formatDuration(base.minus(5000, ChronoUnit.YEARS)));
+        assertEquals("1 Jahrtausend", prettyTime.formatDuration(base.minus(1000, ChronoUnit.YEARS)));
     }
 
-    // Method tearDown() is called automatically after every test method
-    @After
-    public void tearDown() throws Exception
+    @Test
+    public void testGrammaticalCasesForMultipleDurations()
     {
-        Locale.setDefault(locale);
-    }
+        LocalDateTime then = base.minus(2, ChronoUnit.YEARS)
+                .minus(3, ChronoUnit.MONTHS)
+                .minus(4, ChronoUnit.DAYS)
+                .minus(6, ChronoUnit.HOURS)
+                .minus(30, ChronoUnit.MINUTES);
+        final List<Duration> durations = prettyTime.calculatePreciseDuration(then);
 
-    /**
-     * Helper method to simplify unit tests and prevent code duplicates.
-     *
-     * @param amount Amount of time to add
-     * @param field  Calendar field (ie. {@link Calendar#HOUR}, {@link Calendar#YEAR})
-     * @return Date with the added quantity of time
-     */
-    private Date addTime(int amount, int field)
-    {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(base);
-        calendar.add(field, amount);
-        return calendar.getTime();
+        // note: days are not accurate due to a contained leap year,
+        // hours and minutes are not accurate on the scale of years
+        // (a prettytime year has always about 365,242 days)
+        assertEquals("vor 2 Jahren 3 Monaten 5 Tagen 11 Stunden 25 Minuten", prettyTime.format(durations));
     }
-
 }

@@ -16,7 +16,13 @@
 package org.ocpsoft.prettytime.i18n;
 
 import java.util.ListResourceBundle;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.ocpsoft.prettytime.Duration;
 import org.ocpsoft.prettytime.TimeFormat;
@@ -130,14 +136,22 @@ public class Resources_de extends ListResourceBundle implements TimeFormatProvid
     @Override
     public TimeFormat getFormatFor(TimeUnit t)
     {
-        return new DeTimeFormat(this, t, t.getClass().getSimpleName());
+        return new DeTimeFormat(this, t);
     }
 
     private static class DeTimeFormat extends SimpleTimeFormat
     {
+        // Map for changing all occurring nominative plurals to dative (for achieving "in x Jahren" or "vor x Monaten")
+        private static final Map<String, String> unitsToAdjust = Stream
+                    .of("Jahrtausende", "Jahrhunderte", "Jahrzehnte", "Jahre", "Monate", "Tage")
+                    .collect(Collectors.toMap(Function.identity(), s -> s + "n"));
 
-        public DeTimeFormat(final ResourceBundle bundle, final TimeUnit unit, String prefix)
+        private static final Pattern grammerReplacementPattern = Pattern
+                    .compile("\\b(" + String.join("|", unitsToAdjust.keySet()) + ")\\b");
+
+        public DeTimeFormat(final ResourceBundle bundle, final TimeUnit unit)
         {
+            String prefix = unit.getClass().getSimpleName();
             setPattern(bundle.getString(prefix + "Pattern"));
             setFuturePrefix(bundle.getString(prefix + "FuturePrefix"));
             setFutureSuffix(bundle.getString(prefix + "FutureSuffix"));
@@ -150,26 +164,25 @@ public class Resources_de extends ListResourceBundle implements TimeFormatProvid
         @Override
         public String decorate(Duration duration, String time)
         {
-            // Change the nominative plural to dative by appending an "n" (Tage -> Tagen / Monate -> Monaten)
-            if (isPlural(duration, true)) {
-                if (time != null && time.trim().length() > 0 && !time.endsWith("n")) {
-                    time += "n";
-                }
-            }
-            return super.decorate(duration, time);
+            return super.decorate(duration, adjustGrammar(time));
         }
 
         @Override
         public String decorateUnrounded(Duration duration, String time)
         {
-            // Change the nominative plural to dative by appending an "n" (Tage -> Tagen / Monate -> Monaten)
-            if (isPlural(duration, false)) {
-                if (time != null && time.trim().length() > 0 && !time.endsWith("n")) {
-                    time += "n";
-                }
+            return super.decorateUnrounded(duration, adjustGrammar(time));
+        }
+
+        private String adjustGrammar(String time)
+        {
+            Matcher matcher = grammerReplacementPattern.matcher(time);
+            StringBuffer sb = new StringBuffer();
+            while (matcher.find()) {
+                matcher.appendReplacement(sb, unitsToAdjust.get(matcher.group(1)));
             }
-            return super.decorateUnrounded(duration, time);
+            matcher.appendTail(sb);
+
+            return sb.toString();
         }
     }
-
 }

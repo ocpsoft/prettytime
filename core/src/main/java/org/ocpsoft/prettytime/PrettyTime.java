@@ -366,8 +366,8 @@ public class PrettyTime
     * the given {@link LocalDate} is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be
     * used instead.
     *
-    * @param then   The {@link LocalDate} to be compared against the reference timestamp, or <i>now</i> if no reference
-    *                  timestamp was provided
+    * @param then The {@link LocalDate} to be compared against the reference timestamp, or <i>now</i> if no reference
+    *           timestamp was provided
     * @param zoneId The {@link ZoneId} to be used, not null
     * @see #getReference()
     */
@@ -382,7 +382,7 @@ public class PrettyTime
     * will be used instead.
     *
     * @param then The {@link LocalDate} to be compared against the reference timestamp, or <i>now</i> if no reference
-    *                timestamp was provided
+    *           timestamp was provided
     * @see #getReference()
     */
    public Duration approximateDuration(LocalDateTime then)
@@ -395,8 +395,8 @@ public class PrettyTime
     * If the given {@link LocalDateTime} is <code>null</code>, the current value of {@link System#currentTimeMillis()}
     * will be used instead.
     *
-    * @param then   The {@link LocalDate} to be compared against the reference timestamp, or <i>now</i> if no reference
-    *                  timestamp was provided
+    * @param then The {@link LocalDate} to be compared against the reference timestamp, or <i>now</i> if no reference
+    *           timestamp was provided
     * @param zoneId The {@link ZoneId} to be used, not null
     * @see #getReference()
     */
@@ -414,7 +414,7 @@ public class PrettyTime
     * of time (in milliseconds).
     * 
     * @param then The {@link Date} to be compared against the reference timestamp, or <i>now</i> if no reference
-    *                timestamp was provided
+    *           timestamp was provided
     * @return A sorted {@link List} of {@link Duration} objects, from largest to smallest. Each element in the list
     *         represents the approximate duration (number of times) that {@link TimeUnit} to fit into the previous
     *         element's delta. The first element is the largest {@link TimeUnit} to fit within the total difference
@@ -434,7 +434,7 @@ public class PrettyTime
     * of time (in milliseconds).
     *
     * @param then The {@link Instant} to be compared against the reference timestamp, or <i>now</i> if no reference
-    *                timestamp was provided
+    *           timestamp was provided
     * @return A sorted {@link List} of {@link Duration} objects, from largest to smallest. Each element in the list
     *         represents the approximate duration (number of times) that {@link TimeUnit} to fit into the previous
     *         element's delta. The first element is the largest {@link TimeUnit} to fit within the total difference
@@ -476,7 +476,7 @@ public class PrettyTime
     * of time (in milliseconds).
     *
     * @param then The {@link LocalDateTime} to be compared against the reference timestamp, or <i>now</i> if no
-    *                reference timestamp was provided
+    *           reference timestamp was provided
     * @return A sorted {@link List} of {@link Duration} objects, from largest to smallest. Each element in the list
     *         represents the approximate duration (number of times) that {@link TimeUnit} to fit into the previous
     *         element's delta. The first element is the largest {@link TimeUnit} to fit within the total difference
@@ -496,8 +496,8 @@ public class PrettyTime
     * <b>Note</b>: Precision may be lost if no supplied {@link TimeUnit} is granular enough to represent the remainder
     * of time (in milliseconds).
     *
-    * @param then   The {@link LocalDateTime} to be compared against the reference timestamp, or <i>now</i> if no
-    *                  reference timestamp was provided
+    * @param then The {@link LocalDateTime} to be compared against the reference timestamp, or <i>now</i> if no
+    *           reference timestamp was provided
     * @param zoneId The {@link ZoneId} to be used, not null
     * @return A sorted {@link List} of {@link Duration} objects, from largest to smallest. Each element in the list
     *         represents the approximate duration (number of times) that {@link TimeUnit} to fit into the previous
@@ -519,7 +519,7 @@ public class PrettyTime
     * of time (in milliseconds).
     *
     * @param then The {@link LocalDate} to be compared against the reference timestamp, or <i>now</i> if no reference
-    *                timestamp was provided
+    *           timestamp was provided
     * @return A sorted {@link List} of {@link Duration} objects, from largest to smallest. Each element in the list
     *         represents the approximate duration (number of times) that {@link TimeUnit} to fit into the previous
     *         element's delta. The first element is the largest {@link TimeUnit} to fit within the total difference
@@ -539,8 +539,8 @@ public class PrettyTime
     * <b>Note</b>: Precision may be lost if no supplied {@link TimeUnit} is granular enough to represent the remainder
     * of time (in milliseconds).
     *
-    * @param then   The {@link LocalDate} to be compared against the reference timestamp, or <i>now</i> if no reference
-    *                  timestamp was provided
+    * @param then The {@link LocalDate} to be compared against the reference timestamp, or <i>now</i> if no reference
+    *           timestamp was provided
     * @param zoneId The {@link ZoneId} to be used, not null
     * @return A sorted {@link List} of {@link Duration} objects, from largest to smallest. Each element in the list
     *         represents the approximate duration (number of times) that {@link TimeUnit} to fit into the previous
@@ -674,7 +674,7 @@ public class PrettyTime
     * Format the given {@link LocalDateTime} object using the given {@link ZoneId}. If the given {@link LocalDateTime}
     * is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be used instead.
     *
-    * @param then   the {@link LocalDateTime} to be formatted
+    * @param then the {@link LocalDateTime} to be formatted
     * @param zoneId the {@link ZoneId} to be used, not null
     * @return A formatted string representing {@code then}
     */
@@ -704,7 +704,7 @@ public class PrettyTime
     * This assumes that the time of the given date is midnight.
     * </p>
     *
-    * @param then   the {@link LocalDate} to be formatted
+    * @param then the {@link LocalDate} to be formatted
     * @param zoneId the {@link ZoneId} to be used, not null
     * @return A formatted string representing {@code then}
     */
@@ -848,7 +848,7 @@ public class PrettyTime
     * given {@link LocalDateTime} is <code>null</code>, the current value of {@link System#currentTimeMillis()} will be
     * used instead.
     *
-    * @param then   the {@link LocalDateTime} to be formatted
+    * @param then the {@link LocalDateTime} to be formatted
     * @param zoneId the {@link ZoneId} to be used, not null
     * @return A formatted string representing {@code then}
     */
@@ -879,7 +879,7 @@ public class PrettyTime
     * This assumes that the time of the given date is midnight.
     * </p>
     *
-    * @param then   the {@link LocalDate} to be formatted
+    * @param then the {@link LocalDate} to be formatted
     * @param zoneId the {@link ZoneId} to be used, not null
     * @return A formatted string representing {@code then}
     */
@@ -1043,7 +1043,7 @@ public class PrettyTime
     * {@link System#currentTimeMillis()} will be used instead.
     * <p>
     *
-    * @param then   the {@link LocalDateTime} to be formatted
+    * @param then the {@link LocalDateTime} to be formatted
     * @param zoneId the {@link ZoneId} to be used, not null
     * @return A formatted string of the given {@link LocalDateTime}
     */
@@ -1077,7 +1077,7 @@ public class PrettyTime
     * This assumes that the time of the given date is midnight.
     * </p>
     *
-    * @param then   the {@link LocalDate} to be formatted
+    * @param then the {@link LocalDate} to be formatted
     * @param zoneId the {@link ZoneId} to be used, not null
     * @return A formatted string of the given {@link LocalDate}
     */
@@ -1466,7 +1466,7 @@ public class PrettyTime
       cachedUnits = null;
 
       units.put(Objects.requireNonNull(unit, "TimeUnit to register must not be null."),
-              Objects.requireNonNull(format, "TimeFormat to register must not be null."));
+               Objects.requireNonNull(format, "TimeFormat to register must not be null."));
       if (unit instanceof LocaleAware)
          ((LocaleAware<?>) unit).setLocale(locale);
       if (format instanceof LocaleAware)

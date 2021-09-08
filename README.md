@@ -27,3 +27,9 @@ Be sure to check maven central for the latest version: https://repo1.maven.org/m
 DEVELOPMENT
 ===========
 force-release: mvn release:prepare release:perform -DskipTests=true -DdevelopmentVersion=4.0.2-SNAPSHOT -DreleaseVersion=4.0.1.Final -Dtag=4.0.1.Final -Darguments="-DskipTests=true -Dmaven.test.skip=true"
+
+CODE FORMAT DEFINITIONS/CONFIG
+==============================
+Please use the following eclipse-style code formatter settings when submitting PRs:
+
+https://github.com/ocpsoft/common/blob/master/ocpsoft-eclipse-code-format.xml

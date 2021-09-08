@@ -128,7 +128,7 @@ public class SimpleTimeFormat implements TimeFormat, LocaleAware<SimpleTimeForma
       return Math.abs(round ? duration.getQuantityRounded(roundingTolerance) : duration.getQuantity());
    }
 
-   protected String getGramaticallyCorrectName(final Duration d, boolean round)
+   protected String getGramaticallyCorrectName(final Duration d, final boolean round)
    {
       String result = getSingularName(d);
       if (isPlural(d, round)) {
@@ -137,9 +137,10 @@ public class SimpleTimeFormat implements TimeFormat, LocaleAware<SimpleTimeForma
       return result;
    }
 
-   protected boolean isPlural(final Duration d, boolean round)
+   protected boolean isPlural(final Duration d, final boolean round)
    {
-      return (Math.abs(getQuantity(d, round)) == 0) || (Math.abs(getQuantity(d, round)) > 1);
+      final long quantity = Math.abs(getQuantity(d, round));
+      return (quantity == 0) || (quantity > 1);
    }
 
    private String getSign(final Duration d)
@@ -206,9 +207,6 @@ public class SimpleTimeFormat implements TimeFormat, LocaleAware<SimpleTimeForma
 
    /**
     * The percentage of the current {@link TimeUnit}.getMillisPerUnit() for which the quantity may be rounded up by one.
-    *
-    * @param roundingTolerance
-    * @return
     */
    public SimpleTimeFormat setRoundingTolerance(final int roundingTolerance)
    {

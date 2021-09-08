@@ -26,7 +26,10 @@ Be sure to check maven central for the latest version: https://repo1.maven.org/m
 
 DEVELOPMENT
 ===========
-force-release: mvn release:prepare release:perform -DskipTests=true -DdevelopmentVersion=4.0.2-SNAPSHOT -DreleaseVersion=4.0.1.Final -Dtag=4.0.1.Final -Darguments="-DskipTests=true -Dmaven.test.skip=true"
+export RELEASE_VERSION="5.x.x.Final"
+export SNAPSHOT_VERSION="5.x.x-SNAPSHOT"
+
+force-release: mvn release:prepare release:perform -DskipTests=true -DdevelopmentVersion=$SNAPSHOT_VERSION -DreleaseVersion=$RELEASE_VERSION -Dtag=$RELEASE_VERSION -Darguments="-DskipTests=true -Dmaven.test.skip=true"
 
 CODE FORMAT DEFINITIONS/CONFIG
 ==============================

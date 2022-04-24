@@ -621,6 +621,9 @@ public class PrettyTime
       for (int i = 0; i < durations.size(); i++) {
          duration = durations.get(i);
          format = getFormat(duration.getUnit());
+         // check if format is null, if so, throw an exception
+         if (format == null)
+            throw new IllegalArgumentException("Unsupported time unit: " + duration.getUnit());
 
          /*
           * Round only the last element 
@@ -1302,10 +1305,15 @@ public class PrettyTime
     */
    public TimeFormat getFormat(TimeUnit unit)
    {
-      if (unit != null && units.get(unit) != null) {
+      if (unit == null) return null;
+      if (units.get(unit) != null) {
          return units.get(unit);
+      } else {
+         // Trying to transform the TimeUnit to String does the trick
+         Map<String, TimeFormat> map = new ConcurrentHashMap<>();
+         units.keySet().forEach(key -> map.put(key.toString(), units.get(key)));
+         return map.get(unit.toString());
       }
-      return null;
    }
 
    /**

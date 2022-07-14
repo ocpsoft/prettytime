@@ -97,4 +97,19 @@ public class PrettyTimeParserTest
       Assert.assertEquals(yesterday.get(Calendar.MONTH), parsedDate.get(Calendar.MONTH));
       Assert.assertEquals(yesterday.get(Calendar.YEAR), parsedDate.get(Calendar.YEAR));
    }
+
+  @Test
+  public void testParseYesterdayFromReferenceDate()
+  {
+    Date july14th2022 = new Date(1657830053000L);
+    List<Date> parse = new PrettyTimeParser().parse("yesterday", july14th2022);
+
+    Assert.assertEquals(1, parse.size());
+
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(parse.get(0));
+    Assert.assertEquals(13, calendar.get(Calendar.DAY_OF_MONTH));
+    Assert.assertEquals(6, calendar.get(Calendar.MONTH));
+    Assert.assertEquals(2022, calendar.get(Calendar.YEAR));
+  }
 }

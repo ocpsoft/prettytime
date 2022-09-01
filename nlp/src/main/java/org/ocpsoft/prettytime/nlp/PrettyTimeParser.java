@@ -15,8 +15,8 @@ import org.ocpsoft.prettytime.nlp.parse.DateGroup;
 import com.joestelmach.natty.Parser;
 
 /**
- * A utility for parsing natural language date and time expressions. (e.g. "Let's get lunch at two pm",
- * "I did it 3 days ago")
+ * A utility for parsing natural language date and time expressions. (e.g. "Let's get lunch at two pm", "I did it 3 days
+ * ago")
  * <p>
  * <b>Usage:</b>
  * <p>
@@ -78,17 +78,13 @@ public class PrettyTimeParser
    public PrettyTimeParser(TimeZone timezone)
    {
       parser = new Parser(timezone);
-   }
 
-   /**
-    * Create a new {@link PrettyTimeParser} with the current system default {@link TimeZone}.
-    */
-   public PrettyTimeParser()
-   {
-      this(TimeZone.getDefault());
-      for (int hours = 0; hours < 24; hours++)
-         for (int min = 0; min < 60; min++)
+      for (int hours = 0; hours < 24; hours++) {
+         for (int min = 0; min < 60; min++) {
             translations.put(provideRepresentation(hours * 100 + min), "" + hours * 100 + min);
+         }
+      }
+
       translations.put(provideRepresentation(60), "" + 60);
       translations.put(provideRepresentation(70), "" + 70);
       translations.put(provideRepresentation(80), "" + 80);
@@ -106,6 +102,14 @@ public class PrettyTimeParser
    }
 
    /**
+    * Create a new {@link PrettyTimeParser} with the current system default {@link TimeZone}.
+    */
+   public PrettyTimeParser()
+   {
+      this(TimeZone.getDefault());
+   }
+
+   /**
     * Provides a string representation for the number passed. This method works for limited set of numbers as parsing
     * will only be done at maximum for 2400, which will be used in military time format.
     */
@@ -117,13 +121,11 @@ public class PrettyTimeParser
          key = "zero";
       else if (number < 20)
          key = numNames[number];
-      else if (number < 100)
-      {
+      else if (number < 100) {
          int unit = number % 10;
          key = tensNames[number / 10] + numNames[unit];
       }
-      else
-      {
+      else {
          int unit = number % 10;
          int ten = number % 100 - unit;
          int hundred = (number - ten) / 100;
@@ -147,20 +149,21 @@ public class PrettyTimeParser
       return parse(language, new Date());
    }
 
-  /**
-   * Parse the given language and return a {@link List} with all discovered {@link Date} instances.
-   *
-   * @param referenceDate date to use as a reference for the parsing.
-   */
-   public List<Date> parse(String language, Date referenceDate) {
-     language = words2numbers(language);
+   /**
+    * Parse the given language and return a {@link List} with all discovered {@link Date} instances.
+    *
+    * @param referenceDate date to use as a reference for the parsing.
+    */
+   public List<Date> parse(String language, Date referenceDate)
+   {
+      language = words2numbers(language);
 
-     List<Date> result = new ArrayList<>();
-     List<com.joestelmach.natty.DateGroup> groups = parser.parse(language, referenceDate);
-     for (com.joestelmach.natty.DateGroup group : groups) {
-       result.addAll(group.getDates());
-     }
-     return result;
+      List<Date> result = new ArrayList<>();
+      List<com.joestelmach.natty.DateGroup> groups = parser.parse(language, referenceDate);
+      for (com.joestelmach.natty.DateGroup group : groups) {
+         result.addAll(group.getDates());
+      }
+      return result;
    }
 
    /**

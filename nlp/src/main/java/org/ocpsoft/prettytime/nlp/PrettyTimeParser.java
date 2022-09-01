@@ -144,14 +144,23 @@ public class PrettyTimeParser
     */
    public List<Date> parse(String language)
    {
-      language = words2numbers(language);
+      return parse(language, new Date());
+   }
 
-      List<Date> result = new ArrayList<Date>();
-      List<com.joestelmach.natty.DateGroup> groups = parser.parse(language);
-      for (com.joestelmach.natty.DateGroup group : groups) {
-         result.addAll(group.getDates());
-      }
-      return result;
+  /**
+   * Parse the given language and return a {@link List} with all discovered {@link Date} instances.
+   *
+   * @param referenceDate date to use as a reference for the parsing.
+   */
+   public List<Date> parse(String language, Date referenceDate) {
+     language = words2numbers(language);
+
+     List<Date> result = new ArrayList<>();
+     List<com.joestelmach.natty.DateGroup> groups = parser.parse(language, referenceDate);
+     for (com.joestelmach.natty.DateGroup group : groups) {
+       result.addAll(group.getDates());
+     }
+     return result;
    }
 
    /**

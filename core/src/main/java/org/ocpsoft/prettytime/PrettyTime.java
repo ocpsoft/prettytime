@@ -15,38 +15,17 @@
  */
 package org.ocpsoft.prettytime;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.ocpsoft.prettytime.impl.DurationImpl;
 import org.ocpsoft.prettytime.impl.ResourcesTimeFormat;
 import org.ocpsoft.prettytime.impl.ResourcesTimeUnit;
-import org.ocpsoft.prettytime.units.Century;
-import org.ocpsoft.prettytime.units.Day;
-import org.ocpsoft.prettytime.units.Decade;
-import org.ocpsoft.prettytime.units.Hour;
-import org.ocpsoft.prettytime.units.JustNow;
-import org.ocpsoft.prettytime.units.Millennium;
-import org.ocpsoft.prettytime.units.Millisecond;
-import org.ocpsoft.prettytime.units.Minute;
 import org.ocpsoft.prettytime.units.Month;
-import org.ocpsoft.prettytime.units.Second;
-import org.ocpsoft.prettytime.units.Week;
 import org.ocpsoft.prettytime.units.Year;
+import org.ocpsoft.prettytime.units.*;
+
+import java.time.*;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A utility for creating social-networking style timestamps. (e.g. "just now", "moments ago", "3 days ago", "within 2
@@ -1465,6 +1444,20 @@ public class PrettyTime
    }
 
    /**
+    * Get the registered {@link TimeUnit} for the given {@link ChronoUnit} type or {@code null}
+    * if none exists.
+    *
+    * @param unit The {@code ChronoUnit}
+    * @return the time unit
+    * @throws IllegalArgumentException if no corresponding {@code TimeUnit} was found for the given
+    * {@code ChronoUnit}
+    */
+   public TimeUnit getUnit(final ChronoUnit unit)
+   {
+      return getUnit(TimeUnit.of(unit).getClass());
+   }
+
+   /**
     * Register the given {@link TimeUnit} and corresponding {@link TimeFormat} instance to be used in calculations. If
     * an entry already exists for the given {@link TimeUnit}, its {@link TimeFormat} will be overwritten with the given
     * {@link TimeFormat}. ({@link TimeUnit} and {@link TimeFormat} must not be <code>null</code>.)
@@ -1480,6 +1473,19 @@ public class PrettyTime
       if (format instanceof LocaleAware)
          ((LocaleAware<?>) format).setLocale(locale);
       return this;
+   }
+
+   /**
+    * Register the given {@link ChronoUnit} and corresponding {@link TimeFormat}.
+    * @param unit The {@code ChronoUnit} to be registered
+    * @param format The {@code TimeFormat} to be registered
+    * @return the current {@code PrettyTime} object
+    * @throws IllegalArgumentException if no corresponding {@code TimeUnit} was found for the given
+    * {@code ChronoUnit}
+    */
+   public PrettyTime registerUnit(final ChronoUnit unit, final TimeFormat format)
+   {
+      return registerUnit(TimeUnit.of(unit), format);
    }
 
    public PrettyTime setUnits(final ResourcesTimeUnit... units)
@@ -1543,6 +1549,20 @@ public class PrettyTime
       cachedUnits = null;
 
       return units.remove(unit);
+   }
+
+   /**
+    * Removes the mapping corresponding to the given {@link ChronoUnit}, returning the
+    * {@link TimeFormat} if available.
+    *
+    * @param unit The {@code ChronoUnit} to be removed
+    * @return the corresponding {@code TimeFormat}
+    * @throws IllegalArgumentException if no {@link TimeUnit} corresponding to the given
+    * {@code ChronoUnit} was found.
+    */
+   public TimeFormat removeUnit(final ChronoUnit unit)
+   {
+      return removeUnit(TimeUnit.of(unit));
    }
 
    /**

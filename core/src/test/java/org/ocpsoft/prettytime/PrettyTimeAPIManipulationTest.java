@@ -15,21 +15,17 @@
  */
 package org.ocpsoft.prettytime;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import org.junit.Assert;
+import org.junit.Test;
+import org.ocpsoft.prettytime.units.JustNow;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.ocpsoft.prettytime.units.JustNow;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class PrettyTimeAPIManipulationTest
 {
@@ -244,7 +240,7 @@ public class PrettyTimeAPIManipulationTest
    @Test(expected = NullPointerException.class)
    public void testApiMisuse14() throws Exception
    {
-      t.registerUnit(null, null);
+      t.registerUnit((TimeUnit) null, null);
    }
 
    @Test
@@ -268,7 +264,7 @@ public class PrettyTimeAPIManipulationTest
    @Test
    public void testApiMisuse18() throws Exception
    {
-      Assert.assertNull(t.getUnit(null));
+      Assert.assertNull(t.getUnit((Class<TimeUnit>) null));
    }
 
    @Test

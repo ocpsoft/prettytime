@@ -51,7 +51,7 @@ public class Resources_az extends ListResourceBundle
             { "JustNowPattern", "%u" },
             { "JustNowFuturePrefix", "" },
             { "JustNowFutureSuffix", "az sonra" },
-            { "JustNowPastPrefix", "az əvvəl" },
+            { "JustNowPastPrefix", "az öncə" },
             { "JustNowPastSuffix", "" },
             { "JustNowSingularName", "" },
             { "JustNowPluralName", "" },

@@ -15,17 +15,39 @@
  */
 package org.ocpsoft.prettytime;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.ocpsoft.prettytime.impl.DurationImpl;
 import org.ocpsoft.prettytime.impl.ResourcesTimeFormat;
 import org.ocpsoft.prettytime.impl.ResourcesTimeUnit;
+import org.ocpsoft.prettytime.units.Century;
+import org.ocpsoft.prettytime.units.Day;
+import org.ocpsoft.prettytime.units.Decade;
+import org.ocpsoft.prettytime.units.Hour;
+import org.ocpsoft.prettytime.units.JustNow;
+import org.ocpsoft.prettytime.units.Millennium;
+import org.ocpsoft.prettytime.units.Millisecond;
+import org.ocpsoft.prettytime.units.Minute;
 import org.ocpsoft.prettytime.units.Month;
+import org.ocpsoft.prettytime.units.Second;
+import org.ocpsoft.prettytime.units.Week;
 import org.ocpsoft.prettytime.units.Year;
-import org.ocpsoft.prettytime.units.*;
-
-import java.time.*;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A utility for creating social-networking style timestamps. (e.g. "just now", "moments ago", "3 days ago", "within 2

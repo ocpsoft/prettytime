@@ -387,7 +387,7 @@ public class PrettyTime
     */
    public Duration approximateDuration(LocalDateTime then)
    {
-      return approximateDuration(then != null ? then.atZone(ZoneId.systemDefault()).toInstant() : null);
+      return approximateDuration(then, ZoneId.systemDefault());
    }
 
    /**

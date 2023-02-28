@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -242,9 +243,15 @@ public class PrettyTimeAPIManipulationTest
    }
 
    @Test(expected = NullPointerException.class)
-   public void testApiMisuse14() throws Exception
+   public void testApiMisuse14_TimeUnit() throws Exception
    {
-      t.registerUnit(null, null);
+      t.registerUnit((TimeUnit) null, null);
+   }
+
+   @Test(expected = NullPointerException.class)
+   public void testApiMisuse14_ChronoUnit()
+   {
+      t.registerUnit((ChronoUnit) null, null);
    }
 
    @Test
@@ -268,7 +275,7 @@ public class PrettyTimeAPIManipulationTest
    @Test
    public void testApiMisuse18() throws Exception
    {
-      Assert.assertNull(t.getUnit(null));
+      Assert.assertNull(t.getUnit((Class<TimeUnit>) null));
    }
 
    @Test

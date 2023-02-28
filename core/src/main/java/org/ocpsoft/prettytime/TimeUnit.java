@@ -15,6 +15,20 @@
  */
 package org.ocpsoft.prettytime;
 
+import org.ocpsoft.prettytime.units.Century;
+import org.ocpsoft.prettytime.units.Day;
+import org.ocpsoft.prettytime.units.Decade;
+import org.ocpsoft.prettytime.units.Hour;
+import org.ocpsoft.prettytime.units.Millennium;
+import org.ocpsoft.prettytime.units.Millisecond;
+import org.ocpsoft.prettytime.units.Minute;
+import org.ocpsoft.prettytime.units.Month;
+import org.ocpsoft.prettytime.units.Second;
+import org.ocpsoft.prettytime.units.Week;
+import org.ocpsoft.prettytime.units.Year;
+
+import java.time.temporal.ChronoUnit;
+
 /**
  * Defines a Unit of time (e.g. seconds, minutes, hours) and its conversion to milliseconds.
  * 
@@ -47,4 +61,74 @@ public interface TimeUnit
     * "minute" as opposed to "moment".
     */
    public boolean isPrecise();
+
+   /**
+    * Converts the given {@link ChronoUnit} to a {@link TimeUnit}, if possible.
+    * @param chronoUnit The {@code ChronoUnit} to be converted
+    * @return the corresponding {@code TimeUnit}
+    * @throws IllegalArgumentException if there is no corresponding {@code TimeUnit}
+    */
+   public static TimeUnit of(final ChronoUnit chronoUnit) {
+      switch (chronoUnit) {
+         case MILLIS:
+            return new Millisecond();
+         case SECONDS:
+            return new Second();
+         case MINUTES:
+            return new Minute();
+         case HOURS:
+            return new Hour();
+         case DAYS:
+            return new Day();
+         case WEEKS:
+            return new Week();
+         case MONTHS:
+            return new Month();
+         case YEARS:
+            return new Year();
+         case DECADES:
+            return new Decade();
+         case CENTURIES:
+            return new Century();
+         case MILLENNIA:
+            return new Millennium();
+         default:
+            throw new IllegalArgumentException("No corresponding TimeUnit for given ChronoUnit");
+      }
+   }
+
+   /**
+    * Converts the given {@link TimeUnit} to a {@link ChronoUnit}, if possible.
+    *
+    * @param timeUnit The {@code TimeUnit} to be converted
+    * @return the corresponding {@code ChronoUnit}
+    * @throws IllegalArgumentException if there is no corresponding {@code ChronoUnit}.
+    */
+   public static ChronoUnit toChronoUnit(final TimeUnit timeUnit) {
+      if (timeUnit instanceof Millisecond) {
+         return ChronoUnit.MILLIS;
+      } else if (timeUnit instanceof Second) {
+         return ChronoUnit.SECONDS;
+      } else if (timeUnit instanceof Minute) {
+         return ChronoUnit.MINUTES;
+      } else if (timeUnit instanceof Hour) {
+         return ChronoUnit.HOURS;
+      } else if (timeUnit instanceof Day) {
+         return ChronoUnit.DAYS;
+      } else if (timeUnit instanceof Week) {
+         return ChronoUnit.WEEKS;
+      } else if (timeUnit instanceof Month) {
+         return ChronoUnit.MONTHS;
+      } else if (timeUnit instanceof Year) {
+         return ChronoUnit.YEARS;
+      } else if (timeUnit instanceof Decade) {
+         return ChronoUnit.DECADES;
+      } else if (timeUnit instanceof Century) {
+         return ChronoUnit.CENTURIES;
+      } else if (timeUnit instanceof Millennium) {
+         return ChronoUnit.MILLENNIA;
+      } else {
+         throw new IllegalArgumentException("No corresponding ChronoUnit for given TimeUnit");
+      }
+   }
 }

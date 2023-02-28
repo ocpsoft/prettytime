@@ -359,7 +359,7 @@ public class PrettyTime
     */
    public Duration approximateDuration(LocalDate then)
    {
-      return approximateDuration(then != null ? then.atStartOfDay(ZoneId.systemDefault()).toInstant() : null);
+      return approximateDuration(then, ZoneId.systemDefault());
    }
 
    /**
@@ -374,7 +374,7 @@ public class PrettyTime
     */
    public Duration approximateDuration(LocalDate then, final ZoneId zoneId)
    {
-      return approximateDuration(then != null ? then.atStartOfDay(ZoneId.systemDefault()).toInstant() : null);
+      return approximateDuration(then != null ? then.atStartOfDay(zoneId).toInstant() : null);
    }
 
    /**
@@ -388,7 +388,7 @@ public class PrettyTime
     */
    public Duration approximateDuration(LocalDateTime then)
    {
-      return approximateDuration(then != null ? then.atZone(ZoneId.systemDefault()).toInstant() : null);
+      return approximateDuration(then, ZoneId.systemDefault());
    }
 
    /**

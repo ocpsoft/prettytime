@@ -68,14 +68,16 @@ public class PrettyTimeI18n_DA_Test
    @Test
    public void testNullDate() throws Exception
    {
-      PrettyTime t = new PrettyTime(locale);
+      Date now = new Date();
+      PrettyTime t = new PrettyTime(now, locale);
       assertEquals("straks", t.format((Date) null));
    }
 
    @Test
    public void testRightNow() throws Exception
    {
-      PrettyTime t = new PrettyTime(locale);
+      Date now = new Date();
+      PrettyTime t = new PrettyTime(now, locale);
       assertEquals("straks", t.format(new Date()));
    }
 

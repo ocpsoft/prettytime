@@ -38,8 +38,9 @@ public class PrettyTimeI18n_SV_Test
    @Test
    public void testPrettyTime()
    {
-      PrettyTime p = new PrettyTime(locale);
-      assertEquals(p.format(new Date()), "om en stund");
+      Date now = new Date();
+      PrettyTime p = new PrettyTime(now, locale);
+      assertEquals(p.format(now), "om en stund");
    }
 
    @Test
@@ -64,7 +65,8 @@ public class PrettyTimeI18n_SV_Test
    @Test
    public void testNullDate() throws Exception
    {
-      PrettyTime t = new PrettyTime(locale);
+      Date now = new Date();
+      PrettyTime t = new PrettyTime(now, locale);
       Date date = null;
       assertEquals("om en stund", t.format(date));
    }

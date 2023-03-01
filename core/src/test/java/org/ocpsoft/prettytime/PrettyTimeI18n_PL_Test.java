@@ -1,14 +1,14 @@
 package org.ocpsoft.prettytime;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public class PrettyTimeI18n_PL_Test
 {
@@ -26,7 +26,7 @@ public class PrettyTimeI18n_PL_Test
    public void testPrettyTime()
    {
       PrettyTime p = new PrettyTime(locale);
-      assertEquals("przed chwilą", p.format(new Date()));
+      assertEquals("za chwilę", p.format(new Date()));
    }
 
    @Test

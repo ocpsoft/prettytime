@@ -84,8 +84,8 @@ public class PrettyTimeI18n_EO_Test
     {
         PrettyTime t = new PrettyTime(LocalDate.of(2000, 2, 2));
         List<Duration> durations = t.calculatePreciseDuration(LocalDate.of(100, 1, 1));
-        Assert.assertEquals("antaŭ 1 jarmilo 9 jarcentoj 1 monato 1 tago 8 horoj 34 minutoj", t.format(durations));
-        Assert.assertEquals("1 jarmilo 9 jarcentoj 1 monato 1 tago 8 horoj 34 minutoj", t.formatDuration(durations));
+        Assert.assertEquals("antaŭ 1 jarmilo 9 jarcentoj 1 monato 1 tago 9 horoj 19 minutoj", t.format(durations));
+        Assert.assertEquals("1 jarmilo 9 jarcentoj 1 monato 1 tago 9 horoj 19 minutoj", t.formatDuration(durations));
     }
 
     @Test

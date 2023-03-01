@@ -1130,7 +1130,7 @@ public class PrettyTime
     * rules are ignored. If the given {@link Calendar} is <code>null</code>, the current value of
     * {@link System#currentTimeMillis()} will be used instead.
     * <p>
-    * 
+    *
     * @param then the date to be formatted
     * @return A formatted string of the given {@link Date}
     */
@@ -1306,10 +1306,12 @@ public class PrettyTime
     */
    public TimeFormat getFormat(TimeUnit unit)
    {
-      if (unit == null) return null;
+      if (unit == null)
+         return null;
       if (units.get(unit) != null) {
          return units.get(unit);
-      } else {
+      }
+      else {
          // Trying to transform the TimeUnit to String does the trick
          Map<String, TimeFormat> map = new ConcurrentHashMap<>();
          units.keySet().forEach(key -> map.put(key.toString(), units.get(key)));
@@ -1466,13 +1468,11 @@ public class PrettyTime
    }
 
    /**
-    * Get the registered {@link TimeUnit} for the given {@link ChronoUnit} type or {@code null}
-    * if none exists.
+    * Get the registered {@link TimeUnit} for the given {@link ChronoUnit} type or {@code null} if none exists.
     *
     * @param unit The {@code ChronoUnit}
     * @return the time unit
-    * @throws IllegalArgumentException if no corresponding {@code TimeUnit} was found for the given
-    * {@code ChronoUnit}
+    * @throws IllegalArgumentException if no corresponding {@code TimeUnit} was found for the given {@code ChronoUnit}
     */
    public TimeUnit getUnit(final ChronoUnit unit)
    {
@@ -1499,11 +1499,11 @@ public class PrettyTime
 
    /**
     * Register the given {@link ChronoUnit} and corresponding {@link TimeFormat}.
+    *
     * @param unit The {@code ChronoUnit} to be registered
     * @param format The {@code TimeFormat} to be registered
     * @return the current {@code PrettyTime} object
-    * @throws IllegalArgumentException if no corresponding {@code TimeUnit} was found for the given
-    * {@code ChronoUnit}
+    * @throws IllegalArgumentException if no corresponding {@code TimeUnit} was found for the given {@code ChronoUnit}
     */
    public PrettyTime registerUnit(final ChronoUnit unit, final TimeFormat format)
    {
@@ -1574,13 +1574,11 @@ public class PrettyTime
    }
 
    /**
-    * Removes the mapping corresponding to the given {@link ChronoUnit}, returning the
-    * {@link TimeFormat} if available.
+    * Removes the mapping corresponding to the given {@link ChronoUnit}, returning the {@link TimeFormat} if available.
     *
     * @param unit The {@code ChronoUnit} to be removed
     * @return the corresponding {@code TimeFormat}
-    * @throws IllegalArgumentException if no {@link TimeUnit} corresponding to the given
-    * {@code ChronoUnit} was found.
+    * @throws IllegalArgumentException if no {@link TimeUnit} corresponding to the given {@code ChronoUnit} was found.
     */
    public TimeFormat removeUnit(final ChronoUnit unit)
    {

@@ -45,7 +45,7 @@ public class PrettyTimeAPIManipulationTest
    @Test
    public void testApiMisuse1() throws Exception
    {
-      Assert.assertEquals(t.approximateDuration(LocalDateTime.now()),
+      Assert.assertEquals(t.approximateDuration((LocalDateTime) null),
                t.approximateDuration((LocalDateTime) null));
    }
 

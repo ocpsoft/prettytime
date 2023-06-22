@@ -1,10 +1,10 @@
 package org.ocpsoft.prettytime;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
 
 import org.junit.After;
 import org.junit.Before;
@@ -29,7 +29,8 @@ public class PrettyTimeI18n_RU_Test
    public void testPrettyTime()
    {
       PrettyTime p = new PrettyTime(locale);
-      assertEquals("сейчас", p.format(new Date()));
+      List<String> values = Arrays.asList("сейчас", "только что");
+      assertTrue(values.contains(p.format(new Date())));
    }
 
    @Test
@@ -37,9 +38,11 @@ public class PrettyTimeI18n_RU_Test
    {
       PrettyTime p = new PrettyTime(new Date(3155692597470L * 3L), locale);
       assertEquals("3 века назад", p.format(new Date(0)));
+      assertEquals("3 века", p.formatDuration(new Date(0)));
 
       p = new PrettyTime(new Date(0), locale);
       assertEquals("через 3 века", p.format(new Date(3155692597470L * 3L)));
+      assertEquals("3 века", p.formatDuration(new Date(3155692597470L * 3L)));
    }
 
    @Test
@@ -49,6 +52,7 @@ public class PrettyTimeI18n_RU_Test
       Date ref = format.parse("17/6/2009");
       PrettyTime t = new PrettyTime(ref, locale);
       assertEquals("1 месяц назад", t.format(then));
+      assertEquals("1 месяц", t.formatDuration(then));
    }
 
    @Test
@@ -57,6 +61,7 @@ public class PrettyTimeI18n_RU_Test
       PrettyTime t = new PrettyTime(locale);
       Date date = null;
       assertEquals("сейчас", t.format(date));
+      assertEquals("сейчас", t.formatDuration(date));
    }
 
    @Test
@@ -64,6 +69,7 @@ public class PrettyTimeI18n_RU_Test
    {
       PrettyTime t = new PrettyTime(locale);
       assertEquals("сейчас", t.format(new Date()));
+      assertEquals("сейчас", t.formatDuration(new Date()));
    }
 
    @Test
@@ -71,6 +77,7 @@ public class PrettyTimeI18n_RU_Test
    {
       PrettyTime t = new PrettyTime(new Date(0), locale);
       assertEquals("сейчас", t.format(new Date(600)));
+      assertEquals("сейчас", t.formatDuration(new Date(600)));
    }
 
    @Test
@@ -78,6 +85,7 @@ public class PrettyTimeI18n_RU_Test
    {
       PrettyTime t = new PrettyTime(new Date(0), locale);
       assertEquals("через 12 минут", t.format(new Date(1000 * 60 * 12)));
+      assertEquals("12 минут", t.formatDuration(new Date(1000 * 60 * 12)));
    }
 
    @Test
@@ -85,6 +93,7 @@ public class PrettyTimeI18n_RU_Test
    {
       PrettyTime t = new PrettyTime(new Date(0), locale);
       assertEquals("через 3 часа", t.format(new Date(1000 * 60 * 60 * 3)));
+      assertEquals("3 часа", t.formatDuration(new Date(1000 * 60 * 60 * 3)));
    }
 
    @Test
@@ -92,6 +101,7 @@ public class PrettyTimeI18n_RU_Test
    {
       PrettyTime t = new PrettyTime(new Date(0), locale);
       assertEquals("через 3 дня", t.format(new Date(1000 * 60 * 60 * 24 * 3)));
+      assertEquals("3 дня", t.formatDurationUnrounded(new Date(1000 * 60 * 60 * 24 * 3)));
    }
 
    @Test
@@ -99,6 +109,7 @@ public class PrettyTimeI18n_RU_Test
    {
       PrettyTime t = new PrettyTime(new Date(0), locale);
       assertEquals("через 3 недели", t.format(new Date(1000 * 60 * 60 * 24 * 7 * 3)));
+      assertEquals("3 недели", t.formatDuration(new Date(1000 * 60 * 60 * 24 * 7 * 3)));
    }
 
    @Test
@@ -106,6 +117,7 @@ public class PrettyTimeI18n_RU_Test
    {
       PrettyTime t = new PrettyTime(new Date(0), locale);
       assertEquals("через 3 месяца", t.format(new Date(2629743830L * 3L)));
+      assertEquals("3 месяца", t.formatDuration(new Date(2629743830L * 3L)));
    }
 
    @Test
@@ -113,6 +125,7 @@ public class PrettyTimeI18n_RU_Test
    {
       PrettyTime t = new PrettyTime(new Date(0), locale);
       assertEquals("через 3 года", t.format(new Date(2629743830L * 12L * 3L)));
+      assertEquals("3 года", t.formatDuration(new Date(2629743830L * 12L * 3L)));
    }
 
    @Test
@@ -120,6 +133,7 @@ public class PrettyTimeI18n_RU_Test
    {
       PrettyTime t = new PrettyTime(new Date(0), locale);
       assertEquals("через 3 десятилетия", t.format(new Date(315569259747L * 3L)));
+      assertEquals("3 десятилетия", t.formatDuration(new Date(315569259747L * 3L)));
    }
 
    @Test
@@ -127,6 +141,7 @@ public class PrettyTimeI18n_RU_Test
    {
       PrettyTime t = new PrettyTime(new Date(0), locale);
       assertEquals("через 3 века", t.format(new Date(3155692597470L * 3L)));
+      assertEquals("3 века", t.formatDuration(new Date(3155692597470L * 3L)));
    }
 
    /*
@@ -137,6 +152,7 @@ public class PrettyTimeI18n_RU_Test
    {
       PrettyTime t = new PrettyTime(new Date(6000), locale);
       assertEquals("только что", t.format(new Date(0)));
+      assertEquals("только что", t.formatDuration(new Date(0)));
    }
 
    @Test
@@ -145,6 +161,8 @@ public class PrettyTimeI18n_RU_Test
       PrettyTime t = new PrettyTime(new Date(1000 * 60), locale);
       assertEquals("1 минуту назад", t.formatUnrounded(new Date(0)));
       assertEquals("1 минуту назад", t.format(new Date(0)));
+      assertEquals("1 минута", t.formatDuration(new Date(0)));
+      assertEquals("1 минута", t.formatDuration(new Date(0)));
    }
 
    @Test
@@ -161,6 +179,8 @@ public class PrettyTimeI18n_RU_Test
       PrettyTime t = new PrettyTime(new Date(1000 * 60 * 12), locale);
       assertEquals("12 минут назад", t.formatUnrounded(new Date(0)));
       assertEquals("12 минут назад", t.format(new Date(0)));
+      assertEquals("12 минут", t.formatDuration(new Date(0)));
+      assertEquals("12 минут", t.formatDuration(new Date(0)));
    }
 
    @Test
@@ -169,6 +189,8 @@ public class PrettyTimeI18n_RU_Test
       PrettyTime t = new PrettyTime(new Date(1000 * 60 * 60), locale);
       assertEquals("1 час назад", t.formatUnrounded(new Date(0)));
       assertEquals("1 час назад", t.format(new Date(0)));
+      assertEquals("1 час", t.formatDuration(new Date(0)));
+      assertEquals("1 час", t.formatDurationUnrounded(new Date(0)));
    }
 
    @Test
@@ -177,6 +199,8 @@ public class PrettyTimeI18n_RU_Test
       PrettyTime t = new PrettyTime(new Date(1000 * 60 * 60 * 3), locale);
       assertEquals("3 часа назад", t.formatUnrounded(new Date(0)));
       assertEquals("3 часа назад", t.format(new Date(0)));
+      assertEquals("3 часа", t.formatDuration(new Date(0)));
+      assertEquals("3 часа", t.formatDurationUnrounded(new Date(0)));
    }
 
    @Test
@@ -185,6 +209,8 @@ public class PrettyTimeI18n_RU_Test
       PrettyTime t = new PrettyTime(new Date(1000 * 60 * 60 * 5), locale);
       assertEquals("5 часов назад", t.formatUnrounded(new Date(0)));
       assertEquals("5 часов назад", t.format(new Date(0)));
+      assertEquals("5 часов", t.formatDurationUnrounded(new Date(0)));
+      assertEquals("5 часов", t.formatDuration(new Date(0)));
    }
 
    @Test
@@ -193,6 +219,8 @@ public class PrettyTimeI18n_RU_Test
       PrettyTime t = new PrettyTime(new Date(1000 * 60 * 60 * 24), locale);
       assertEquals("1 день назад", t.formatUnrounded(new Date(0)));
       assertEquals("1 день назад", t.format(new Date(0)));
+      assertEquals("1 день", t.formatDurationUnrounded(new Date(0)));
+      assertEquals("1 день", t.formatDuration(new Date(0)));
    }
 
    @Test
@@ -201,6 +229,8 @@ public class PrettyTimeI18n_RU_Test
       PrettyTime t = new PrettyTime(new Date(1000 * 60 * 60 * 24 * 3), locale);
       assertEquals("3 дня назад", t.formatUnrounded(new Date(0)));
       assertEquals("3 дня назад", t.format(new Date(0)));
+      assertEquals("3 дня", t.formatDurationUnrounded(new Date(0)));
+      assertEquals("3 дня", t.formatDuration(new Date(0)));
    }
 
    @Test
@@ -209,6 +239,8 @@ public class PrettyTimeI18n_RU_Test
       PrettyTime t = new PrettyTime(new Date(1000 * 60 * 60 * 24 * 5), locale);
       assertEquals("5 дней назад", t.formatUnrounded(new Date(0)));
       assertEquals("5 дней назад", t.format(new Date(0)));
+      assertEquals("5 дней", t.formatDurationUnrounded(new Date(0)));
+      assertEquals("5 дней", t.formatDuration(new Date(0)));
    }
 
    @Test
@@ -217,6 +249,8 @@ public class PrettyTimeI18n_RU_Test
       PrettyTime t = new PrettyTime(new Date(1000 * 60 * 60 * 24 * 7), locale);
       assertEquals("1 неделю назад", t.formatUnrounded(new Date(0)));
       assertEquals("1 неделю назад", t.format(new Date(0)));
+      assertEquals("1 неделя", t.formatDurationUnrounded(new Date(0)));
+      assertEquals("1 неделя", t.formatDuration(new Date(0)));
    }
 
    @Test
@@ -225,6 +259,8 @@ public class PrettyTimeI18n_RU_Test
       PrettyTime t = new PrettyTime(new Date(1000 * 60 * 60 * 24 * 7 * 3), locale);
       assertEquals("3 недели назад", t.formatUnrounded(new Date(0)));
       assertEquals("3 недели назад", t.format(new Date(0)));
+      assertEquals("3 недели", t.formatDurationUnrounded(new Date(0)));
+      assertEquals("3 недели", t.formatDuration(new Date(0)));
    }
 
    @Test
@@ -233,6 +269,8 @@ public class PrettyTimeI18n_RU_Test
       PrettyTime t = new PrettyTime(new Date(2629743830L), locale);
       assertEquals("1 месяц назад", t.formatUnrounded(new Date(0)));
       assertEquals("1 месяц назад", t.format(new Date(0)));
+      assertEquals("1 месяц", t.formatDurationUnrounded(new Date(0)));
+      assertEquals("1 месяц", t.formatDuration(new Date(0)));
    }
 
    @Test
@@ -241,6 +279,8 @@ public class PrettyTimeI18n_RU_Test
       PrettyTime t = new PrettyTime(new Date(2629743830L * 3L), locale);
       assertEquals("3 месяца назад", t.formatUnrounded(new Date(0)));
       assertEquals("3 месяца назад", t.format(new Date(0)));
+      assertEquals("3 месяца", t.formatDurationUnrounded(new Date(0)));
+      assertEquals("3 месяца", t.formatDuration(new Date(0)));
    }
 
    @Test
@@ -249,6 +289,8 @@ public class PrettyTimeI18n_RU_Test
       PrettyTime t = new PrettyTime(new Date(2629743830L * 5L), locale);
       assertEquals("5 месяцев назад", t.formatUnrounded(new Date(0)));
       assertEquals("5 месяцев назад", t.format(new Date(0)));
+      assertEquals("5 месяцев", t.formatDurationUnrounded(new Date(0)));
+      assertEquals("5 месяцев", t.formatDuration(new Date(0)));
    }
 
    @Test
@@ -257,6 +299,8 @@ public class PrettyTimeI18n_RU_Test
       PrettyTime t = new PrettyTime(new Date(2629743830L * 12L), locale);
       assertEquals("1 год назад", t.formatUnrounded(new Date(0)));
       assertEquals("1 год назад", t.format(new Date(0)));
+      assertEquals("1 год", t.formatDurationUnrounded(new Date(0)));
+      assertEquals("1 год", t.formatDuration(new Date(0)));
    }
 
    @Test
@@ -265,6 +309,8 @@ public class PrettyTimeI18n_RU_Test
       PrettyTime t = new PrettyTime(new Date(2629743830L * 12L * 3L), locale);
       assertEquals("3 года назад", t.formatUnrounded(new Date(0)));
       assertEquals("3 года назад", t.format(new Date(0)));
+      assertEquals("3 года", t.formatDurationUnrounded(new Date(0)));
+      assertEquals("3 года", t.formatDuration(new Date(0)));
    }
 
    @Test
@@ -273,6 +319,8 @@ public class PrettyTimeI18n_RU_Test
       PrettyTime t = new PrettyTime(new Date(2629743830L * 12L * 5L), locale);
       assertEquals("5 лет назад", t.formatUnrounded(new Date(0)));
       assertEquals("5 лет назад", t.format(new Date(0)));
+      assertEquals("5 лет", t.formatDuration(new Date(0)));
+      assertEquals("5 лет", t.formatDurationUnrounded(new Date(0)));
    }
 
    @Test
@@ -289,6 +337,8 @@ public class PrettyTimeI18n_RU_Test
       PrettyTime t = new PrettyTime(new Date(315569259747L * 3L), locale);
       assertEquals("3 десятилетия назад", t.formatUnrounded(new Date(0)));
       assertEquals("3 десятилетия назад", t.format(new Date(0)));
+      assertEquals("3 десятилетия", t.formatDurationUnrounded(new Date(0)));
+      assertEquals("3 десятилетия", t.formatDuration(new Date(0)));
    }
 
    @Test
@@ -297,6 +347,8 @@ public class PrettyTimeI18n_RU_Test
       PrettyTime t = new PrettyTime(new Date(315569259747L * 5L), locale);
       assertEquals("5 десятилетий назад", t.formatUnrounded(new Date(0)));
       assertEquals("5 десятилетий назад", t.format(new Date(0)));
+      assertEquals("5 десятилетий", t.formatDurationUnrounded(new Date(0)));
+      assertEquals("5 десятилетий", t.formatDuration(new Date(0)));
    }
 
    @Test
@@ -305,6 +357,8 @@ public class PrettyTimeI18n_RU_Test
       PrettyTime t = new PrettyTime(new Date(3155692597470L), locale);
       assertEquals("1 век назад", t.formatUnrounded(new Date(0)));
       assertEquals("1 век назад", t.format(new Date(0)));
+      assertEquals("1 век", t.formatDurationUnrounded(new Date(0)));
+      assertEquals("1 век", t.formatDuration(new Date(0)));
    }
 
    @Test
@@ -313,6 +367,8 @@ public class PrettyTimeI18n_RU_Test
       PrettyTime t = new PrettyTime(new Date(3155692597470L * 3L), locale);
       assertEquals("3 века назад", t.formatUnrounded(new Date(0)));
       assertEquals("3 века назад", t.format(new Date(0)));
+      assertEquals("3 века", t.formatDurationUnrounded(new Date(0)));
+      assertEquals("3 века", t.formatDuration(new Date(0)));
    }
 
    @Test
@@ -321,6 +377,8 @@ public class PrettyTimeI18n_RU_Test
       PrettyTime t = new PrettyTime(new Date(3155692597470L * 5L), locale);
       assertEquals("5 веков назад", t.formatUnrounded(new Date(0)));
       assertEquals("5 веков назад", t.format(new Date(0)));
+      assertEquals("5 веков", t.formatDurationUnrounded(new Date(0)));
+      assertEquals("5 веков", t.formatDuration(new Date(0)));
    }
 
    @After

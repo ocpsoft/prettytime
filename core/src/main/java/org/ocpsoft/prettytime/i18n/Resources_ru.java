@@ -34,20 +34,19 @@ public class Resources_ru extends ListResourceBundle implements TimeFormatProvid
 
       @Override
       public String format(Duration duration) {
-         String time = String.valueOf(Math.abs(duration.getQuantityRounded(tolerance)));
-         return performFormat(duration, time, true);
+         long roundedQuantity = Math.abs(duration.getQuantityRounded(tolerance));
+         return performFormat(roundedQuantity, true);
       }
 
       @Override
       public String formatUnrounded(Duration duration) {
-         String time = String.valueOf(Math.abs(duration.getQuantity()));
-         return performFormat(duration, time, true);
+         long unroundedQuantity = Math.abs(duration.getQuantity());
+         return performFormat(unroundedQuantity, true);
       }
 
-      public String performFormat(Duration duration, String time, boolean isDuration) {
+      public String performFormat(long n, boolean isDuration) {
          // a bit cryptic, yet well-tested
          // consider http://translate.sourceforge.net/wiki/l10n/pluralforms
-         long n = Math.abs(duration.getQuantity());
          int pluralIdx = (n % 10 == 1 && n % 100 != 11 ? 0 : n % 10 >= 2 && n % 10 <= 4
                   && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2);
 
@@ -56,7 +55,7 @@ public class Resources_ru extends ListResourceBundle implements TimeFormatProvid
             throw new IllegalStateException("Wrong plural index was calculated somehow for russian language");
          }
 
-         String result = time +
+         String result = String.valueOf(n) +
                  ' ' +
                  pluarls[isDuration && pluralIdx == 0 ? pluralIdx : pluralIdx + 1];
 
@@ -66,8 +65,8 @@ public class Resources_ru extends ListResourceBundle implements TimeFormatProvid
       @Override
       public String decorate(Duration duration, String time) {
          if(requiresReformatting(duration, true)) {
-            time = String.valueOf(Math.abs(duration.getQuantityRounded(tolerance)));
-            return performDecoration(duration, performFormat(duration, time, false));
+            long roundedQuantity = Math.abs(duration.getQuantityRounded(tolerance));
+            return performDecoration(duration, performFormat(roundedQuantity, false));
          }
          return performDecoration(duration, time);
       }
@@ -75,8 +74,8 @@ public class Resources_ru extends ListResourceBundle implements TimeFormatProvid
       @Override
       public String decorateUnrounded(Duration duration, String time) {
          if(requiresReformatting(duration, false)) {
-            time = String.valueOf(Math.abs(duration.getQuantity()));
-            return performDecoration(duration, performFormat(duration, time, false));
+            long unroundedQuantity = Math.abs(duration.getQuantity());
+            return performDecoration(duration, performFormat(unroundedQuantity, false));
          }
          return performDecoration(duration, time);
       }

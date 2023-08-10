@@ -1,4 +1,4 @@
-module prettytime {
+module org.ocpsoft.prettytime {
     exports org.ocpsoft.prettytime;
     exports org.ocpsoft.prettytime.format;
     exports org.ocpsoft.prettytime.i18n;

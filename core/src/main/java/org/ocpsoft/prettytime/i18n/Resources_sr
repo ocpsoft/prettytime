@@ -1,0 +1,121 @@
+/*
+ * Copyright 2012 <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.ocpsoft.prettytime.i18n;
+
+import java.util.ListResourceBundle;
+
+public class Resources_sr extends ListResourceBundle
+{
+   private static final Object[][] OBJECTS = new Object[][] {
+            { "CenturyPattern", "%n %u" },
+            { "CenturyFuturePrefix", "за " },
+            { "CenturyFutureSuffix", "" },
+            { "CenturyPastPrefix", "пре " },
+            { "CenturyPastSuffix", "" },
+            { "CenturySingularName", "века" },
+            { "CenturyPluralName", "векова" },
+            { "DayPattern", "%n %u" },
+            { "DayFuturePrefix", "за " },
+            { "DayFutureSuffix", "" },
+            { "DayPastPrefix", "пре " },
+            { "DayPastSuffix", "" },
+            { "DaySingularName", "дан" },
+            { "DayPluralName", "дана" },
+            { "DecadePattern", "%n %u" },
+            { "DecadeFuturePrefix", "за " },
+            { "DecadeFutureSuffix", "" },
+            { "DecadePastPrefix", "пре " },
+            { "DecadePastSuffix", "" },
+            { "DecadeSingularName", "деценију" },
+            { "DecadePluralName", "деценија" },
+            { "HourPattern", "%n %u" },
+            { "HourFuturePrefix", "за " },
+            { "HourFutureSuffix", "" },
+            { "HourPastPrefix", "пре " },
+            { "HourPastSuffix", "" },
+            { "HourSingularName", "сат" },
+            { "HourPluralName", "сати" },
+            { "JustNowPattern", "%u" },
+            { "JustNowFuturePrefix", "за неколико тренутака" },
+            { "JustNowFutureSuffix", "" },
+            { "JustNowPastPrefix", "пре неколико тренутака" },
+            { "JustNowPastSuffix", "" },
+            { "JustNowSingularName", "" },
+            { "JustNowPluralName", "" },
+            { "MillenniumPattern", "%n %u" },
+            { "MillenniumFuturePrefix", "за " },
+            { "MillenniumFutureSuffix", "" },
+            { "MillenniumPastPrefix", "пре " },
+            { "MillenniumPastSuffix", "" },
+            { "MillenniumSingularName", "миленијума" },
+            { "MillenniumPluralName", "миленијума" },
+            { "MillisecondPattern", "%n %u" },
+            { "MillisecondFuturePrefix", "за " },
+            { "MillisecondFutureSuffix", "" },
+            { "MillisecondPastPrefix", "пре " },
+            { "MillisecondPastSuffix", "" },
+            { "MillisecondSingularName", "милисекунде" },
+            { "MillisecondPluralName", "милисекунди" },
+            { "MinutePattern", "%n %u" },
+            { "MinuteFuturePrefix", "за " },
+            { "MinuteFutureSuffix", "" },
+            { "MinutePastPrefix", "пре " },
+            { "MinutePastSuffix", "" },
+            { "MinuteSingularName", "минут" },
+            { "MinutePluralName", "минута" },
+            { "MonthPattern", "%n %u" },
+            { "MonthFuturePrefix", "за " },
+            { "MonthFutureSuffix", "" },
+            { "MonthPastPrefix", "пре " },
+            { "MonthPastSuffix", "" },
+            { "MonthSingularName", "месец" },
+            { "MonthPluralName", "месеца" },
+            { "SecondPattern", "%n %u" },
+            { "SecondFuturePrefix", "за " },
+            { "SecondFutureSuffix", "" },
+            { "SecondPastPrefix", "пре " },
+            { "SecondPastSuffix", "" },
+            { "SecondSingularName", "секунду" },
+            { "SecondPluralName", "секунди" },
+            { "WeekPattern", "%n %u" },
+            { "WeekFuturePrefix", "за " },
+            { "WeekFutureSuffix", "" },
+            { "WeekPastPrefix", "за " },
+            { "WeekPastSuffix", "" },
+            { "WeekSingularName", "недељу" },
+            { "WeekPluralName", "недеље" },
+            { "YearPattern", "%n %u" },
+            { "YearFuturePrefix", "за " },
+            { "YearFutureSuffix", " " },
+            { "YearPastPrefix", "пре " },
+            { "YearPastSuffix", "" },
+            { "YearSingularName", "годину" },
+            { "YearPluralName", "године" },
+            { "AbstractTimeUnitPattern", "" },
+            { "AbstractTimeUnitFuturePrefix", "" },
+            { "AbstractTimeUnitFutureSuffix", "" },
+            { "AbstractTimeUnitPastPrefix", "" },
+            { "AbstractTimeUnitPastSuffix", "" },
+            { "AbstractTimeUnitSingularName", "" },
+            { "AbstractTimeUnitPluralName", "" } };
+
+   @Override
+   public Object[][] getContents()
+   {
+      return OBJECTS;
+   }
+
+}

@@ -238,6 +238,77 @@ public class PrettyTimeI18n_uk_Test
       assertEquals("3 століття тому", t.format(new Date(0)));
    }
 
+   @Test
+   public void testUnroundedNow() throws Exception
+   {
+      PrettyTime t = new PrettyTime(new Date(0), locale);
+      assertEquals("зараз", t.formatUnrounded(new Date(0)));
+   }
+
+   @Test
+   public void testUnroundedSlightlyAfterNow() throws Exception
+   {
+      PrettyTime t = new PrettyTime(new Date(0), locale);
+      assertEquals("зараз", t.formatUnrounded(new Date(600)));
+   }
+
+   @Test
+   public void testUnroundedFuture() throws Exception
+   {
+      Object[][] datesAndExpectedResults = {
+         {new Date(1000 * 60 * 12), "через 12 хвилин"},
+         {new Date(1000 * 60 * 60 * 3), "через 3 години"},
+         {new Date(1000 * 60 * 60 * 24 * 3), "через 3 дні"},
+         {new Date(1000 * 60 * 60 * 24 * 7 * 3), "через 3 тижні"},
+         {new Date(2629743830L * 3L), "через 3 місяці"},
+         {new Date(2629743830L * 12L * 3L), "через 3 роки"},
+         {new Date(315569259747L * 3L), "через 3 десятиліття"},
+         {new Date(3155692597470L * 3L), "через 3 століття"},
+      };
+
+      for (Object[] dateAndExpectedResult : datesAndExpectedResults) {
+         Date date = (Date) dateAndExpectedResult[0];
+         String expectedResult = (String) dateAndExpectedResult[1];
+
+         PrettyTime t = new PrettyTime(new Date(0), locale);
+         assertEquals(expectedResult, t.formatUnrounded(date));
+      }
+   }
+
+   @Test
+   public void testUnroundedSlightlyBeforeNow() throws Exception
+   {
+      PrettyTime t = new PrettyTime(new Date(600), locale);
+      assertEquals("щойно", t.formatUnrounded(new Date(0)));
+   }
+
+   @Test
+   public void testUnroundedPast() throws Exception
+   {
+      Object[][] referenceDatesAndExpectedResults = {
+         {new Date(1000 * 60 * 12), "12 хвилин тому"},
+         {new Date(1000 * 60 * 60 * 1), "1 годину тому"},
+         {new Date(1000 * 60 * 60 * 3), "3 години тому"},
+         {new Date(1000 * 60 * 60 * 6), "6 годин тому"},
+         {new Date(1000 * 60 * 60 * 24 * 3), "3 дні тому"},
+         {new Date(1000 * 60 * 60 * 24 * 7 * 3), "3 тижні тому"},
+         {new Date(2629743830L * 3L), "3 місяці тому"},
+         {new Date(2629743830L * 12L * 3L), "3 роки тому"},
+         {new Date(2629743830L * 12L * 8L), "8 років тому"},
+         {new Date(315569259747L * 3L), "3 десятиліття тому"},
+         {new Date(315569259747L * 8L), "8 десятиліть тому"},
+         {new Date(3155692597470L * 3L), "3 століття тому"},
+      };
+
+      for (Object[] referenceDateAndExpectedResult : referenceDatesAndExpectedResults) {
+         Date referenceDate = (Date) referenceDateAndExpectedResult[0];
+         String expectedResult = (String) referenceDateAndExpectedResult[1];
+
+         PrettyTime t = new PrettyTime(referenceDate, locale);
+         assertEquals(expectedResult, t.formatUnrounded(new Date(0)));
+      }
+   }
+
    @After
    public void tearDown() throws Exception
    {

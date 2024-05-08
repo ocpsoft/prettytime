@@ -62,7 +62,7 @@ public class Resources_uk extends ListResourceBundle implements TimeFormatProvid
       @Override
       public String formatUnrounded(Duration duration)
       {
-         long quantity = duration.getQuantity();
+         long quantity = Math.abs(duration.getQuantity());
          StringBuilder result = new StringBuilder();
          result.append(quantity);
          return result.toString();
@@ -84,7 +84,7 @@ public class Resources_uk extends ListResourceBundle implements TimeFormatProvid
          return performDecoration(
                   duration.isInPast(),
                   duration.isInFuture(),
-                  duration.getQuantity(),
+                  Math.abs(duration.getQuantity()),
                   time);
       }
 

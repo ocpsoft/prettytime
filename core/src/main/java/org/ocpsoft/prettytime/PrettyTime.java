@@ -32,6 +32,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.ocpsoft.prettytime.impl.DurationImpl;
 import org.ocpsoft.prettytime.impl.ResourcesTimeFormat;
@@ -73,9 +74,9 @@ public class PrettyTime
 {
    private volatile Instant reference;
    private volatile Locale locale = Locale.getDefault();
-   private final Map<TimeUnit, TimeFormat> units = new ConcurrentHashMap<>();
-   private volatile List<TimeUnit> cachedUnits;
-   private String overrideResourceBundle;
+   private final Map<TimeUnit, TimeFormat> unitsAndFormats = new ConcurrentHashMap<>();
+   private final List<TimeUnit> cachedUnits = new CopyOnWriteArrayList<>();
+   private final String overrideResourceBundle;
 
    /**
     * Create a new {@link PrettyTime} instance that will always use the current value of
@@ -1308,13 +1309,13 @@ public class PrettyTime
    {
       if (unit == null)
          return null;
-      if (units.get(unit) != null) {
-         return units.get(unit);
+      if (unitsAndFormats.get(unit) != null) {
+         return unitsAndFormats.get(unit);
       }
       else {
          // Trying to transform the TimeUnit to String does the trick
          Map<String, TimeFormat> map = new ConcurrentHashMap<>();
-         units.keySet().forEach(key -> map.put(key.toString(), units.get(key)));
+         unitsAndFormats.keySet().forEach(key -> map.put(key.toString(), unitsAndFormats.get(key)));
          return map.get(unit.toString());
       }
    }
@@ -1441,13 +1442,8 @@ public class PrettyTime
     */
    public List<TimeUnit> getUnits()
    {
-      if (cachedUnits == null) {
-         List<TimeUnit> result = new ArrayList<>(units.keySet());
-         Collections.sort(result, Comparator.comparing(TimeUnit::getMillisPerUnit));
-         cachedUnits = Collections.unmodifiableList(result);
-      }
-
-      return cachedUnits;
+      cachedUnits.sort(Comparator.comparingLong(TimeUnit::getMillisPerUnit));
+      return Collections.unmodifiableList(new ArrayList<>(cachedUnits));
    }
 
    /**
@@ -1459,7 +1455,7 @@ public class PrettyTime
       if (unitType == null)
          return null;
 
-      for (TimeUnit unit : units.keySet()) {
+      for (TimeUnit unit : unitsAndFormats.keySet()) {
          if (unitType.isAssignableFrom(unit.getClass())) {
             return (UNIT) unit;
          }
@@ -1486,10 +1482,9 @@ public class PrettyTime
     */
    public PrettyTime registerUnit(final TimeUnit unit, TimeFormat format)
    {
-      cachedUnits = null;
+      cachedUnits.add(unit);
+      unitsAndFormats.put(unit, format);
 
-      units.put(Objects.requireNonNull(unit, "TimeUnit to register must not be null."),
-               Objects.requireNonNull(format, "TimeFormat to register must not be null."));
       if (unit instanceof LocaleAware)
          ((LocaleAware<?>) unit).setLocale(locale);
       if (format instanceof LocaleAware)
@@ -1548,11 +1543,11 @@ public class PrettyTime
       if (unitType == null)
          return null;
 
-      for (TimeUnit unit : units.keySet()) {
+      for (TimeUnit unit : unitsAndFormats.keySet()) {
          if (unitType.isAssignableFrom(unit.getClass())) {
-            cachedUnits = null;
+            cachedUnits.remove(unit);
 
-            return units.remove(unit);
+            return unitsAndFormats.remove(unit);
          }
       }
       return null;
@@ -1568,9 +1563,9 @@ public class PrettyTime
       if (unit == null)
          return null;
 
-      cachedUnits = null;
+      cachedUnits.remove(unit);
 
-      return units.remove(unit);
+      return unitsAndFormats.remove(unit);
    }
 
    /**
@@ -1603,15 +1598,14 @@ public class PrettyTime
          locale = Locale.getDefault();
 
       this.locale = locale;
-      for (TimeUnit unit : units.keySet()) {
+      for (TimeUnit unit : unitsAndFormats.keySet()) {
          if (unit instanceof LocaleAware)
             ((LocaleAware<?>) unit).setLocale(locale);
       }
-      for (TimeFormat format : units.values()) {
+      for (TimeFormat format : unitsAndFormats.values()) {
          if (format instanceof LocaleAware)
             ((LocaleAware<?>) format).setLocale(locale);
       }
-      cachedUnits = null;
       return this;
    }
 
@@ -1627,8 +1621,8 @@ public class PrettyTime
    public List<TimeUnit> clearUnits()
    {
       List<TimeUnit> result = getUnits();
-      cachedUnits = null;
-      units.clear();
+      cachedUnits.clear();
+      unitsAndFormats.clear();
       return result;
    }
 

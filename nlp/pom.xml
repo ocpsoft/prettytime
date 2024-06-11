@@ -62,6 +62,7 @@
 								<relocation>
 									<includes>
 										<include>com.joestelmach.**</include>
+										<include>org.slf4j.**</include>
 										<include>edu.emory.**</include>
 										<include>net.fortuna.**</include>
 										<include>org.antlr.**</include>

@@ -19,7 +19,7 @@ Android
 =======
 To use prettytime in android, first add the following dependency to your app level build.gradle
 
-	implementation 'org.ocpsoft.prettytime:prettytime:5.0.4.Final'
+	implementation 'org.ocpsoft.prettytime:prettytime:5.0.8.Final'
 
 ProGuard rules are automatically configured for you if you use the R8 shrinker (which is the default since version 3.4.0 of the Android Gradle Plugin). If you are using an older version of AGP, add the ProGuard rules from [this file](core/src/main/resources/META-INF/proguard/prettytime.pro)
 

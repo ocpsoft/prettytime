@@ -1,0 +1,14 @@
+[tools]
+# Java 8 is the minimum required version for PrettyTime 5.x
+# Using the latest Amazon Corretto 8 for exact compatibility with project requirements
+java = "microsoft-11.0.28"
+
+# Maven for building the project
+maven = "3.9"
+
+[env]
+# Set JAVA_HOME for Maven and other tools
+JAVA_HOME = "{{exec(command='mise where java')}}"
+
+# Maven configuration
+MAVEN_OPTS = "-Xmx1024m -XX:MaxPermSize=256m"
